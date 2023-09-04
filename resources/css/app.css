@@ -1,9 +1,13 @@
+@import "theme.css";
+@import "~dropzone/dist/dropzone.css";
+@import "~flatpickr/dist/flatpickr.min.css";
+@import '~bootstrap/scss';
+@import "admin-lte/build/scss";
+@import '~jquery-ui/themes/base/all.css';
+@import "~select2/dist/css/select2.min.css";
+@import "~bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css";
+/*@import "@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css";*/
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import "theme.css";
-@import "~select2/dist/css/select2.min.css";
-@import "select.css";
-@import "~dropzone/dist/dropzone.css";
-@import "~flatpickr/dist/flatpickr.min.css";

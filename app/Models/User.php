@@ -5,10 +5,9 @@ namespace App\Models;
 use \DateTimeInterface;
 use App\Support\HasAdvancedFilter;
 use Carbon\Carbon;
-use Hash;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -40,12 +39,17 @@ class User extends Authenticatable
     protected $hidden = [
         'remember_token',
         'password',
+        'password_playtomic'
     ];
 
     protected $fillable = [
         'name',
         'email',
         'password',
+        'playtomic_id',
+        'playtomic_token',
+        'playtomic_refresh_token',
+        'password_playtomic'
     ];
 
     protected $dates = [
@@ -85,5 +89,9 @@ class User extends Authenticatable
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    public function scopeByEmail($query, $value){
+        return $query->where('email', $value);
     }
 }

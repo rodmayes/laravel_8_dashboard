@@ -8,11 +8,11 @@ use Livewire\Component;
 
 class Edit extends Component
 {
-    public Role $role;
+    public $role;
 
-    public array $permissions = [];
+    public $permissions = [];
 
-    public array $listsForFields = [];
+    public $listsForFields = [];
 
     public function mount(Role $role)
     {

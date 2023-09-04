@@ -4,17 +4,20 @@ namespace App\Http\Livewire\User;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Services\PlaytomicHttpService;
+use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 
 class Edit extends Component
 {
-    public User $user;
+    public $user;
 
-    public array $roles = [];
+    public $roles = [];
 
-    public string $password = '';
+    public $password = '';
+    public $playtomic_password;
 
-    public array $listsForFields = [];
+    public $listsForFields = [];
 
     public function mount(User $user)
     {
@@ -31,11 +34,40 @@ class Edit extends Component
     public function submit()
     {
         $this->validate();
-        $this->user->password = $this->password;
         $this->user->save();
         $this->user->roles()->sync($this->roles);
 
         return redirect()->route('admin.users.index');
+    }
+
+    public function storePassword(){
+        $this->user->password = $this->password;
+        $this->user->save();
+
+        return redirect()->route('admin.users.edit', $this->user->id);
+    }
+
+    public function storePlaytomicPassword(){
+        $this->user->playtomic_password = Crypt::encrypt($this->playtomic_password);
+        $this->user->save();
+
+        return redirect()->route('admin.users.edit', $this->user->id);
+    }
+
+    public function refreshToken(){
+        $response = (new PlaytomicHttpService($this->user))->login();
+        if($response) {
+            $this->user->playtomic_id = $response['user_id'];
+            $this->user->playtomic_token = $response['access_token'];
+            $this->user->playtomic_refresh_token = $response['refresh_token'];
+            $this->user->save();
+            return redirect()->route('admin.users.edit', $this->user->id);
+        }
+        return $this->addError('user.playtomic_token', 'Error to refresh');
+    }
+
+    public function refreshData(){
+        $this->user = User::find($this->user->id);
     }
 
     protected function rules(): array
@@ -52,6 +84,12 @@ class Edit extends Component
             ],
             'password' => [
                 'string',
+            ],
+            'user.playtomic_id' => [
+                'string'
+            ],
+            'user.playtomic_token' => [
+                'string'
             ],
             'roles' => [
                 'required',

@@ -4,17 +4,18 @@ namespace App\Http\Livewire\User;
 
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 
 class Create extends Component
 {
-    public User $user;
+    public $user;
 
-    public array $roles = [];
+    public $roles = [];
+    public $password = '';
+    public $playtomic_password = '';
 
-    public string $password = '';
-
-    public array $listsForFields = [];
+    public $listsForFields = [];
 
     public function mount(User $user)
     {
@@ -31,6 +32,7 @@ class Create extends Component
     {
         $this->validate();
         $this->user->password = $this->password;
+        $this->user->playtomic_password = Crypt::encrypt($this->playtomic_password);
         $this->user->save();
         $this->user->roles()->sync($this->roles);
 
@@ -52,6 +54,12 @@ class Create extends Component
             'password' => [
                 'string',
                 'required',
+            ],
+            'user.playtomic_id' => [
+                'string'
+            ],
+            'user.playtomic_token' => [
+                'string'
             ],
             'roles' => [
                 'required',

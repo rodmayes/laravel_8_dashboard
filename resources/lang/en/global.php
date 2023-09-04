@@ -66,6 +66,10 @@ return [
         'colvis'        => 'Columns',
         'delete'        => 'Delete selected',
         'zero_selected' => 'No rows selected',
+        'per_page'      => 'Per page',
+        'search'        => 'Search',
+        'loading'       => 'Loading ...',
+        'no_items_found'=> 'No items found'
     ],
     'billing' => [
         'menu'                        => 'Billing',
@@ -304,4 +308,5 @@ return [
     'team-members'                   => 'Team members',
     'calendar'                       => 'Calendar',
     'messenger'                      => 'Messenger',
+    'sync-data'                      => 'Sync data'
 ];

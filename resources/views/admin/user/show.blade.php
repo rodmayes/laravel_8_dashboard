@@ -18,25 +18,15 @@
             <table class="table table-view">
                 <tbody class="bg-white">
                     <tr>
-                        <th>
-                            {{ trans('cruds.user.fields.id') }}
-                        </th>
-                        <td>
-                            {{ $user->id }}
-                        </td>
+                        <th>{{ trans('cruds.user.fields.id') }}</th>
+                        <td>{{ $user->id }}</td>
                     </tr>
                     <tr>
-                        <th>
-                            {{ trans('cruds.user.fields.name') }}
-                        </th>
-                        <td>
-                            {{ $user->name }}
-                        </td>
+                        <th>{{ trans('cruds.user.fields.name') }}</th>
+                        <td>{{ $user->name }}</td>
                     </tr>
                     <tr>
-                        <th>
-                            {{ trans('cruds.user.fields.email') }}
-                        </th>
+                        <th>{{ trans('cruds.user.fields.email') }}</th>
                         <td>
                             <a class="link-light-blue" href="mailto:{{ $user->email }}">
                                 <i class="far fa-envelope fa-fw">
@@ -46,17 +36,19 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>
-                            {{ trans('cruds.user.fields.email_verified_at') }}
-                        </th>
-                        <td>
-                            {{ $user->email_verified_at }}
-                        </td>
+                        <th>{{ trans('cruds.user.fields.email_verified_at') }}</th>
+                        <td>{{ $user->email_verified_at }}</td>
                     </tr>
                     <tr>
-                        <th>
-                            {{ trans('cruds.user.fields.roles') }}
-                        </th>
+                        <th>{{ trans('playtomic.clubs.fields.playtomic_id') }}</th>
+                        <td>{{ $user->playtomic_id }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ trans('playtomic.clubs.fields.playtomic_token') }}</th>
+                        <td>{{ $user->playtomic_token }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ trans('cruds.user.fields.roles') }}</th>
                         <td>
                             @foreach($user->roles as $key => $entry)
                                 <span class="badge badge-relationship">{{ $entry->title }}</span>

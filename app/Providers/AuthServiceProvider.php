@@ -25,6 +25,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('viewDatabaseSchedule', function ($user) {
+            return Gate::denies('admin');
+        });
     }
 }

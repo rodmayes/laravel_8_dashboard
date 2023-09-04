@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class Edit extends Component
 {
-    public ContactCompany $contactCompany;
+    public $contactCompany;
 
     public function mount(ContactCompany $contactCompany)
     {

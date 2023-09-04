@@ -4,7 +4,20 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap')
+//require('./bootstrap')
+import 'bootstrap';
+import 'admin-lte';
+import flatpickr from "flatpickr";
+import { Spanish } from "flatpickr/dist/l10n/es"
+flatpickr.localize(Spanish);
+
+import $ from 'jquery';
+window.$ = window.jQuery = $;
+
+import 'jquery-ui/ui/widgets/datepicker.js'
+import 'bootstrap4-datetimepicker';
+import 'select2/dist/js/select2.full.min';
+//require('select2');
 
 /* Sidebar - Side navigation menu on mobile/responsive mode */
 window.toggleNavbar = function (collapseID) {
@@ -38,3 +51,4 @@ window.initialSubNavLoad = function () {
 
 initialSubNavLoad()
 /* Opens sidebar navigation that contains sub-items */
+

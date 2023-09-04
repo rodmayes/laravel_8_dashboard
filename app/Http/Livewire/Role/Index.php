@@ -16,15 +16,15 @@ class Index extends Component
     use WithSorting;
     use WithConfirmation;
 
-    public int $perPage;
+    public $perPage;
 
-    public array $orderable;
+    public $orderable;
 
-    public string $search = '';
+    public $search = '';
 
-    public array $selected = [];
+    public $selected = [];
 
-    public array $paginationOptions;
+    public $paginationOptions;
 
     protected $queryString = [
         'search' => [

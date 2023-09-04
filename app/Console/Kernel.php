@@ -24,7 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        //$schedule->command('playtomic:avalibility')->dailyAt('08:00');
+        //$schedule->command('playtomic:booking-on-date rodmayes@gmail.com')->dailyAt('08:00');
+        //$schedule->command('playtomic:bookings-status-closed')->dailyAt('01:00');
+        //$schedule->command('schedule:run');
     }
 
     /**

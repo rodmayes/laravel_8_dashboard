@@ -1,133 +1,134 @@
-<nav class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
-    <div class="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
-        <button class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent" type="button" onclick="toggleNavbar('example-collapse-sidebar')">
-            <i class="fas fa-bars"></i>
-        </button>
-        <a class="md:block text-left md:pb-2 text-blueGray-700 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0" href="{{ route('admin.home') }}">
-            {{ trans('panel.site_title') }}
-        </a>
-        <div class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded hidden" id="example-collapse-sidebar">
-            <div class="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-300">
-                <div class="flex flex-wrap">
-                    <div class="w-6/12">
-                        <a class="md:block text-left md:pb-2 text-blueGray-700 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0" href="{{ route('admin.home') }}">
-                            {{ trans('panel.site_title') }}
-                        </a>
-                    </div>
-                    <div class="w-6/12 flex justify-end">
-                        <button type="button" class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent" onclick="toggleNavbar('example-collapse-sidebar')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- Divider -->
-            <hr class="mb-6 md:min-w-full" />
-            <!-- Heading -->
 
-            <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-                <li class="items-center">
-                    <a href="{{ route("admin.home") }}" class="{{ request()->is("admin") ? "sidebar-nav-active" : "sidebar-nav" }}">
-                        <i class="fas fa-tv"></i>
-                        {{ trans('global.dashboard') }}
+    <div class="sidebar os-theme-dark">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+               <img src="{{asset('images/heroina.webp')}}" class="img-circle elevation-2" alt="User Image" style="height:35px">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">{{Auth::user()->name}}</a>
+            </div>
+        </div>
+
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-compact text-sm" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item {{ request()->is("admin") ? "menu-is-opening menu-open" : "" }}">
+                    <a href="{{ route("admin.home") }}" class="nav-link {{ request()->is("admin") ? "active" : "" }}">
+                        <i class="nav-icon fas fa-tv"></i>
+                        <p>{{ trans('global.dashboard') }}</p>
+                    </a>
+                </li>
+                <!-- PLAYTOMIC -->
+                <li class="nav-item {{ request()->is("playtomic*")||request()->is("playtomic/**") ? "menu-is-opening menu-open" : "" }}">
+                    <a href="#" class="nav-link {{ request()->is("playtomic*")||request()->is("playtomic/**") ? "active" : "" }}">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            {{ trans('playtomic.title') }}
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('playtomic_club_access')
+                            <li class="class-link {{ request()->is("playtomic/clubs*") ? "menu-is-opening menu-open" : "" }}">
+                                <a href="{{ route("playtomic.clubs.index") }}" class="nav-link {{ request()->is("playtomic/clubs*") ? "active" : "" }}">
+                                    <i class="fa-fw c-sidebar-nav-icon fas fa-briefcase"></i>
+                                    <p>{{ trans('playtomic.clubs.title') }}</p>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('playtomic_resources_access')
+                            <li class="class-link {{ request()->is("playtomic/resources*") ? "menu-is-opening menu-open" : "" }}">
+                                <a href="{{ route("playtomic.resources.index") }}" class="nav-link {{ request()->is("playtomic/resources*") ? "active" : "" }}">
+                                    <i class="fa-fw c-sidebar-nav-icon fas fa-briefcase"></i>
+                                    <p>{{ trans('playtomic.resources.title') }}</p>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('playtomic_booking_access')
+                        <li class="class-link {{ request()->is("playtomic/bookings*") ? "menu-is-opening menu-open" : "" }}">
+                            <a href="{{ route("playtomic.bookings.index") }}" class="nav-link {{ request()->is("playtomic/bookings*") ? "active" : "" }}">
+                                <i class="fa-fw c-sidebar-nav-icon fas fa-briefcase"></i>
+                                <p>{{ trans('playtomic.bookings.title') }}</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                <!-- END PLAYTOMIC -->
+
+                <!-- USERS -->
+                @can('user_management_access')
+                <li class="nav-item {{ request()->is("admin/permissions*")||request()->is("admin/roles*")||request()->is("admin/users*") ? "menu-is-opening menu-open" : "" }}">
+                    <a href="#" class="nav-link {{ request()->is("admin/permissions*") ? "sidebar-nav-active" : "menu-open" }}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            {{ trans('cruds.userManagement.title') }}
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('permission_access')
+                            <li class="class-link {{ request()->is("admin/permissions*") ? "menu-is-opening menu-open" : "" }}">
+                                <a href="{{ route("admin.permissions.index") }}" class="nav-link {{ request()->is("admin/permissions*") ? "active" : "" }}">
+                                    <i class="fa-fw c-sidebar-nav-icon fas fa-unlock-alt"></i>
+                                    <p>{{ trans('cruds.permission.title') }}</p>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('role_access')
+                            <li class="class-link {{ request()->is("admin/roles*") ? "menu-is-opening menu-open" : "" }}">
+                                <a href="{{ route("admin.roles.index") }}" class="nav-link {{ request()->is("admin/roles*") ? "active" : "" }}">
+                                    <i class="fa-fw c-sidebar-nav-icon fas fa-briefcase"></i>
+                                    <p>{{ trans('cruds.role.title') }}</p>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('user_access')
+                                <li class="class-link {{ request()->is("admin/users*") ? "menu-is-opening menu-open" : "" }}">
+                                    <a href="{{ route("admin.users.index") }}" class="nav-link {{ request()->is("admin/users*") ? "active" : "" }}">
+                                        <i class="fa-fw c-sidebar-nav-icon fas fa-user"></i>
+                                        <p>{{ trans('cruds.user.title') }}</p>
+                                    </a>
+                                </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcan
+                <!-- END USERS -->
+                <li class="class-link {{ request()->is("logs") ? "menu-is-opening menu-open" : "" }}">
+                    <a href="/logs" class="nav-link {{ request()->is("logs") ? "active" : "" }}">
+                        <i class="fas fa-cogs"></i>
+                        Logs
                     </a>
                 </li>
 
-                @can('user_management_access')
-                    <li class="items-center">
-                        <a class="has-sub {{ request()->is("admin/permissions*")||request()->is("admin/roles*")||request()->is("admin/users*") ? "sidebar-nav-active" : "sidebar-nav" }}" href="#" onclick="window.openSubNav(this)">
-                            <i class="fa-fw fas fa-users c-sidebar-nav-icon">
-                            </i>
-                            {{ trans('cruds.userManagement.title') }}
-                        </a>
-                        <ul class="ml-4 subnav hidden">
-                            @can('permission_access')
-                                <li class="items-center">
-                                    <a class="{{ request()->is("admin/permissions*") ? "sidebar-nav-active" : "sidebar-nav" }}" href="{{ route("admin.permissions.index") }}">
-                                        <i class="fa-fw c-sidebar-nav-icon fas fa-unlock-alt">
-                                        </i>
-                                        {{ trans('cruds.permission.title') }}
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('role_access')
-                                <li class="items-center">
-                                    <a class="{{ request()->is("admin/roles*") ? "sidebar-nav-active" : "sidebar-nav" }}" href="{{ route("admin.roles.index") }}">
-                                        <i class="fa-fw c-sidebar-nav-icon fas fa-briefcase">
-                                        </i>
-                                        {{ trans('cruds.role.title') }}
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('user_access')
-                                <li class="items-center">
-                                    <a class="{{ request()->is("admin/users*") ? "sidebar-nav-active" : "sidebar-nav" }}" href="{{ route("admin.users.index") }}">
-                                        <i class="fa-fw c-sidebar-nav-icon fas fa-user">
-                                        </i>
-                                        {{ trans('cruds.user.title') }}
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </li>
-                @endcan
-                @can('contact_management_access')
-                    <li class="items-center">
-                        <a class="has-sub {{ request()->is("admin/contact-companies*")||request()->is("admin/contact-contacts*") ? "sidebar-nav-active" : "sidebar-nav" }}" href="#" onclick="window.openSubNav(this)">
-                            <i class="fa-fw fas fa-users c-sidebar-nav-icon">
-                            </i>
-                            {{ trans('cruds.contactManagement.title') }}
-                        </a>
-                        <ul class="ml-4 subnav hidden">
-                            @can('contact_company_access')
-                                <li class="items-center">
-                                    <a class="{{ request()->is("admin/contact-companies*") ? "sidebar-nav-active" : "sidebar-nav" }}" href="{{ route("admin.contact-companies.index") }}">
-                                        <i class="fa-fw c-sidebar-nav-icon fas fa-building">
-                                        </i>
-                                        {{ trans('cruds.contactCompany.title') }}
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('contact_contact_access')
-                                <li class="items-center">
-                                    <a class="{{ request()->is("admin/contact-contacts*") ? "sidebar-nav-active" : "sidebar-nav" }}" href="{{ route("admin.contact-contacts.index") }}">
-                                        <i class="fa-fw c-sidebar-nav-icon fas fa-user-plus">
-                                        </i>
-                                        {{ trans('cruds.contactContact.title') }}
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </li>
-                @endcan
-                @can('transaction_access')
-                    <li class="items-center">
-                        <a class="{{ request()->is("admin/transactions*") ? "sidebar-nav-active" : "sidebar-nav" }}" href="{{ route("admin.transactions.index") }}">
-                            <i class="fa-fw c-sidebar-nav-icon fas fa-cogs">
-                            </i>
-                            {{ trans('cruds.transaction.title') }}
-                        </a>
-                    </li>
-                @endcan
+                <li class="class-link {{ request()->is("telescope") ? "menu-is-opening menu-open" : "" }}">
+                    <a href="/telescope" class="nav-link {{ request()->is("telescope") ? "active" : "" }}" target="_blank">
+                        <i class="fas fa-cogs"></i>
+                        Telescope
+                    </a>
+                </li>
 
-                @if(file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php')))
-                    @can('profile_password_edit')
-                        <li class="items-center">
-                            <a href="{{ route("profile.password.edit") }}" class="{{ request()->is("profile/password") || request()->is("profile/password/*") ? "sidebar-nav-active" : "sidebar-nav" }}">
-                                <i class="fas fa-cogs"></i>
-                                {{ trans('global.change_password') }}
-                            </a>
-                        </li>
-                    @endcan
-                @endif
+                <li class="class-link {{ request()->is("schedule") ? "menu-is-opening menu-open" : "" }}">
+                    <a href="/schedule" class="nav-link {{ request()->is("schedule") ? "active" : "" }}" target="_blank">
+                        <i class="fas fa-cogs"></i>
+                        Scheduled tasks
+                    </a>
+                </li>
 
-                <li class="items-center">
-                    <a href="#" onclick="event.preventDefault(); document.getElementById('logoutform').submit();" class="sidebar-nav">
+                <li class="class-link {{ request()->is("console") ? "menu-is-opening menu-open" : "" }}">
+                    <a href="/console" class="nav-link {{ request()->is("console") ? "active" : "" }}" target="_blank">
+                        <i class="fas fa-cogs"></i>
+                        Console
+                    </a>
+                </li>
+
+                <li class="class-link">
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logoutform').submit();" class="nav-link">
                         <i class="fa-fw fas fa-sign-out-alt"></i>
                         {{ trans('global.logout') }}
                     </a>
                 </li>
+
             </ul>
-        </div>
+        </nav>
     </div>
-</nav>

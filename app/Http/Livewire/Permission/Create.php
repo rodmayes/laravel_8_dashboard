@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public Permission $permission;
+    public $permission;
 
     public function mount(Permission $permission)
     {

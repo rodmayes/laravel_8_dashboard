@@ -1,5 +1,5 @@
 <div>
-    <div wire:ignore class="w-full">
+    <div wire:ignore data-select2-id="{{$attributes['id']}}">
         @if(isset($attributes['multiple']))
             <div id="{{ $attributes['id'] }}-btn-container" class="mb-3">
                 <button type="button" class="btn btn-info btn-sm select-all-button">{{ trans('global.select_all') }}</button>
@@ -38,6 +38,8 @@
     function initSelect () {
         initButtons()
         el.select2({
+            theme: 'bootstrap4',
+            width: '100%',
             placeholder: '{{ __('Select your option') }}',
             allowClear: !el.attr('required')
         })
@@ -52,7 +54,7 @@
     el.on('change', function (e) {
         let data = $(this).select2("val")
 
-@this.set('{{ $attributes['wire:model'] }}', data)
+    @this.set('{{ $attributes['wire:model'] }}', data)
     });
 });
     </script>

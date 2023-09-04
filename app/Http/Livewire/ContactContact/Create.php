@@ -8,9 +8,9 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public array $listsForFields = [];
+    public $listsForFields = [];
 
-    public ContactContact $contactContact;
+    public $contactContact;
 
     public function mount(ContactContact $contactContact)
     {

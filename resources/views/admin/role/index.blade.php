@@ -1,21 +1,27 @@
 @extends('layouts.admin')
 @section('content')
-<div class="card bg-white">
-    <div class="card-header border-b border-blueGray-200">
-        <div class="card-header-container">
-            <h6 class="card-title">
-                {{ trans('cruds.role.title_singular') }}
-                {{ trans('global.list') }}
-            </h6>
-
-            @can('role_create')
-                <a class="btn btn-indigo" href="{{ route('admin.roles.create') }}">
-                    {{ trans('global.add') }} {{ trans('cruds.role.title_singular') }}
-                </a>
-            @endcan
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">
+                        {{ trans('cruds.role.title_singular') }}
+                        {{ trans('global.list') }}
+                    </h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
+                        <li class="breadcrumb-item active"> {{ trans('cruds.role.title') }}</li>
+                    </ol>
+                </div>
+            </div>
         </div>
-    </div>
-    @livewire('role.index')
+    </section>
 
-</div>
+    <section class="content">
+        <div class="container-fluid">
+            @livewire('role.index')
+        </div>
+    </section>
 @endsection

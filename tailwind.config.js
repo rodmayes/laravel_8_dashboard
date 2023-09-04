@@ -3,7 +3,9 @@ const colors = require('tailwindcss/colors')
 module.exports = {
   purge: {
     enabled: true,
-    content: ['./resources/views/**/*.blade.php'],
+    content: [
+        './resources/views/**/*.blade.php'
+    ],
     options: {
       whitelist: []
     }
@@ -88,5 +90,7 @@ module.exports = {
     'visited',
     'disabled'
   ],
-  plugins: [require('@tailwindcss/forms')]
+  plugins: [
+      require('@tailwindcss/forms')
+  ]
 }

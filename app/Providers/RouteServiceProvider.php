@@ -44,6 +44,11 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
+
+            Route::prefix('playtomic')
+                ->name('playtomic.')
+                ->middleware(['web','auth'])
+                ->group(base_path('routes/playtomic.php'));
         });
     }
 
