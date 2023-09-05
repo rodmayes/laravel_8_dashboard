@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Services\PlaytomicHttpService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -55,7 +54,7 @@ class PlaytomicBooking extends Command
         }
 
         $this->service = new PlaytomicHttpService($this->user);
-        $this->line('Login attempt');
+        $this->info('Login attempt');
         $this->log[] = 'Login attempt';
         $bookings = Booking::ontime()->orderBy('started_at')->get();
         foreach($bookings as $booking){
@@ -93,7 +92,7 @@ class PlaytomicBooking extends Command
                 $this->log[] = 'Booking end: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name . ' Do it!';
                 if (!isset($response['error'])) {
                     Mail::to($this->user)->send(new PlaytomicBookingConfirmation($booking, $resource, $timetable, $response));
-                    $this->line('Mail sent to ' . $this->user->email);
+                    $this->info('Mail sent to ' . $this->user->email);
                     $this->log[] = 'Mail sent to ' . $this->user->email;
                     break;
                 }
