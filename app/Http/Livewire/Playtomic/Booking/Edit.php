@@ -32,7 +32,7 @@ class Edit extends Component
     {
         $this->validate();
         $this->booking->resources = implode(",",$this->resources);
-        $this->booking->name = $this->booking->club->name.' '.$this->booking->resource->name.' '.$this->booking->start_at;
+        $this->booking->name = $this->booking->club->name.' '.$this->booking->start_at;
         $this->booking->public = isset($this->public) ? $this->public : false;
         if(Carbon::now('Europe/Andorra')->startOfDay()->diffInDays($this->booking->started_at->startOfDay()) >= (int)$this->booking->club->days_min_booking) $this->booking->status = 'on-time';
         else $this->booking->status = 'time-out';
