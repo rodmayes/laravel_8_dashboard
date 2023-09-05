@@ -176,9 +176,8 @@ class PreBooking extends Component
                 'exists:playtomic_club,id',
                 'required',
             ],
-            'booking.resource_id' => [
-                'integer',
-                'exists:playtomic_resource,id',
+            'resources' => [
+                'array',
                 'required',
             ],
             'booking.public' => [

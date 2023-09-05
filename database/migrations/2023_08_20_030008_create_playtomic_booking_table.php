@@ -13,7 +13,6 @@ class CreatePlaytomicBookingTable extends Migration
             $table->string('name', 50);
             $table->unsignedBigInteger('club_id');
             $table->foreign('club_id', 'fk_playtomic_booking_club')->references('id')->on('playtomic_club');
-            $table->unsignedBigInteger('resource_id');
             $table->string('resources');
             $table->string('booking_preference')->default('resource');
             $table->unsignedBigInteger('timetable_id');

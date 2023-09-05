@@ -51,11 +51,11 @@
                                 {{ trans('playtomic.bookings.fields.club_helper') }}
                             </div>
                         </div>
-                        <div class="form-group {{ $errors->has('booking.resource_id') ? 'is-invalid' : '' }} col-6">
-                            <label class="form-label required" for="resource_id">{{ trans('playtomic.bookings.fields.resource') }}</label>
-                            <x-select-list class="form-control" required id="resource_id" name="resource_id" :options="$this->listsForFields['resource']" wire:model="booking.resource_id" />
+                        <div class="form-group {{ $errors->has('resources') ? 'is-invalid' : '' }} col-6">
+                            <label class="form-label required" for="resources">{{ trans('playtomic.bookings.fields.resource') }}</label>
+                            <x-select-list class="form-control" required id="resources" name="resources" :options="$this->listsForFields['resources']" wire:model="resources" />
                             <small class="text-danger">
-                                {{ $errors->first('booking.resource_id') }}
+                                {{ $errors->first('resources') }}
                             </small>
                             <div class="help-block">
                                 {{ trans('playtomic.bookings.fields.resource_helper') }}
