@@ -61,9 +61,9 @@ class Create extends Component
                 'exists:playtomic_club,id',
                 'required',
             ],
-            'booking.resource_id' => [
-                'integer',
-                'exists:playtomic_resource,id',
+            'resources' => [
+                'array',
+                //'exists:playtomic_resource,id',
                 'required',
             ],
             'booking.timetable_id' => [
