@@ -81,8 +81,8 @@ class PlaytomicBooking extends Command
                     $resource = $preference2;
                     $timetable = $preference;
                 } else {
-                    $resource = $preference2;
-                    $timetable = $preference;
+                    $resource = $preference;
+                    $timetable = $preference2;
                 }
                 $this->log[] = 'Booking start: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name;
                 $this->line('Booking start : ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name);
