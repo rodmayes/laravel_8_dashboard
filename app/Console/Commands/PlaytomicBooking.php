@@ -115,7 +115,7 @@ class PlaytomicBooking extends Command
         $this->log[] = 'Confirmation Match '.$timetable->name;
         $this->line('Confirmation Match '.$timetable->name);
         $prebooking = $this->confirmationMatch($prebooking);
-        if(isset($prebooking['status']) && $prebooking['message'] === 'fail') return ['error' => 'Confirmation match error '.$prebooking['message']];
+        if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Confirmation match error '.$prebooking['message']];
         return $prebooking;
     }
 
@@ -125,6 +125,7 @@ class PlaytomicBooking extends Command
             try{
                 $response = $this->service->preBooking($booking, $resource, $timetable);
                 if(isset($response['status']) && $response['status'] === 'fail') {
+                    $this->line('Prebooking error '. $response['message']);
                     Log::error('Prebooking error '.$timetable->name.' '.$response['message']);
                     return ['status' => 'fail', 'message' => 'Prebooking '.$timetable->name.' '.$response['message']];
                 }
