@@ -87,9 +87,9 @@ class PlaytomicBooking extends Command
                     $timetable = $preference2;
                 }
                 $this->log[] = 'Booking start: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name;
-                $this->line('Booking start : ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name);
+                $this->line('  Booking start : ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name);
                 $response = $this->makeBooking($booking, $resource, $timetable);
-                $this->log[] = 'Booking end: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name . ' Do it!';
+                $this->log[] = '  Booking end: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name . ' Do it!';
                 if (!isset($response['error'])) {
                     Mail::to($this->user)->send(new PlaytomicBookingConfirmation($booking, $resource, $timetable, $response));
                     $this->info('Mail sent to ' . $this->user->email);
@@ -103,19 +103,19 @@ class PlaytomicBooking extends Command
 
     public function makeBooking(Booking  $booking, Resource $resource, Timetable $timetable){
         $this->log[] = 'Prebooking '.$timetable->name;
-        $this->line('PreBooking '.$timetable->name);
+        $this->line('    PreBooking '.$timetable->name);
         $prebooking = $this->preBooking($booking, $resource, $timetable);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Prebooking error '.$prebooking['message']];
         $this->log[] = 'Payment method '.$timetable->name;
-        $this->line('Payment method '.$timetable->name);
+        $this->line('    Payment method '.$timetable->name);
         $prebooking = $this->paymentMethodSelection($prebooking);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Payment method selection error '.$prebooking['message']];
         $this->log[] = 'Confirmation '.$timetable->name;
-        $this->line('Confirmation '.$timetable->name);
+        $this->line('    Confirmation '.$timetable->name);
         $prebooking = $this->confirmation($prebooking);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Confirmation error '.$prebooking['message']];
         $this->log[] = 'Confirmation Match '.$timetable->name;
-        $this->line('Confirmation Match '.$timetable->name);
+        $this->line('    Confirmation Match '.$timetable->name);
         $prebooking = $this->confirmationMatch($prebooking);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Confirmation match error '.$prebooking['message']];
         return $prebooking;
