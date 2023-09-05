@@ -49,7 +49,10 @@ class PlaytomicBooking extends Command
     public function handle()
     {
         $this->user = User::byEmail($this->argument('user'))->first();
-        if(!$this->user) return $this->error('No user found');
+        if(!$this->user) {
+            Log::error('No user found');
+            return $this->error('No user found');
+        }
 
         $this->service = new PlaytomicHttpService($this->user);
         $this->line('Login attempt');
@@ -125,13 +128,14 @@ class PlaytomicBooking extends Command
             try{
                 $response = $this->service->preBooking($booking, $resource, $timetable);
                 if(isset($response['status']) && $response['status'] === 'fail') {
-                    $this->line('Prebooking error '. $response['message']);
+                    $this->error('Prebooking error '. $response['message']);
                     Log::error('Prebooking error '.$timetable->name.' '.$response['message']);
                     return ['status' => 'fail', 'message' => 'Prebooking '.$timetable->name.' '.$response['message']];
                 }
                 $this->line('Prebooking Ok');
                 return $response;
             }catch(\Exception $e){
+                $this->error('Prebooking error '. $timetable->name.' '.$e->getMessage());
                 Log::error('Prebooking error '.$timetable->name.' '.$e->getMessage());
                 return ['status' => 'fail', 'message' => 'Prebooking '.$timetable->name.' '.$e->getMessage()];
             }
@@ -143,14 +147,14 @@ class PlaytomicBooking extends Command
         try{
             $response = $this->service->paymentMethodSelection($prebooking["payment_intent_id"]);
             if(isset($response['status']) && $response['status'] === 'fail') {
-                $this->line('Payment method error'. $response['message']);
+                $this->error('Payment method error'. $response['message']);
                 Log::error('Payment method error ' . $response['message']);
                 return ['status' => 'fail', 'message' => 'Payment method error ' . $response['message']];
             }
             $this->line('Payment method Ok');
             return $response;
         }catch(\Exception $e){
-            $this->line('Payment method error'. $e->getMessage());
+            $this->error('Payment method error'. $e->getMessage());
             Log::error('Payment method error '.$e->getMessage());
             return ['status' => 'fail', 'message' => 'Payment method error '.$e->getMessage()];
         }
@@ -161,14 +165,14 @@ class PlaytomicBooking extends Command
         try{
             $response = $this->service->confirmation($prebooking['payment_intent_id']);
             if(isset($response['status']) && $response['status'] === 'fail') {
-                $this->line('Confirmation error'. $response['message']);
+                $this->error('Confirmation error'. $response['message']);
                 Log::error('Confirmation error ' . $response['message']);
                 return ['status' => 'fail', 'message' => 'Confirmation error ' . $response['message']];
             }
             $this->line('Confirmation Ok');
             return $response;
         }catch (\Exception $e) {
-            $this->line('Confirmation error'. $e->getMessage());
+            $this->error('Confirmation error'. $e->getMessage());
             Log::error('Confirmation error '.$e->getMessage());
             return ['status' => 'fail', 'message' => 'Confirmation error '.$e->getMessage()];
         }
@@ -179,14 +183,14 @@ class PlaytomicBooking extends Command
         try{
             $response = $this->service->confirmationMatch($prebooking['cart']['item']['cart_item_data']['match_id']);
             if(isset($response['status']) && $response['status'] === 'fail') {
-                $this->line('Confirmation match error'. $response['message']);
+                $this->error('Confirmation match error'. $response['message']);
                 Log::error('Confirmation match error ' . $response['message']);
                 return ['status' => 'fail', 'message' => 'Confirmation match error ' . $response['message']];
             }
             $this->line('Confirmation match Ok');
             return $response;
         }catch (\Exception $e) {
-            $this->line('Confirmation match error'. $e->getMessage());
+            $this->error('Confirmation match error'. $e->getMessage());
             Log::error('Confirmation match error '.$e->getMessage());
             return ['status' => 'fail', 'message' => 'Confirmation match error '.$e->getMessage()];
         }
