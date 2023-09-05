@@ -142,7 +142,6 @@
                                 <tr>
                                     <td colspan="10">No entries found.</td>
                                 </tr>
-                            @endempty
                         @endforelse
                     </tbody>
                 </table>

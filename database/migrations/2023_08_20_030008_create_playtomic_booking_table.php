@@ -14,7 +14,8 @@ class CreatePlaytomicBookingTable extends Migration
             $table->unsignedBigInteger('club_id');
             $table->foreign('club_id', 'fk_playtomic_booking_club')->references('id')->on('playtomic_club');
             $table->unsignedBigInteger('resource_id');
-            $table->foreign('resource_id', 'fk_playtomic_booking_recource')->references('id')->on('playtomic_resource');
+            $table->string('resources');
+            $table->string('booking_preference')->default('resource');
             $table->unsignedBigInteger('timetable_id');
             $table->foreign('timetable_id', 'fk_playtomic_booking_timetable')->references('id')->on('playtomic_timetable');
             $table->dateTime('started_at');
@@ -22,7 +23,7 @@ class CreatePlaytomicBookingTable extends Migration
             $table->string('status',30)->enum(['on-time','time-out','closed'])->default('on-time');
             $table->unsignedBigInteger('created_by');
             $table->unsignedInteger('public')->default(0);
-            $table->string('playtomic_id', 100)->nullable();
+            $table->string('playtomic_url_check_match', 255)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
