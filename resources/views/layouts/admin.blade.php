@@ -13,18 +13,12 @@
     <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/select2-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
-
-   <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>-->
     <title>{{ trans('panel.site_title') }}</title>
     <style>
+        .select2-container--default .select2-selection--multiple .select2-selection__choice{
+            color: #000000;
+        }
 
-        span.select2-selection__rendered {
-            display: none;
-        }
-        span.select2-selection--single{
-            display: none;
-        }
     </style>
     @stack('scripts-header')
     @stack('styles')

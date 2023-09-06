@@ -8,20 +8,13 @@ use App\Models\Resource;
 use App\Models\Timetable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Create extends Component
 {
-    public $booking;
-    public $club = -1;
-    public $resources;
-
     public $listsForFields = [];
-
-    public function updatedBooking(){
-        $this->initListsForFields();
-    }
+    public $booking;
+    public $resources;
 
     public function mount(Booking $booking)
     {
@@ -84,12 +77,16 @@ class Create extends Component
     protected function initListsForFields(): void
     {
         $this->listsForFields['club'] = Club::pluck('name','id');
+        $this->listsForFields['resource'] = Resource::pluck('name','id');
+        $this->listsForFields['timetable'] = Timetable::pluck('name','id');
+
+        /*
         $this->listsForFields['resource'] = Resource::
             when((int)$this->club > -1, function($q){
                 return $q->byClub($this->club);
             })->get()->map(function ($item) {
                 return ['name' => $item->name.'-'.$item->club->name, 'id' => $item->id, 'club' => $item->club->name];
             })->pluck('name','id');
-        $this->listsForFields['timetable'] = Timetable::pluck('name','id');
+        */
     }
 }

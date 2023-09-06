@@ -13,7 +13,6 @@ class Edit extends Component
 {
     public $listsForFields = [];
     public $booking;
-   //public $timetables;
     public $resources;
 
     public function mount(Booking $booking)

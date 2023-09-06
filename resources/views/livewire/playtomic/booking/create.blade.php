@@ -75,7 +75,6 @@
                                 {{ trans('playtomic.bookings.fields.log_helper') }}
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -89,10 +88,13 @@
 
 <script type="text/javascript">
     window.onload = (event) => {
+        var today = new Date();
+        var nextBook = new Date;
         $('.flatpickr-input').datetimepicker({
             locale: 'es',
             format: 'DD-MM-YYYY',
-            extraFormats: ['YYYY-MM-DD']
+            extraFormats: ['YYYY-MM-DD'],
+            'defaultDate' : nextBook.setDate(today.getDate()+3)
         });
     };
 </script>
