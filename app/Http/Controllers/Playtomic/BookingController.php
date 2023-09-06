@@ -76,6 +76,8 @@ class BookingController extends Controller
         }
 
         $this->log[] = 'Booking scheduled finish';
+        $booking->log = json_encode($this->log);
+        $booking->save();
         return $this->log;
     }
 

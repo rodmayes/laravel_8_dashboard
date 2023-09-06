@@ -66,6 +66,8 @@ class PlaytomicBooking extends Command
                     Log::error($e->getMessage());
                 }
             }
+            $booking->log = json_encode($this->log);
+            $booking->save();
         }
         $this->info('Booking scheduled finish');
     }
