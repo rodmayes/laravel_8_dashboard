@@ -6,19 +6,22 @@
 
 //require('./bootstrap')
 import 'bootstrap';
-import 'admin-lte';
-import flatpickr from "flatpickr";
-import { Spanish } from "flatpickr/dist/l10n/es"
-flatpickr.localize(Spanish);
+import 'admin-lte/dist/js/adminlte.min';
+import 'jquery/src/jquery';
+//import flatpickr from "flatpickr";
+//import { Spanish } from "flatpickr/dist/l10n/es"
+//latpickr.localize(Spanish);
 
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 
-import 'jquery-ui/ui/widgets/datepicker.js'
-import 'bootstrap4-datetimepicker';
-import 'select2/dist/js/select2.full.min';
-//require('select2');
+import 'select2/dist/js/select2.full'
+import 'bootstrap4-datetimepicker/build/js/bootstrap-datetimepicker.min';
 
+/*
+    import 'select2/dist/js/select2.full.min';
+    import 'bootstrap4-datetimepicker';
+*/
 /* Sidebar - Side navigation menu on mobile/responsive mode */
 window.toggleNavbar = function (collapseID) {
   document.getElementById(collapseID).classList.toggle('hidden')

@@ -18,7 +18,7 @@
                         <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
                         <div class="form-group">
                             <div class="input-group date" id="started_at">
-                                <input class="form-control flatpickr flatpickr-input" type="text" wire:model="booking.started_at">
+                                <input class="form-control flatpickr flatpickr-input" type="text" wire:model="booking.started_at" required>
                                 <div class="input-group-append" >
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
@@ -31,9 +31,9 @@
                             {{ trans('playtomic.bookings.fields.started_at_helper') }}
                         </div>
                     </div>
-                    <div class="form-group {{ $errors->has('booking.timetable_id') ? 'invalid' : '' }} col-">
+                    <div class="form-group {{ $errors->has('booking.timetable_id') ? 'invalid' : '' }} col-4">
                         <label class="form-label required" for="timetable_id">{{ trans('playtomic.bookings.fields.timetable') }}</label>
-                        <x-select-list class="form-control" required id="timetable_id" name="timetable_id" :options="$this->listsForFields['timetable']" wire:model="booking.timetable_id" />
+                        <x-select-list class="form-control" required id="timetable_id" name="timetable_id" :options="$this->listsForFields['timetable']" wire:model="booking.timetable_id"/>
                         <small class="text-danger">
                             {{ $errors->first('booking.timetable_id') }}
                         </small>
@@ -43,9 +43,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group {{ $errors->has('resources') ? 'invalid' : '' }} col-8">
+                    <div class="form-group {{ $errors->has('resources') ? 'invalid' : '' }} col-11">
                         <label class="form-label required" for="resources">{{ trans('playtomic.bookings.fields.resource') }}</label>
-                        <x-select-list class="form-control" required id="resources" name="resources[]" :options="$this->listsForFields['resource']" wire:model="resources" multiple/>
+                        <x-select-list class="form-control" required id="resources" name="resources" :options="$this->listsForFields['resource']" wire:model="resources"  multiple=""/>
                         <small class="text-danger">
                             {{ $errors->first('resources') }}
                         </small>
@@ -53,22 +53,27 @@
                             {{ trans('playtomic.bookings.fields.resource_helper') }}
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group col-2">
                         <div class="custom-control custom-switch">
                             <input type="checkbox" value="0" class="custom-control-input" id="ck_public" name="ck_public" wire:model="booking.public" checked>
                             <label class="custom-control-label" for="ck_public">{{ trans('playtomic.bookings.fields.is_public') }}</label>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group {{ $errors->has('booking.log') ? 'invalid' : '' }} col-12">
-                        <label class="form-label" for="log">{{ trans('playtomic.bookings.fields.log') }}</label>
-                        <input class="form-control" type="text" name="log" id="log" wire:model.defer="booking.log">
-                        <small class="text-danger">
-                            {{ $errors->first('booking.log') }}
-                        </small>
-                        <div class="help-block">
-                            {{ trans('playtomic.bookings.fields.log_helper') }}
+                    <p class="col-2">
+                        <button class="btn btn-xs btn-warning" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Log</button>
+                    </p>
+                    <div class="collapse col-12" id="collapseExample">
+                        <div class="form-group {{ $errors->has('booking.log') ? 'invalid' : '' }} col-12">
+                            <label class="form-label" for="log">{{ trans('playtomic.bookings.fields.log') }}</label>
+                            <input class="form-control" type="text" name="log" id="log" wire:model.defer="booking.log">
+                            <small class="text-danger">
+                                {{ $errors->first('booking.log') }}
+                            </small>
+                            <div class="help-block">
+                                {{ trans('playtomic.bookings.fields.log_helper') }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -83,10 +88,10 @@
 
 <script type="text/javascript">
     window.onload = (event) => {
-        flatpickr('.flatpickr-input', {
-            dateFormat: 'd-m-Y',
-            altFormat: "F j, Y",
-            minTime: "08:00"
+        $('.flatpickr-input').datetimepicker({
+            locale: 'es',
+            format: 'DD-MM-YYYY',
+            extraFormats: ['YYYY-MM-DD']
         });
     };
 </script>

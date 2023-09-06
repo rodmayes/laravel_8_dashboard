@@ -13,4 +13,12 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
+    .copy('node_modules/admin-lte/dist/css/adminlte.css', 'public/css')
+    .copy('node_modules/admin-lte/dist/js/adminlte.js', 'public/js')
+    .copy('node_modules/@fortawesome/fontawesome-free/css/all.min.css', 'public/css')
+    .copy('node_modules/select2/dist/css/select2.min.css', 'public/css')
+    .copy('node_modules/select2-bootstrap-theme/dist/select2-bootstrap.min.css', 'public/css')
+    .copy('node_modules/bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.min.css', 'public/css')
+    .copy('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts')
     .sourceMaps();
+

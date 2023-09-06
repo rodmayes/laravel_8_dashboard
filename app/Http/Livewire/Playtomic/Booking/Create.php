@@ -19,7 +19,7 @@ class Create extends Component
 
     public $listsForFields = [];
 
-    public function updatedClub(){
+    public function updatedBooking(){
         $this->initListsForFields();
     }
 

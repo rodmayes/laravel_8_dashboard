@@ -53,7 +53,7 @@
                         </div>
                         <div class="form-group {{ $errors->has('resources') ? 'is-invalid' : '' }} col-6">
                             <label class="form-label required" for="resources">{{ trans('playtomic.bookings.fields.resource') }}</label>
-                            <x-select-list class="form-control" required id="resources" name="resources" :options="$this->listsForFields['resources']" wire:model="resources" />
+                            <x-select-list class="form-control" required id="resources" name="resources" :options="$this->listsForFields['resource']" wire:model="resources" />
                             <small class="text-danger">
                                 {{ $errors->first('resources') }}
                             </small>
@@ -91,7 +91,6 @@
                     <p class="mb-2">
                         @if($url_prebooking)
                             <a class="text-blue-500" href="{{$url_prebooking['url']}}" target="_blank">{{ $url_prebooking['name'] }} </a>
-                            <button class="btn btn-warning" wire:click="preBooking({{$booking}})" type="button">Generate checkout url</button>
                             <button class="btn btn-success" wire:click="booking({{$booking}})" type="button">Booking</button>
                         @endif
                     </p>
