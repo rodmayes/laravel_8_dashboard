@@ -28,3 +28,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::resource('contact-contacts', ContactContactController::class, ['except' => ['store', 'update', 'destroy']]);
     Route::resource('transactions', TransactionController::class, ['except' => ['store', 'update', 'destroy']]);
 });
+
+Route::get('send-mail', function () {
+
+    $details = [
+        'title' => 'Mail from unpoquitodemayorga.es',
+        'body' => 'This is for testing email using smtp'
+    ];
+
+    \Mail::to('rodmayes@gmail.com')->send(new \App\Mail\MyTestMail($details));
+
+    dd("Email is Sent.");
+});
