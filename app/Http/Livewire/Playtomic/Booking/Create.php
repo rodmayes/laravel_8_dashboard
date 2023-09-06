@@ -36,6 +36,7 @@ class Create extends Component
             $this->booking->created_by = Auth::user()->id;
             $this->booking->public = isset($this->public) ? $this->public : false;
             $this->booking->name = $this->booking->club->name.' '.$this->booking->start_at;
+            $this->booking->started_at = $this->booking->started_at ?: Carbon::now()->addDays((int)$this->booking->club->days_min_booking);
             if(Carbon::now('Europe/Andorra')->startOfDay()->diffInDays($this->booking->started_at->startOfDay()) >= (int)$this->booking->club->days_min_booking) $this->booking->status = 'on-time';
             else $this->booking->status = 'time-out';
             $this->booking->save();
@@ -65,7 +66,7 @@ class Create extends Component
                 'required',
             ],
             'booking.started_at' => [
-                'required',
+                'nullable',
                 //'date_format:' . config('project.date_format'),
             ],
             'booking.public' => [

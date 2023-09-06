@@ -18,7 +18,7 @@
                         <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
                         <div class="form-group">
                             <div class="input-group date" id="started_at">
-                                <input class="form-control flatpickr flatpickr-input" type="text" wire:model="booking.started_at" required>
+                                <input class="form-control flatpickr flatpickr-input" type="text" wire:model="booking.started_at">
                                 <div class="input-group-append" >
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
