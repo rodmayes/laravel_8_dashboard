@@ -71,6 +71,7 @@ class PlaytomicBooking extends Command
     }
 
     public function booking($booking){
+        $booked = false;
         $timetables = [$booking->timetable, Timetable::before($booking->timetable)->first(), Timetable::after($booking->timetable)->first()];
         $resources_ids = explode(",",$booking->resources);
         foreach ($resources_ids as $id)
@@ -78,6 +79,7 @@ class PlaytomicBooking extends Command
         $booking_preference = ["timetable" => $timetables, "resource" => $resources];
 
         foreach ($booking_preference[$booking->booking_preference] as $preference){
+            if($booked) break;
             foreach ($booking_preference[$booking->booking_preference === 'timetable' ? 'resource' : 'timetable'] as $preference2) {
                 if ($booking->booking_preference === 'timetable') {
                     $resource = $preference2;
@@ -94,6 +96,7 @@ class PlaytomicBooking extends Command
                     Mail::to($this->user)->send(new PlaytomicBookingConfirmation($booking, $resource, $timetable, $response));
                     $this->info('Mail sent to ' . $this->user->email);
                     $this->log[] = 'Mail sent to ' . $this->user->email;
+                    $booked = true;
                     break;
                 }
             }
