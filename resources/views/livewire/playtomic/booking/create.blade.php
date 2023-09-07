@@ -4,6 +4,9 @@
             <div class="card-body">
                 @error('error') <small class="text-danger">{{ $message }}</small> @enderror
                 <div class="row">
+                    <x-date-picker class="form-control" wire:model="booking.started_at" id="started_at" name="started_at" picker="date" />
+                </div>
+                <div class="row">
                     <div class="form-group {{ $errors->has('booking.club_id') ? 'invalid' : '' }} col-4">
                         <label class="form-label required" for="club_id">{{ trans('playtomic.bookings.fields.club') }}</label>
                         <x-select-list class="form-control" required id="club_id" name="club_id" :options="$this->listsForFields['club']" wire:model="booking.club_id"/>

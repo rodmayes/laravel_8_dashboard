@@ -44,9 +44,14 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        {{ trans('playtomic.bookings.fields.playtomic_id') }}
+                                        {{ trans('playtomic.bookings.fields.resource') }}
                                     </th>
-                                    <td>{{ $booking->playtomic_id }}</td>
+                                    <td>
+                                        @foreach(explode(",",$booking->resources) as $item)
+                                            @php $resource = \App\Models\Resource::find($item); @endphp
+                                            <span class="badge badge-success">{{ $resource->name }}</span>
+                                        @endforeach
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>
@@ -61,7 +66,11 @@
                                         Log
                                     </th>
                                     <td>
-                                        <span class="badge badge-relationship">{{ $booking->log }}</span>
+                                        <span class="badge badge-relationship">
+                                            @foreach(json_decode($booking->log, true) as $item)
+                                                <p class="text-left">{{ $item }}</p>
+                                            @endforeach
+                                        </span>
                                     </td>
                                 </tr>
                             </tbody>
