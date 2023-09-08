@@ -13,14 +13,14 @@
             <ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-compact text-sm" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item {{ request()->is("admin") ? "menu-is-opening menu-open" : "" }}">
                     <a href="{{ route("admin.home") }}" class="nav-link {{ request()->is("admin") ? "active" : "" }}">
-                        <i class="nav-icon fas fa-tv"></i>
+                        <i class="fa fas fa-sun"></i>
                         <p>{{ trans('global.dashboard') }}</p>
                     </a>
                 </li>
                 <!-- PLAYTOMIC -->
                 <li class="nav-item {{ request()->is("playtomic*")||request()->is("playtomic/**") ? "menu-is-opening menu-open" : "" }}">
                     <a href="#" class="nav-link {{ request()->is("playtomic*")||request()->is("playtomic/**") ? "active" : "" }}">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="fa fa-play"></i>
                         <p>
                             {{ trans('playtomic.title') }}
                             <i class="right fas fa-angle-left"></i>
@@ -30,7 +30,7 @@
                         @can('playtomic_club_access')
                             <li class="class-link {{ request()->is("playtomic/clubs*") ? "menu-is-opening menu-open" : "" }}">
                                 <a href="{{ route("playtomic.clubs.index") }}" class="nav-link {{ request()->is("playtomic/clubs*") ? "active" : "" }}">
-                                    <i class="fa-fw c-sidebar-nav-icon fas fa-briefcase"></i>
+                                    <i class="fa c-sidebar-nav-icon fas fa-medal"></i>
                                     <p>{{ trans('playtomic.clubs.title') }}</p>
                                 </a>
                             </li>
@@ -38,7 +38,7 @@
                         @can('playtomic_resources_access')
                             <li class="class-link {{ request()->is("playtomic/resources*") ? "menu-is-opening menu-open" : "" }}">
                                 <a href="{{ route("playtomic.resources.index") }}" class="nav-link {{ request()->is("playtomic/resources*") ? "active" : "" }}">
-                                    <i class="fa-fw c-sidebar-nav-icon fas fa-briefcase"></i>
+                                    <i class="fa-fw c-sidebar-nav-icon fas fa-table-tennis"></i>
                                     <p>{{ trans('playtomic.resources.title') }}</p>
                                 </a>
                             </li>
@@ -46,7 +46,7 @@
                         @can('playtomic_booking_access')
                         <li class="class-link {{ request()->is("playtomic/bookings*") ? "menu-is-opening menu-open" : "" }}">
                             <a href="{{ route("playtomic.bookings.index") }}" class="nav-link {{ request()->is("playtomic/bookings*") ? "active" : "" }}">
-                                <i class="fa-fw c-sidebar-nav-icon fas fa-briefcase"></i>
+                                <i class="fa-fw c-sidebar-nav-icon fas fa-baseball-ball"></i>
                                 <p>{{ trans('playtomic.bookings.title') }}</p>
                             </a>
                         </li>
@@ -59,7 +59,7 @@
                 @can('user_management_access')
                 <li class="nav-item {{ request()->is("admin/permissions*")||request()->is("admin/roles*")||request()->is("admin/users*") ? "menu-is-opening menu-open" : "" }}">
                     <a href="#" class="nav-link {{ request()->is("admin/permissions*") ? "sidebar-nav-active" : "menu-open" }}">
-                        <i class="nav-icon fas fa-users"></i>
+                        <i class="fa fas fa-users"></i>
                         <p>
                             {{ trans('cruds.userManagement.title') }}
                             <i class="right fas fa-angle-left"></i>

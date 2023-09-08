@@ -7,6 +7,7 @@
                     <h1 class="m-0">
                         {{ trans('playtomic.bookings.title_singular') }}
                         {{ trans('global.list') }}
+                        List
                     </h1>
                 </div>
                 <div class="col-sm-6">

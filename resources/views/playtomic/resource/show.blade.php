@@ -46,7 +46,7 @@
                             {{ trans('playtomic.resources.fields.club') }}
                         </th>
                         <td>
-                            <span class="badge badge-relationship">{{ $resource->club->name }}</span>
+                            <span class="badge badge-info">{{ $resource->club->name }}</span>
                         </td>
                     </tr>
                 </tbody>

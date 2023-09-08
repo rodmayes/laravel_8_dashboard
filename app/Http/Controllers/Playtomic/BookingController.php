@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Playtomic;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BookingCalendarResource;
 use App\Mail\PlaytomicBookingConfirmation;
 use App\Models\Booking;
 use App\Models\Resource;
@@ -25,6 +26,13 @@ class BookingController extends Controller
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.booking.index');
+    }
+
+    public function viewCalendar()
+    {
+        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $bookings = BookingCalendarResource::collection(Booking::all())->resolve(); //notCLosed()->get()();
+        return view('livewire.playtomic.booking.playtomic-calendar', compact('bookings'));
     }
 
     public function create()

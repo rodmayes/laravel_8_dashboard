@@ -16,14 +16,7 @@
                     </div>
                     <div class="form-group {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }} col-4">
                         <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
-                        <div class="form-group">
-                            <div class="input-group date" id="started_at">
-                                <input class="form-control flatpickr flatpickr-input" type="text" wire:model="booking.started_at" required>
-                                <div class="input-group-append" >
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
-                            </div>
-                        </div>
+                        <x-date-picker class="form-control" id="started_at" name="started_at" wire:model="booking.started_at" required/>
                         <small class="text-danger">
                             {{ $errors->first('booking.started_at') }}
                         </small>
@@ -85,13 +78,3 @@
         </form>
     </div>
 </div>
-
-<script type="text/javascript">
-    window.onload = (event) => {
-        $('.flatpickr-input').datetimepicker({
-            locale: 'es',
-            format: 'DD-MM-YYYY',
-            extraFormats: ['YYYY-MM-DD']
-        });
-    };
-</script>

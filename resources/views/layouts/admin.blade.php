@@ -13,12 +13,20 @@
     <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/select2-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.css' rel='stylesheet'>
+    <link href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css' rel='stylesheet'>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+    <script>
+
+
+
+    </script>
     <title>{{ trans('panel.site_title') }}</title>
     <style>
         .select2-container--default .select2-selection--multiple .select2-selection__choice{
             color: #000000;
         }
-
     </style>
     @stack('scripts-header')
     @stack('styles')
@@ -61,6 +69,7 @@
         });
     </script>
     @livewireScripts
+    @livewireCalendarScripts
         @yield('scripts')
         @stack('scripts')
 </body>

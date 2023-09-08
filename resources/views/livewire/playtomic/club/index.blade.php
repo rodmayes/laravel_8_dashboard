@@ -12,22 +12,22 @@
                                 @endforeach
                             </select>
                         </div>
-                        <button class="btn btn-danger ml-3 disabled:opacity-50 disabled:cursor-not-allowed" type="button" wire:click="confirm('deleteSelected')" wire:loading.attr="disabled" {{ $this->selectedCount ? '' : 'disabled' }}>
-                            {{ __('Delete Selected') }}
-                        </button>
                     </div>
                 </div>
-                <div class="card-tools col-6">
+                <div class="card-tools col-">
+                    <button class="btn btn-danger  disabled:opacity-50 disabled:cursor-not-allowed float-right" type="button" wire:click="confirm('deleteSelected')" wire:loading.attr="disabled" {{ $this->selectedCount ? '' : 'disabled' }}>
+                        {{ __('Delete Selected') }}
+                    </button>
                     <div class="form-group form-inline float-right">
                         <label for="search" class="col-2 col-form-label">Search:</label>
-                            <div class="col-7">
-                                <input type="text" wire:model.debounce.300ms="search" class="form-control" />
-                            </div>
-                            @can('user_create')
-                                <a class="btn btn-primary" href="{{ route('playtomic.clubs.create') }}">
-                                    {{ trans('global.add') }} {{ trans('playtomic.clubs.title_singular') }}
-                                </a>
-                            @endcan
+                        <div class="col-7">
+                            <input type="text" wire:model.debounce.300ms="search" class="form-control" />
+                        </div>
+                        @can('user_create')
+                            <a class="btn btn-primary" href="{{ route('playtomic.clubs.create') }}">
+                                {{ trans('global.add') }} {{ trans('playtomic.clubs.title_singular') }}
+                            </a>
+                        @endcan
                     </div>
                 </div>
             </div>

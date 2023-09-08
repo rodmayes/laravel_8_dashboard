@@ -11,6 +11,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">{{ trans('global.dashboard') }}</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('playtomic.bookings.index') }}">{{ trans('playtomic.bookings.title') }}</a></li>
                         <li class="breadcrumb-item active">{{ trans('playtomic.generate-links.generated-links') }}</li>
                     </ol>
                 </div>

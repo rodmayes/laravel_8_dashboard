@@ -47,7 +47,7 @@
                         </th>
                         <td>
                             @foreach($club->resources as $key => $entry)
-                                <span class="badge badge-relationship">{{ $entry->name }}</span>
+                                <span class="badge badge-info">{{ $entry->name }}</span>
                             @endforeach
                         </td>
                     </tr>

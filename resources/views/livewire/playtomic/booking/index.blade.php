@@ -2,46 +2,57 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <div class="card-title col-6">
-                    <div class="form-group form-inline">
-                        <label for="perPage" class="col-2 col-form-label">{{trans('global.datatables.per_page')}}:</label>
-                        <div class="col-4">
-                            <select wire:model="perPage" class="form-control select2 col-4">
+                <div class="card-title col-8 form-inline">
+                    <div class="form-group col-3">
+                        <label for="perPage" class="col-form-label">{{trans('global.datatables.per_page')}}:</label>
+                        <div class="col-8">
+                            <select wire:model="perPage" class="form-control select2">
                                 @foreach($paginationOptions as $value)
                                     <option value="{{ $value }}">{{ $value }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group col-3 form-inline">
-                            <label>{{ trans('playtomic.resources.per_club') }}:</label>
-                            <select wire:model="perClub" class="form-select form-control col-8">
-                                <option value="-1">All</option>
-                                @foreach($clubs as $club)
-                                    <option value="{{ $club->id }}">{{ $club->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <button class="btn btn-danger ml-3 disabled:opacity-50 disabled:cursor-not-allowed" type="button" wire:click="confirm('deleteSelected')" wire:loading.attr="disabled" {{ $this->selectedCount ? '' : 'disabled' }}>
-                            {{ __('Delete Selected') }}
-                        </button>
                     </div>
-                </div>
-                <div class="card-tools col-6">
-                    <button class="btn btn-info mr-2  float-right" wire:click="truncateResources">
-                        Truncate data
-                    </button>
-                    @can('user_create')
-                        <a class="btn btn-primary float-right mr-1" href="{{ route('playtomic.bookings.create') }}">
-                            {{ trans('global.add') }} {{ trans('playtomic.bookings.title_singular') }}
-                        </a>
-                    @endcan
-                    <a class="btn btn-success mr-1  float-right" href="{{ route('playtomic.prebooking') }}">
-                        {{ trans('playtomic.bookings.prebooking.title_singular') }}
-                    </a>
-                    <div class="form-group form-inline float-right">
+                    <div class="form-group col-3">
+                        <label>{{ trans('playtomic.resources.per_club') }}: </label>
+                        <select wire:model="perClub" class="select2 form-control">
+                            <option value="-1">All</option>
+                            @foreach($clubs as $club)
+                                <option value="{{ $club->id }}">{{ $club->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group form-inline col-6">
                         <label for="search" class="col-2 col-form-label">Search:</label>
                         <div class="col-7">
-                            <input type="text" wire:model.debounce.300ms="search" class="form-control" />
+                            <input type="text" wire:model.debounce.300ms="search" class="form-control col-12" style="width:100%">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-tools col-4">
+                    <div class="btn-group float-right">
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52" aria-expanded="false">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" role="menu" style="">
+                            @can('user_create')
+                                <a class="dropdown-item" href="{{ route('playtomic.bookings.create') }}">
+                                    <i class="fa fa-plus-circle"></i> {{ trans('global.add') }} {{ trans('playtomic.bookings.title_singular') }}
+                                </a>
+                            @endcan
+                            <a class="dropdown-item" href="{{ route('playtomic.bookings.booking') }}">
+                                <i class="fa fa-calendar-check"></i> {{ trans('playtomic.bookings.prebooking.title_singular') }}
+                            </a>
+                                <a class="dropdown-item" href="{{ route('playtomic.bookings.view-calendar') }}">
+                                    <i class="fa fa-calendar"></i> Calendar mode
+                                </a>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item bg-gradient-pink" wire:click="truncateResources">
+                                Truncate data
+                            </button>
+                            <button class="dropdown-item bg-danger disabled:opacity-50 disabled:cursor-not-allowed" type="button" wire:click="confirm('deleteSelected')" wire:loading.attr="disabled" {{ $this->selectedCount ? '' : 'disabled' }}>
+                                <i class="fa fa-trash"></i> {{ __('Delete Selected') }}
+                            </button>
                         </div>
                     </div>
                 </div>
