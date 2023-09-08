@@ -3,18 +3,12 @@
         <div class="card card-success">
             <form wire:submit.prevent="submit" class="pt-3">
                 <div class="card-body">
-                    @error('errors') <span class="error invalid-feedback">{{ $message }}</span> @enderror
+                    @error('action') <span class="error invalid-feedback">{{ $message }}</span> @enderror
                     <div class="row">
+
                         <div class="form-group {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }} col-4">
                             <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
-                            <div class="form-group">
-                                <div class="input-group date" id="started_at">
-                                    <input class="form-control flatpickr flatpickr-input" type="text" wire:model="booking.started_at">
-                                    <div class="input-group-append" >
-                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-date-picker class="form-control" id="started_at" name="started_at" wire:model="booking.started_at" required/>
                             <small class="text-danger">
                                 {{ $errors->first('booking.started_at') }}
                             </small>
@@ -22,7 +16,6 @@
                                 {{ trans('playtomic.bookings.fields.started_at_helper') }}
                             </div>
                         </div>
-
                         <div class="form-group {{ $errors->has('booking.timetable_id') ? 'is-invalid' : '' }} col-4">
                             <label class="form-label required" for="timetable_id">{{ trans('playtomic.bookings.fields.timetable') }}</label>
                             <x-select-list class="form-control" required id="timetable_id" name="timetable_id" :options="$this->listsForFields['timetable']" wire:model="booking.timetable_id" />
@@ -41,7 +34,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group {{ $errors->has('booking.club_id') ? 'is-invalid' : '' }} col-6">
+                        <div class="form-group {{ $errors->has('booking.club_id') ? 'is-invalid' : '' }} col-12">
                             <label class="form-label required" for="club_id">{{ trans('playtomic.bookings.fields.club') }}</label>
                             <x-select-list class="form-control" required id="club_id" name="club_id" :options="$this->listsForFields['club']" wire:model="booking.club_id"/>
                             <small class="text-danger">
@@ -51,9 +44,11 @@
                                 {{ trans('playtomic.bookings.fields.club_helper') }}
                             </div>
                         </div>
-                        <div class="form-group {{ $errors->has('resources') ? 'is-invalid' : '' }} col-6">
+                    </div>
+                    <div class="row">
+                        <div class="form-group {{ $errors->has('resources') ? 'invalid' : '' }} col-12">
                             <label class="form-label required" for="resources">{{ trans('playtomic.bookings.fields.resource') }}</label>
-                            <x-select-list class="form-control" required id="resources" name="resources" :options="$this->listsForFields['resource']" wire:model="resources" />
+                            <x-select-list class="form-control" required id="resources" name="resources" :options="$this->listsForFields['resource']" wire:model="resources"  multiple=""/>
                             <small class="text-danger">
                                 {{ $errors->first('resources') }}
                             </small>
@@ -88,20 +83,25 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    <p class="mb-2">
-                        @if($url_prebooking)
-                            <a class="text-blue-500" href="{{$url_prebooking['url']}}" target="_blank">{{ $url_prebooking['name'] }} </a>
-                            <button class="btn btn-success" wire:click="booking({{$booking}})" type="button">Booking</button>
-                        @endif
-                    </p>
+                    @if($url_prebooking)
+                        @foreach($url_prebooking as $url)
+                        <p class="mb-2">
+                            <a class="text-blue-500" href="{{$url['url']}}" target="_blank">{{ $url['name'] }} </a>
+                            <button class="btn btn-success" wire:click="booking({{$url['resource']}})" type="button">Booking</button>
+                        @endforeach
+                        </p>
+                    @endif
                     <p class="mb-2">
                         @if($url_checkout)
                             <a class="text-blue-500" href="{{$url_checkout['url']}}" target="_blank" id="url-iframe-checkout">Confirmation {{ $url_checkout['name'] }} </a>
                         @endif
                     </p>
-                    @if($execution_response)
-                        <small class="text-danger">{{$execution_response}}</small>
-                    @endif
+                            <div class="callout callout-info">
+                                @foreach($log as $l)
+                                    <p>{{$l}}</p>
+                                @endforeach
+                            </div>
+
                     @error('action') <span class="error invalid-feedback">{{ $message }}</span> @enderror
                 </div>
             </div>

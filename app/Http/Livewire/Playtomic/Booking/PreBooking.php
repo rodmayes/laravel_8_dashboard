@@ -20,6 +20,7 @@ class PreBooking extends Component
     public $url_checkout;
     public $execution_response;
     public $resources;
+    public $log;
 
     public $listsForFields = [];
 
@@ -29,6 +30,7 @@ class PreBooking extends Component
 
     public function mount(Booking $booking)
     {
+        $this->log = [];
         $this->playtomic_url_checkout = env('PLAYTOMIC_URL_CHECKOUT','https://playtomic.io/checkout/booking');
         $this->booking = $booking;
         $this->resources = explode(",",$this->booking->resources);
@@ -43,28 +45,33 @@ class PreBooking extends Component
     public function generate()
     {
         $this->validate();
-        try{
+        try {
             $this->execution_response = null;
-            $this->booking->resources = implode(",",$this->resources);
+            $this->booking->resources = implode(",", $this->resources);
             $this->url_checkout = null;
             $this->url_prebooking = null;
             $this->booking->created_by = Auth::user()->id;
             $this->booking->public = $this->booking->public ?? false;
-            $this->booking->name = $this->booking->club->name.' '.$this->booking->resource->name.' '.$this->booking->start_at;
+            $this->booking->name = $this->booking->club->name . ' ' . $this->booking->started_at->format('d-m-Y');
             $this->booking->status = 'on-time';
 
-            $this->url_prebooking = [
-                'name' => 'Resource ' . $this->booking->resource->name . ' ' . $this->booking->timetable->name,
-                'url' => $this->playtomic_url_checkout . "?s=" . $this->booking->club->playtomic_id . "~" . $this->booking->resource->playtomic_id . "~" . $this->booking->started_at->format('Y-m-d') . $this->booking->timetable->playtomic_id . "~90"
-            ];
+            foreach ($this->resources as $id) {
+                $resource = Resource::find($id);
+                $this->url_prebooking[] = [
+                    'name' => 'Resource ' . $resource->name . ' ' . $this->booking->timetable->name,
+                    'url' => $this->playtomic_url_checkout . "?s=" . $this->booking->club->playtomic_id . "~" . $resource->playtomic_id . "~" . $this->booking->started_at->format('Y-m-d') . $this->booking->timetable->playtomic_id . "~90",
+                    'resource' => $resource->id
+                ];
+            }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             $this->addError('action', 'Dramatic error you will die. '. $e->getMessage());
         }
     }
 
-    public function booking(){
-        (new BookingController())->startBooking($this->booking);
+    public function booking($resource_id){
+        $resource = Resource::find($resource_id);
+        $this->log = (new BookingController())->startBooking($this->booking, $resource);
     }
 
     protected function rules(): array
