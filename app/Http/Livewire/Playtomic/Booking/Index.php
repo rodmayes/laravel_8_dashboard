@@ -22,15 +22,10 @@ class Index extends Component
     use WithConfirmation;
 
     public $perPage;
-
     public $perClub;
-
     public $orderable;
-
     public $search = '';
-
     public $selected = [];
-
     public $paginationOptions;
 
     protected $queryString = [

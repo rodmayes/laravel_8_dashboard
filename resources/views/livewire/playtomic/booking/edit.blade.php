@@ -14,7 +14,7 @@
                             {{ trans('playtomic.bookings.fields.club_helper') }}
                         </div>
                     </div>
-                    <div class="form-group {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }} col-4">
+                    <div class="form-group {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }} col-3">
                         <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
                         <x-date-picker class="form-control" id="started_at" name="started_at" wire:model="booking.started_at" required/>
                         <small class="text-danger">
@@ -24,19 +24,19 @@
                             {{ trans('playtomic.bookings.fields.started_at_helper') }}
                         </div>
                     </div>
-                    <div class="form-group {{ $errors->has('booking.timetable_id') ? 'invalid' : '' }} col-4">
-                        <label class="form-label required" for="timetable_id">{{ trans('playtomic.bookings.fields.timetable') }}</label>
-                        <x-select-list class="form-control" required id="timetable_id" name="timetable_id" :options="$this->listsForFields['timetable']" wire:model="booking.timetable_id"/>
+                    <div class="form-group {{ $errors->has('timetables') ? 'is-invalid' : '' }} col-5">
+                        <label class="form-label required" for="timetables">{{ trans('playtomic.bookings.fields.timetable') }}</label>
+                        <x-select-list class="form-control" required id="timetables" name="timetables" :options="$this->listsForFields['timetable']" wire:model="timetables" multiple/>
                         <small class="text-danger">
-                            {{ $errors->first('booking.timetable_id') }}
+                            {{ $errors->first('timetables') }}
                         </small>
                         <div class="help-block">
-                            {{ trans('playtomic.bookings.fields.resource_helper') }}
+                            {{ trans('playtomic.bookings.fields.timetable_helper') }}
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group {{ $errors->has('resources') ? 'invalid' : '' }} col-11">
+                    <div class="form-group {{ $errors->has('resources') ? 'invalid' : '' }} col-12">
                         <label class="form-label required" for="resources">{{ trans('playtomic.bookings.fields.resource') }}</label>
                         <x-select-list class="form-control" required id="resources" name="resources" :options="$this->listsForFields['resource']" wire:model="resources"  multiple=""/>
                         <small class="text-danger">
@@ -54,19 +54,14 @@
                             <label class="custom-control-label" for="ck_public">{{ trans('playtomic.bookings.fields.is_public') }}</label>
                         </div>
                     </div>
-                    <p class="col-2">
-                        <button class="btn btn-xs btn-warning" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Log</button>
-                    </p>
-                    <div class="collapse col-12" id="collapseExample">
-                        <div class="form-group {{ $errors->has('booking.log') ? 'invalid' : '' }} col-12">
-                            <label class="form-label" for="log">{{ trans('playtomic.bookings.fields.log') }}</label>
-                            <input class="form-control" type="text" name="log" id="log" wire:model.defer="booking.log">
-                            <small class="text-danger">
-                                {{ $errors->first('booking.log') }}
-                            </small>
-                            <div class="help-block">
-                                {{ trans('playtomic.bookings.fields.log_helper') }}
-                            </div>
+                    <div class="form-group form-inline {{ $errors->has('booking.booking_preference') ? 'invalid' : '' }} col-8">
+                        <label class="form-label required" for="booking_preference">Preference</label>
+                        <x-select-list class="form-control" required id="booking_preference" name="booking_preference" :options="$this->listsForFields['booking_preference']" wire:model="booking.booking_preference"/>
+                        <small class="text-danger">
+                            {{ $errors->first('booking.booking_preference') }}
+                        </small>
+                        <div class="help-block">
+                            {{ trans('playtomic.bookings.fields.resource_helper') }}
                         </div>
                     </div>
                 </div>

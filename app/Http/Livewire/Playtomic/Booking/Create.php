@@ -15,11 +15,18 @@ class Create extends Component
     public $listsForFields = [];
     public $booking;
     public $resources;
+    public $timetables;
+
+    public function updatedBooking(){
+        //dd(1);
+        //$this->initListsForFields();
+    }
 
     public function mount(Booking $booking)
     {
         $this->booking = $booking;
         $this->resources = explode(",",$this->booking->resources);
+        $this->timetables = explode(",",$this->booking->timetables);
         $this->initListsForFields();
     }
 
@@ -33,6 +40,7 @@ class Create extends Component
         try{
             $this->validate();
             $this->booking->resources = implode(",",$this->resources);
+            $this->booking->timetables = implode(",", $this->timetables);
             $this->booking->created_by = Auth::user()->id;
             $this->booking->public = isset($this->public) ? $this->public : false;
             $this->booking->name = $this->booking->club->name.' '.$this->booking->started_at->format('d-m-yyy');
@@ -57,12 +65,10 @@ class Create extends Component
             ],
             'resources' => [
                 'array',
-                //'exists:playtomic_resource,id',
                 'required',
             ],
-            'booking.timetable_id' => [
-                'integer',
-                'exists:playtomic_timetable,id',
+            'timetables' => [
+                'array',
                 'required',
             ],
             'booking.started_at' => [
@@ -72,6 +78,9 @@ class Create extends Component
             'booking.public' => [
                 'nullable'
             ],
+            'booking.booking_preference' => [
+                'nullable'
+            ]
         ];
     }
 
@@ -80,14 +89,19 @@ class Create extends Component
         $this->listsForFields['club'] = Club::pluck('name','id');
         $this->listsForFields['resource'] = Resource::pluck('name','id');
         $this->listsForFields['timetable'] = Timetable::pluck('name','id');
-
-        /*
+        $this->listsForFields['booking_preference'] = collect(
+            [
+                ['id' => 'timetable', 'name' => 'Time preference'],
+                ['id' => 'resource', 'name' => 'Resource preference']
+            ]
+        )->pluck('name','id');
+/*
         $this->listsForFields['resource'] = Resource::
             when((int)$this->club > -1, function($q){
                 return $q->byClub($this->club);
             })->get()->map(function ($item) {
                 return ['name' => $item->name.'-'.$item->club->name, 'id' => $item->id, 'club' => $item->club->name];
             })->pluck('name','id');
-        */
+*/
     }
 }

@@ -1,11 +1,5 @@
 <div>
     <div wire:ignore class="col-12">
-        @if(isset($attributes['multiple']))
-            <div id="{{ $attributes['id'] }}-btn-container" class="mb-3">
-                <button type="button" class="btn btn-info btn-sm select-all-button">{{ trans('global.select_all') }}</button>
-                <button type="button" class="btn btn-info btn-sm deselect-all-button">{{ trans('global.deselect_all') }}</button>
-            </div>
-        @endif
         <select class="select2 form-control" data-minimum-results-for-search="Infinity" data-placeholder="{{ __('Select your option') }}" {{ $attributes }}>
             @if(!isset($attributes['multiple']))
                 <option></option>

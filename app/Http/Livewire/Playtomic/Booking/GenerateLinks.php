@@ -16,10 +16,14 @@ class GenerateLinks extends Component
     public $booking;
     public $prebooking_url;
     public $execution_response;
+    public $resources;
+    public $timetables;
 
     public function mount(Booking $booking)
     {
         $this->booking = $booking;
+        $this->resources = explode(",",$this->booking->resources);
+        $this->timetables = explode(",",$this->booking->timetables);
     }
 
     public function render()

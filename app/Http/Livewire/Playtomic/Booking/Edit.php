@@ -14,11 +14,13 @@ class Edit extends Component
     public $listsForFields = [];
     public $booking;
     public $resources;
+    public $timetables;
 
     public function mount(Booking $booking)
     {
         $this->booking = $booking;
         $this->resources = explode(",",$this->booking->resources);
+        $this->timetables = explode(",",$this->booking->timetables);
         $this->initListsForFields();
     }
 
@@ -31,6 +33,7 @@ class Edit extends Component
     {
         $this->validate();
         $this->booking->resources = implode(",",$this->resources);
+        $this->booking->timetables = implode(",", $this->timetables);
         $this->booking->name = $this->booking->club->name.' '.$this->booking->start_at;
         $this->booking->public = isset($this->public) ? $this->public : false;
         if(Carbon::now('Europe/Andorra')->startOfDay()->diffInDays($this->booking->started_at->startOfDay()) >= (int)$this->booking->club->days_min_booking) $this->booking->status = 'on-time';
@@ -50,12 +53,10 @@ class Edit extends Component
             ],
             'resources' => [
                 'array',
-                //'exists:playtomic_resource,id',
                 'required',
             ],
-            'booking.timetable_id' => [
-                'integer',
-                'exists:playtomic_timetable,id',
+            'timetables' => [
+                'array',
                 'required',
             ],
             'booking.started_at' => [
@@ -65,6 +66,9 @@ class Edit extends Component
             'booking.public' => [
                 'nullable'
             ],
+            'booking.booking_preference' => [
+                'nullable'
+            ]
         ];
     }
 
@@ -73,5 +77,11 @@ class Edit extends Component
         $this->listsForFields['club'] = Club::pluck('name','id');
         $this->listsForFields['resource'] = Resource::pluck('name','id');
         $this->listsForFields['timetable'] = Timetable::pluck('name','id');
+        $this->listsForFields['booking_preference'] = collect(
+            [
+                ['id' => 'timetable', 'name' => 'Time preference'],
+                ['id' => 'resource', 'name' => 'Resource preference']
+            ]
+        )->pluck('name','id');
     }
 }

@@ -42,7 +42,7 @@
                                     </th>
                                     <td>{{ $booking->name }}</td>
                                 </tr>
-                                <tr>
+                               <tr>
                                     <th>
                                         {{ trans('playtomic.bookings.fields.resource') }}
                                     </th>
@@ -50,6 +50,17 @@
                                         @foreach(explode(",",$booking->resources) as $item)
                                             @php $resource = \App\Models\Resource::find($item); @endphp
                                             <span class="badge badge-success">{{ $resource->name }}</span>
+                                        @endforeach
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        {{ trans('playtomic.bookings.fields.timetable') }}
+                                    </th>
+                                    <td>
+                                        @foreach(explode(",",$booking->timetables) as $item)
+                                            @php $timestable = \App\Models\Timetable::find($item); @endphp
+                                            <span class="badge badge-warning">{{ $timestable->name }}</span>
                                         @endforeach
                                     </td>
                                 </tr>
@@ -67,9 +78,11 @@
                                     </th>
                                     <td>
                                         <span class="badge badge-relationship">
-                                            @foreach(json_decode($booking->log, true) as $item)
-                                                <p class="text-left">{{ $item }}</p>
-                                            @endforeach
+                                            @if($booking->log)
+                                                @foreach(json_decode($booking->log, true) as $item)
+                                                    <p class="text-left">{{ $item }}</p>
+                                                @endforeach
+                                            @endif
                                         </span>
                                     </td>
                                 </tr>

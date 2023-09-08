@@ -74,12 +74,15 @@ class PlaytomicBooking extends Command
 
     public function booking($booking){
         $booked = false;
-        $timetables = [$booking->timetable, Timetable::before($booking->timetable)->first(), Timetable::after($booking->timetable)->first()];
+        $timetables = []; $resources = [];
+        $timetables_ids = explode(",",$booking->timetables);
+        foreach ($timetables_ids as $id)
+            $timetables[] = Timetable::find($id);
         $resources_ids = explode(",",$booking->resources);
         foreach ($resources_ids as $id)
             $resources[] = Resource::find($id);
-        $booking_preference = ["timetable" => $timetables, "resource" => $resources];
 
+        $booking_preference = ["timetable" => $timetables, "resource" => $resources];
         foreach ($booking_preference[$booking->booking_preference] as $preference){
             if($booked) break;
             foreach ($booking_preference[$booking->booking_preference === 'timetable' ? 'resource' : 'timetable'] as $preference2) {

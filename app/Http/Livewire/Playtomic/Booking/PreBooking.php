@@ -20,6 +20,7 @@ class PreBooking extends Component
     public $url_checkout;
     public $execution_response;
     public $resources;
+    public $timetables;
     public $log;
 
     public $listsForFields = [];
@@ -34,6 +35,7 @@ class PreBooking extends Component
         $this->playtomic_url_checkout = env('PLAYTOMIC_URL_CHECKOUT','https://playtomic.io/checkout/booking');
         $this->booking = $booking;
         $this->resources = explode(",",$this->booking->resources);
+        $this->timetables = explode(",",$this->booking->timetables);
         $this->initListsForFields();
     }
 
@@ -49,6 +51,7 @@ class PreBooking extends Component
         try {
             $this->execution_response = null;
             $this->booking->resources = implode(",", $this->resources);
+            $this->booking->timetables = implode(",", $this->timetables);
             $this->url_checkout = null;
             $this->url_prebooking = null;
             $this->booking->created_by = Auth::user()->id;
@@ -56,13 +59,16 @@ class PreBooking extends Component
             $this->booking->name = $this->booking->club->name . ' ' . $this->booking->started_at->format('d-m-Y');
             $this->booking->status = 'on-time';
 
-            foreach ($this->resources as $id) {
-                $resource = Resource::find($id);
-                $this->url_prebooking[] = [
-                    'name' => 'Resource ' . $resource->name . ' ' . $this->booking->timetable->name,
-                    'url' => $this->playtomic_url_checkout . "?s=" . $this->booking->club->playtomic_id . "~" . $resource->playtomic_id . "~" . $this->booking->started_at->format('Y-m-d') . $this->booking->timetable->playtomic_id . "~90",
-                    'resource' => $resource->id
-                ];
+            foreach ($this->resources as $resource_id) {
+                foreach ($this->timetables as $timetable_id) {
+                    $resource = Resource::find($resource_id);
+                    $timetable = Timetable::find($timetable_id);
+                    $this->url_prebooking[] = [
+                        'name' => 'Resource ' . $resource->name . ' ' . $timetable->name,
+                        'url' => $this->playtomic_url_checkout . "?s=" . $this->booking->club->playtomic_id . "~" . $resource->playtomic_id . "~" . $this->booking->started_at->format('Y-m-d') . $timetable->playtomic_id . "~90",
+                        'resource' => $resource->id
+                    ];
+                }
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -82,9 +88,9 @@ class PreBooking extends Component
                 'required',
                 //'date_format:' . config('project.date_format'),
             ],
-            'booking.timetable_id' => [
-                'integer',
-                'exists:playtomic_timetable,id',
+            'timetables' => [
+                'array',
+                //'exists:playtomic_timetable,id',
                 'required',
             ],
             'booking.club_id' => [

@@ -6,21 +6,15 @@
                     <div class="form-group col-3">
                         <label for="perPage" class="col-form-label">{{trans('global.datatables.per_page')}}:</label>
                         <div class="col-8">
-                            <select wire:model="perPage" class="form-control select2">
-                                @foreach($paginationOptions as $value)
-                                    <option value="{{ $value }}">{{ $value }}</option>
-                                @endforeach
-                            </select>
+                            <x-select-list class="form-control" required id="perPage" name="perPage" :options="$paginationOptions" wire:model="perPage"/>
                         </div>
                     </div>
                     <div class="form-group col-3">
                         <label>{{ trans('playtomic.resources.per_club') }}: </label>
-                        <select wire:model="perClub" class="select2 form-control">
-                            <option value="-1">All</option>
-                            @foreach($clubs as $club)
-                                <option value="{{ $club->id }}">{{ $club->name }}</option>
-                            @endforeach
-                        </select>
+                        <div class="col-8">
+                            <x-select-list class="form-control" required id="perClub" name="perClub" :options="$clubs->pluck('name','id')" wire:model="perClub"/>
+                        </div>
+
                     </div>
                     <div class="form-group form-inline col-6">
                         <label for="search" class="col-2 col-form-label">Search:</label>
