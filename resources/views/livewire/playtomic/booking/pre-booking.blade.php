@@ -96,12 +96,14 @@
                             <a class="text-blue-500" href="{{$url_checkout['url']}}" target="_blank" id="url-iframe-checkout">Confirmation {{ $url_checkout['name'] }} </a>
                         @endif
                     </p>
+                        @if(count($log) > 0)
                             <div class="callout callout-info">
+                                <h5>Process info</h5>
                                 @foreach($log as $l)
                                     <p>{{$l}}</p>
                                 @endforeach
                             </div>
-
+                        @endif
                     @error('action') <span class="error invalid-feedback">{{ $message }}</span> @enderror
                 </div>
             </div>

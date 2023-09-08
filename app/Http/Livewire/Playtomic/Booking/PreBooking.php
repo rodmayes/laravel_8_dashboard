@@ -44,6 +44,7 @@ class PreBooking extends Component
 
     public function generate()
     {
+        $this->log = [];
         $this->validate();
         try {
             $this->execution_response = null;
