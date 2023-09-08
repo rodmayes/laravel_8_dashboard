@@ -15,7 +15,7 @@ class BookingCalendarResource extends JsonResource
      */
     public function toArray($request)
     {
-        $dt = Carbon::createFromTimeString($this->started_at->format('Y-m-d').' '.$this->timetable->name);
+        $dt = Carbon::createFromTimeString($this->started_at->format('Y-m-d'));
         return [
             'id' => $this->id,
             'name' => $this->name,
