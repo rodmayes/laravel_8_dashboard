@@ -76,13 +76,15 @@ class BookingController extends Controller
             $this->log[] = 'Booking start: ' . $booking->club->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name;
             $prebooking = $this->booking($booking,  $resource, $timetable);
             $this->log[] = 'Booking scheduled finish';
-            if(isset($prebooking['status']) && $prebooking['status'] === 'fail') throw new \Exception('Prebokking error '.$prebooking['message']);
+            if(isset($prebooking['error'])) throw new \Exception('Prebooking error '.$prebooking['error']);
             $booking->name = $booking->club->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name;
             $booking->resources = $resource->id;
+            $booking->timetables = $timetable->id;
             $booking->created_by = Auth::user()->id;
             $booking->log = json_encode($this->log);
             $booking->save();
         }catch(\Exception $e){
+            $this->log[] = $e->getMessage();
             Log::error($e->getMessage(), $this->log);
         }
         return $this->log;
@@ -115,16 +117,16 @@ class BookingController extends Controller
             try{
                 $response = $this->service->preBooking($booking, $resource, $timetable);
                 if(isset($response['status']) && $response['status'] === 'fail') {
-                    $this->log[] = 'Prebooking error '. $response['message'];
-                    Log::error('Prebooking error '.$response['message']);
-                    return ['status' => 'fail', 'message' => 'Prebooking '.$timetable->name.' '.$response['message']];
+                    $this->log[] = 'Prebooking error: '. $response['message'];
+                    Log::error('Prebooking error: '.$timetable->name.' '.$response['message']);
+                    return ['status' => 'fail', 'message' => 'Prebooking error: '.$timetable->name.' '.$response['message']];
                 }
                 $this->log[] = 'Prebooking Ok';
                 return $response;
             }catch(\Exception $e){
-                $this->log[] = 'Prebooking error '. $timetable->name.' '.$e->getMessage();
-                Log::error('Prebooking error '.$e->getMessage());
-                return ['status' => 'fail', 'message' => 'Prebooking '.$timetable->name.' '.$e->getMessage()];
+                $this->log[] = 'Prebooking error: '. $timetable->name.' '.$e->getMessage();
+                Log::error('Prebooking error: '.$timetable->name.' '.$e->getMessage());
+                return ['status' => 'fail', 'message' => 'Prebooking error: '.$timetable->name.' '.$e->getMessage()];
             }
         }else return ['status' => 'fail', 'message' => 'No logged'];
     }

@@ -69,9 +69,7 @@
     <div class="col-6">
         <div class="card card-success">
             <div class="card-title p-2">
-                <h4>
-                    {{ trans('playtomic.bookings.prebooking.title_singular') }}
-                </h4>
+                <h4>Booking</h4>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -87,7 +85,7 @@
                         @foreach($url_prebooking as $url)
                         <p class="mb-2">
                             <a class="text-blue-500" href="{{$url['url']}}" target="_blank">{{ $url['name'] }} </a>
-                            <button class="btn btn-success" wire:click="booking({{$url['resource']}})" type="button">Booking</button>
+                            <button class="btn btn-success" wire:click="booking({{$url['resource']}}, {{$url['timetable']}})" type="button">Booking</button>
                         @endforeach
                         </p>
                     @endif

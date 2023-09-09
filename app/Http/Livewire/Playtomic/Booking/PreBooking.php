@@ -67,7 +67,8 @@ class PreBooking extends Component
                     $this->url_prebooking[] = [
                         'name' => 'Resource ' . $resource->name . ' ' . $timetable->name,
                         'url' => $this->playtomic_url_checkout . "?s=" . $this->booking->club->playtomic_id . "~" . $resource->playtomic_id . "~" . $this->booking->started_at->format('Y-m-d') . $timetable->playtomic_id . "~90",
-                        'resource' => $resource->id
+                        'resource' => $resource->id,
+                        'timetable' => $timetable->id
                     ];
                 }
             }
@@ -77,9 +78,10 @@ class PreBooking extends Component
         }
     }
 
-    public function booking($resource_id){
+    public function booking($resource_id, $timetable_id){
         $resource = Resource::find($resource_id);
-        $this->log = (new BookingController())->startBooking($this->booking, $resource);
+        $timetable = Timetable::find($timetable_id);
+        $this->log = (new BookingController())->startBooking($this->booking, $resource, $timetable);
     }
 
     protected function rules(): array

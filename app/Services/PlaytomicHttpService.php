@@ -111,11 +111,6 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
     }
 
     public function paymentMethodSelection($payment_intent_id){
-        $data = [
-            "selected_payment_method_id" =>  "DIRECT",
-            "selected_payment_method_data" => null
-        ];
-
         $client = new Client([
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -123,9 +118,8 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
             ]
         ]);
         $response = $client->patch(env('PLAYTOMIC_URL','https://playtomic.io/api/').'v1/payment_intents/'. $payment_intent_id, [
-            RequestOptions::JSON => $data
+            RequestOptions::JSON => [ "selected_payment_method_id" => "DIRECT", "selected_payment_method_data" => null ]
         ]);
-
         if($response->getStatusCode() === 200) return json_decode($response->getBody()->getContents(),true);
         throw new \Exception('Error Service paymentMethodSelection');
     }
