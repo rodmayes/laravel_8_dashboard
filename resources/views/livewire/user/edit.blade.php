@@ -51,11 +51,7 @@
                 <div class="row">
                     <div class="form-group {{ $errors->has('roles') ? 'invalid' : '' }} col-12">
                         <label class="form-label required" for="roles">{{ trans('cruds.user.fields.roles') }}</label>
-                        <select multiple="multiple" data-placeholder="{{ __('Select your option') }}" data-allow-clear="1" tabindex="-1" class="form-control select2" aria-hidden="true" wire:model="roles" name="roles[]">
-                            @foreach($this->listsForFields['roles'] as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
-                        </select>
+                        <x-select-list class="form-control" required id="roles" name="roles" :options="$this->listsForFields['roles']" wire:model="roles" multiple/>
                         <div class="validation-message">
                             {{ $errors->first('roles') }}
                         </div>
