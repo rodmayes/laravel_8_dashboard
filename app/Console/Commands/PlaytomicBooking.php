@@ -59,13 +59,13 @@ class PlaytomicBooking extends Command
         $bookings = Booking::ontime()->orderBy('started_at', 'DESC')->get();
         foreach ($bookings as $booking) {
             $day_to_date = (Carbon::now('Europe/Andorra'))->addDays((int)$booking->club->days_min_booking);
-            //if ($booking->started_at->format('d-m-Y') === $day_to_date->format('d-m-Y')) {
+            if ($booking->started_at->format('d-m-Y') === $day_to_date->format('d-m-Y')) {
                 try {
                     $this->booking($booking);
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());
                 }
-            //}
+            }
             $booking->log = json_encode($this->log);
             $booking->save();
         }
