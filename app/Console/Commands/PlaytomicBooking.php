@@ -56,7 +56,7 @@ class PlaytomicBooking extends Command
         $this->service = new PlaytomicHttpService($this->user);
         $this->info('Login attempt');
         $this->log[] = 'Login attempt';
-        $bookings = Booking::ontime()->orderBy('started_at')->get();
+        $bookings = Booking::ontime()->orderBy('started_at', 'DESC')->get();
         foreach ($bookings as $booking) {
             $day_to_date = (Carbon::now('Europe/Andorra'))->addDays((int)$booking->club->days_min_booking);
             //if ($booking->started_at->format('d-m-Y') === $day_to_date->format('d-m-Y')) {
