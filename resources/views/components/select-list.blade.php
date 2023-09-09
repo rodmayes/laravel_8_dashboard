@@ -21,14 +21,8 @@
                 allowClear: !el.attr('multiple')
             }).on('change', function (e) {
                 let data = $(this).select2("val")
-                @this.set('{{ $attributes['wire:model'] }}', data)
+                @this.set('{{ $attributes['wire:model'] }}', data);
             });
-
-/*            Livewire.hook('message.processed', (message, component) => {
-                initSelect()
-            });
-*/
-
         });
     </script>
 @endpush

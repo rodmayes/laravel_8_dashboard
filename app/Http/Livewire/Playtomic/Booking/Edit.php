@@ -6,7 +6,6 @@ use App\Models\Booking;
 use App\Models\Club;
 use App\Models\Resource;
 use App\Models\Timetable;
-use Illuminate\Support\Carbon;
 use Livewire\Component;
 
 class Edit extends Component
@@ -15,6 +14,12 @@ class Edit extends Component
     public $booking;
     public $resources;
     public $timetables;
+
+    protected $listeners = ['select-change' => 'initListsForFields'];
+
+    public function updated($field_updated){
+        if($field_updated === 'booking.club_id') $this->emit('render-select', [$this->booking->club_id]);
+    }
 
     public function mount(Booking $booking)
     {
@@ -26,6 +31,7 @@ class Edit extends Component
 
     public function render()
     {
+        $this->initListsForFields();
         return view('livewire.playtomic.booking.edit');
     }
 
@@ -75,10 +81,10 @@ class Edit extends Component
         ];
     }
 
-    protected function initListsForFields(): void
+    public function initListsForFields(): void
     {
         $this->listsForFields['club'] = Club::pluck('name','id');
-        $this->listsForFields['resource'] = Resource::get()->map(function ($item) {
+        $this->listsForFields['resource'] = Resource::byClub($this->booking->club_id)->get()->map(function ($item) {
             return ['name' => $item->name.'-'.$item->club->name, 'id' => $item->id, 'club' => $item->club->name];
         })->pluck('name','id');
         $this->listsForFields['timetable'] = Timetable::pluck('name','id');

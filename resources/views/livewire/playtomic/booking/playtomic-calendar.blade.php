@@ -45,9 +45,12 @@
                 selectable:true,
                 selectHelper: true,
                 firstDay: 1,
-                eventClick: function(calEvent, jsEvent, view) {
-                    //$('#club_id').val(moment(calEvent.end).format('YYYY-MM-DD HH:mm'));
-                    //$('#editModal').modal();
+                eventClick: function(event) {
+                    console.log(event.event._def.url);
+                    if (event.event._def.url) {
+                        window.open(event.li.event._def.url);
+                        return false;
+                    }
                 },
                 events : [
                     @foreach($bookings as $appointment)
@@ -55,6 +58,7 @@
                         id: {{ $appointment['id'] }},
                         title: '{{ $appointment['name'] }}',
                         start: '{{ $appointment['start'] }}',
+                        url: '{{route('playtomic.bookings.edit', $appointment['id'])}}',
                         @if (isset($appointment['end']))
                         end: '{{ $appointment['end'] }}',
                         @endif
