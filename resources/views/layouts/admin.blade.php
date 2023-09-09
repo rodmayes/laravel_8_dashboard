@@ -62,11 +62,16 @@
     <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/adminlte.js') }}"></script>
     <script>
+        /*
         $(document).ready(function() {
             $('.select2').select2({
-                theme: "bootstrap"
+                theme: "bootstrap",
+                allowClear: true,
+                tags:true
             });
         });
+
+         */
     </script>
     @livewireScripts
     @livewireCalendarScripts

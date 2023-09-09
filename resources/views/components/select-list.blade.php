@@ -19,9 +19,14 @@
             el.select2({
                 placeholder: '{{ __('Select your option') }}',
                 allowClear: !el.attr('multiple')
-            }).on('change', function (e) {
+            }).on('select2:select', function(e){
+                var elm = e.params.data.element;
+                $elm = jQuery(elm);
+                $t = jQuery(this);
+                $t.append($elm);
+                $t.trigger('change.select2');
                 let data = $(this).select2("val")
-                @this.set('{{ $attributes['wire:model'] }}', data);
+            @this.set('{{ $attributes['wire:model'] }}', data);
             });
         });
     </script>
