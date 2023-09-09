@@ -36,8 +36,6 @@ class Edit extends Component
         $this->booking->timetables = implode(",", $this->timetables);
         $this->booking->name = $this->booking->club->name.' '.$this->booking->start_at;
         $this->booking->public = isset($this->public) ? $this->public : false;
-        if(Carbon::now('Europe/Andorra')->startOfDay()->diffInDays($this->booking->started_at->startOfDay()) >= (int)$this->booking->club->days_min_booking) $this->booking->status = 'on-time';
-        else $this->booking->status = 'time-out';
         $this->booking->save();
 
         return redirect()->route('playtomic.bookings.index');
@@ -67,20 +65,34 @@ class Edit extends Component
                 'nullable'
             ],
             'booking.booking_preference' => [
+                'string',
                 'nullable'
-            ]
+            ],
+            'booking.status' => [
+                'string',
+                'required',
+            ],
         ];
     }
 
     protected function initListsForFields(): void
     {
         $this->listsForFields['club'] = Club::pluck('name','id');
-        $this->listsForFields['resource'] = Resource::pluck('name','id');
+        $this->listsForFields['resource'] = Resource::get()->map(function ($item) {
+            return ['name' => $item->name.'-'.$item->club->name, 'id' => $item->id, 'club' => $item->club->name];
+        })->pluck('name','id');
         $this->listsForFields['timetable'] = Timetable::pluck('name','id');
         $this->listsForFields['booking_preference'] = collect(
             [
                 ['id' => 'timetable', 'name' => 'Time preference'],
                 ['id' => 'resource', 'name' => 'Resource preference']
+            ]
+        )->pluck('name','id');
+        $this->listsForFields['status'] = collect(
+            [
+                ['id' => 'on-time', 'name' => 'On time'],
+                ['id' => 'time-out', 'name' => 'Time out'],
+                ['id' => 'closed', 'name' => 'Closed']
             ]
         )->pluck('name','id');
     }

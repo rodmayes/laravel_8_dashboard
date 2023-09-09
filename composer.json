@@ -10,7 +10,6 @@
     "require": {
         "php": "^7.3|^8.0",
         "alkhachatryan/laravel-web-console": "^3.3",
-        "asantibanez/livewire-calendar": "^2.2",
         "bugsnag/bugsnag-laravel": "^2.21",
         "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",

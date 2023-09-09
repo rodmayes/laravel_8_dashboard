@@ -30,30 +30,6 @@
             </div>
         </div>
     </section>
-
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <input type="hidden" name="event_id" id="event_id" value="" />
-                <input type="hidden" name="appointment_id" id="appointment_id" value="" />
-                <div class="modal-body">
-                    <h4>Edit Booking</h4>
-                    Start time:
-                    <br />
-                    <input type="text" class="form-control" name="start_time" id="start_time">
-
-                    End time:
-                    <br />
-                    <input type="text" class="form-control" name="finish_time" id="finish_time">
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <input type="button" class="btn btn-primary" id="appointment_update" value="Save">
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('scripts')
@@ -70,10 +46,8 @@
                 selectHelper: true,
                 firstDay: 1,
                 eventClick: function(calEvent, jsEvent, view) {
-                    $('#appointment_id').val(calEvent.id);
-                    $('#start_time').val(moment(calEvent.start).format('YYYY-MM-DD HH:mm'));
-                    $('#finish_time').val(moment(calEvent.end).format('YYYY-MM-DD HH:mm'));
-                    $('#editModal').modal();
+                    //$('#club_id').val(moment(calEvent.end).format('YYYY-MM-DD HH:mm'));
+                    //$('#editModal').modal();
                 },
                 events : [
                     @foreach($bookings as $appointment)
@@ -100,32 +74,6 @@
                 }
             });
             calendar.render();
-        });
-
-        $(document).ready(function() {
-            // ... All the calendar functionality
-
-            $('#appointment_update').click(function(e) {
-                e.preventDefault();
-                var data = {
-                    _token: '{{ csrf_token() }}',
-                    appointment_id: $('#appointment_id').val(),
-                    start_time: $('#start_time').val(),
-                    finish_time: $('#finish_time').val(),
-                };
-
-                $.post('{{ route('playtomic.bookings.create') }}', data, function( result ) {
-                    $('#calendar').fullCalendar('removeEvents', $('#event_id').val());
-
-                    $('#calendar').fullCalendar('renderEvent', {
-                        title: result.appointment.client.first_name + ' ' + result.appointment.client.last_name,
-                        start: result.appointment.start_time,
-                        end: result.appointment.finish_time
-                    }, true);
-
-                    $('#editModal').modal('hide');
-                });
-            });
         });
     </script>
 @endpush

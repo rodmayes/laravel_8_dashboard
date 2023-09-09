@@ -6,8 +6,6 @@ use App\Http\Controllers\Playtomic\ResourceController;
 use App\Http\Controllers\Playtomic\BookingController;
 use App\Http\Controllers\Playtomic\PlaytomicController;
 
-Route::get('prebooking', [BookingController::class, 'prebooking'])->name('prebooking');
-
     Route::get('login',[PlaytomicController::class, 'login'])->name('login');
     Route::resource('clubs', ClubController::class, ['except' => ['store', 'update', 'destroy']]);
     Route::get('clubs/availability/{club}',[ClubController::class, 'availability'])->name('clubs.availability');
@@ -22,5 +20,5 @@ Route::get('prebooking', [BookingController::class, 'prebooking'])->name('preboo
         Route::get('booking', [BookingController::class, 'prebooking'])->name('booking');
         Route::get('generate-links/{booking}', [BookingController::class, 'generatelinks'])->name('generate-links');
         Route::get('{booking}', [BookingController::class, 'show'])->name('show');
-//        Route::get('pre-booking', [BookingController::class, 'prebooking'])->name('pre-booking');
+        Route::get('pre-booking', [BookingController::class, 'prebooking'])->name('pre-booking');
     });

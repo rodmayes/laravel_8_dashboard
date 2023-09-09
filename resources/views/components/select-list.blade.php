@@ -14,40 +14,21 @@
 @push('scripts')
     <script>
         document.addEventListener("livewire:load", () => {
-            let el = $('#{{ $attributes['id'] }}')
-            let buttonsId = '#{{ $attributes['id'] }}-btn-container'
+            let el = $('#{{ $attributes['id'] }}');
 
-            function initButtons() {
-                $(buttonsId + ' .select-all-button').click(function (e) {
-                    el.val(_.map(el.find('option'), opt => $(opt).attr('value')))
-                    el.trigger('change')
-                })
+            el.select2({
+                placeholder: '{{ __('Select your option') }}',
+                allowClear: !el.attr('multiple')
+            }).on('change', function (e) {
+                let data = $(this).select2("val")
+                @this.set('{{ $attributes['wire:model'] }}', data)
+            });
 
-                $(buttonsId + ' .deselect-all-button').click(function (e) {
-                    el.val([])
-                    el.trigger('change')
-                })
-            }
-
-            function initSelect () {
-                initButtons()
-                el.select2({
-                    placeholder: '{{ __('Select your option') }}',
-                    allowClear: !el.attr('required')
-                })
-            }
-
-            initSelect()
-
-            Livewire.hook('message.processed', (message, component) => {
+/*            Livewire.hook('message.processed', (message, component) => {
                 initSelect()
             });
+*/
 
-            el.on('change', function (e) {
-                let data = $(this).select2("val")
-
-            @this.set('{{ $attributes['wire:model'] }}', data)
-            });
         });
     </script>
 @endpush

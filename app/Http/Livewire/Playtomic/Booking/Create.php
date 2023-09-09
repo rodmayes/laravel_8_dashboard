@@ -87,7 +87,9 @@ class Create extends Component
     protected function initListsForFields(): void
     {
         $this->listsForFields['club'] = Club::pluck('name','id');
-        $this->listsForFields['resource'] = Resource::pluck('name','id');
+        $this->listsForFields['resource'] = Resource::get()->map(function ($item) {
+            return ['name' => $item->name.'-'.$item->club->name, 'id' => $item->id, 'club' => $item->club->name];
+        })->pluck('name','id');
         $this->listsForFields['timetable'] = Timetable::pluck('name','id');
         $this->listsForFields['booking_preference'] = collect(
             [

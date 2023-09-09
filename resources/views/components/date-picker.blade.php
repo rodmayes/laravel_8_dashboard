@@ -16,9 +16,24 @@
                 locale: 'es',
                 //format: 'YYYY-MM-DD',
                 format: 'DD-MM-YYYY',
-                extraFormats: ['YYYY-MM-DD']
+                extraFormats: ['YYYY-MM-DD', 'DD-MM-YYYY'],
+                showTodayButton: true,
+                showClear: true,
+                showClose: true,
+                icons: {
+                    time: 'fa fa-clock',
+                    date: 'fa fa-calendar',
+                    up: 'fa fa-caret-up',
+                    down: 'fa fa-caret-down',
+                    previous: 'fa fa-angle-left',
+                    next: 'fa fa-angle-right',
+                    today: 'fa fa-calendar-day',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-plus'
+                },
             }).on('dp.change', function (e) {
-                var formatedValue = e.date.format("YYYY-MM-DD");
+                var formatedValue = e.date.format("DD-MM-YYYY");
+               // $("#{{$attributes['id']}}").setValue(formatedValue);
                 $("#{{$attributes['id']}}").val(formatedValue);
                 @this.set('{{ $attributes['wire:model'] }}', formatedValue)
             });

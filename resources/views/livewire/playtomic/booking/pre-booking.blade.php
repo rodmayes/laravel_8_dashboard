@@ -115,11 +115,6 @@
     <script type="text/javascript">
         $( document ).ready(function() {
 
-            flatpickr('.flatpickr-input', {
-                dateFormat: 'd-m-Y',
-                altFormat: "F j, Y",
-                minTime: "08:00"
-            });
 
         });
     </script>

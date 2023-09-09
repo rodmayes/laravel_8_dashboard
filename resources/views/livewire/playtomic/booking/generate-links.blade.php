@@ -1,15 +1,11 @@
 <div class="col-12">
     <div class="callout callout-warning">
         <h4>
-            <i class="fas fa-globe"></i> Booking for: {{$booking->club->name}} on {{ $this->booking->started_at->format('l,  d-m-Y') }}  at  {{ $this->booking->timetable->name }}
+            <i class="fas fa-globe"></i> Booking for: {{$booking->club->name}} on {{ $this->booking->started_at->format('l,  d-m-Y') }}
             <a href="{{ route('playtomic.bookings.edit', $booking) }}" class="btn btn-success float-right">
                 {{ trans('playtomic.generate-links.edit') }}
             </a>
         </h4>
-        @if($prebooking_url)
-            {{$prebooking_url['name']}}
-            <a class="btn btn-rose btn-sm booking-link" href="{{ $prebooking_url['url'] }}" target="_blank">Open link</a>
-        @endif
     </div>
 
     <div class="callout callout-info">
@@ -49,42 +45,46 @@
                 <th>Name</th>
                 <th>Link</th>
                 <th>Check</th>
-                <th>Actions</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            @foreach($links as $key => $link)
-            <tr>
-                <td>{{ $link['name'] }}</td>
-                <td><a class="btn btn-sm btn-link booking-link" href="{{ $link['url'] }}" target="_blank">Open link</a></td>
-                <td>
-                    <div class="custom-control custom-switch ml-2">
-                        <input type="checkbox" class="custom-control-input" id="ck_link_{{$key}}" name="ck_link">
-                        <label class="custom-control-label" for="ck_link_{{$key}}"></label>
-                    </div>
-                </td>
-                <td>
-                    <button class="btn btn-warning btn-sm booking-link mr-2" wire:click="preBooking({{$booking}})" data-toggle="modal" data-target="#prebooking-modal">preBooking</button>
-                    <button class="btn btn-success btn-sm booking-link" wire:click="booking({{$booking}})">Booking</button>
-                </td>
-            </tr>
-            @endforeach
+                @foreach($links as $key => $link)
+                <tr>
+                    <td>{{ $link['name'] }}</td>
+                    <td><a class="btn btn-sm btn-link booking-link" href="{{ $link['url'] }}" target="_blank">Open link</a></td>
+                    <td>
+                        <div class="custom-control custom-switch ml-2">
+                            <input type="checkbox" class="custom-control-input" id="ck_link_{{$key}}" name="ck_link">
+                            <label class="custom-control-label" for="ck_link_{{$key}}"></label>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-success btn-sm booking-link float-right" wire:click="booking({{$booking}}, {{ $link['resource'] }}, {{ $link['timetable'] }})">Booking</button>
+                        <button data-toggle="modal" data-target="#prebooking-modal" wire:click="preBooking({{$booking}}, {{ $link['resource'] }}, {{ $link['timetable'] }})" class="btn btn-primary btn-sm mr-2 float-right">Prebooking</button>
+                    </td>
+                </tr>
+                @endforeach
             </tbody>
         </table>
         <!-- END LINKS -->
     </div>
+
     <!-- Modal -->
-    <div class="modal fade" id="prebooking-modal" tabindex="-1" role="dialog" aria-labelledby="prebooking-modalLabel" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="prebooking-modal" tabindex="-1" role="dialog" aria-labelledby="prebooking-modal-Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="prebooking-modal">Execution response</h5>
+                    <h5 class="modal-title" id="prebooking-modal-Label">Log execution</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    {{ $execution_response }}
+                    <h5>{{$prebooking['message']}}</h5>
+                    @foreach($log as $l)
+                        <p class="text-sm">{{$l}}</p>
+                    @endforeach
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

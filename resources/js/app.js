@@ -17,6 +17,7 @@ window.$ = window.jQuery = $;
 
 import 'select2/dist/js/select2.full'
 import 'bootstrap4-datetimepicker/build/js/bootstrap-datetimepicker.min';
+require('../../vendor/aliqasemzadeh/livewire-bootstrap-modal/resources/js/modals');
 
 /*
     import 'select2/dist/js/select2.full.min';

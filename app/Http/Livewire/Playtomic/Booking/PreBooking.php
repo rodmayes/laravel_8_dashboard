@@ -59,10 +59,11 @@ class PreBooking extends Component
             $this->booking->name = $this->booking->club->name . ' ' . $this->booking->started_at->format('d-m-Y');
             $this->booking->status = 'on-time';
 
-            foreach ($this->resources as $resource_id) {
-                foreach ($this->timetables as $timetable_id) {
-                    $resource = Resource::find($resource_id);
-                    $timetable = Timetable::find($timetable_id);
+            $timetables = Timetable::whereIn('id', $this->timetables)->get();
+            $resources = Resource::whereIn('id', $this->resources)->get();
+
+            foreach ($resources as $resource) {
+                foreach ($timetables as $timetable) {
                     $this->url_prebooking[] = [
                         'name' => 'Resource ' . $resource->name . ' ' . $timetable->name,
                         'url' => $this->playtomic_url_checkout . "?s=" . $this->booking->club->playtomic_id . "~" . $resource->playtomic_id . "~" . $this->booking->started_at->format('Y-m-d') . $timetable->playtomic_id . "~90",

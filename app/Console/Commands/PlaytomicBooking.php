@@ -59,13 +59,13 @@ class PlaytomicBooking extends Command
         $bookings = Booking::ontime()->orderBy('started_at')->get();
         foreach ($bookings as $booking) {
             $day_to_date = (Carbon::now('Europe/Andorra'))->addDays((int)$booking->club->days_min_booking);
-            if ($booking->started_at->format('d-m-Y') === $day_to_date->format('d-m-Y')) {
+            //if ($booking->started_at->format('d-m-Y') === $day_to_date->format('d-m-Y')) {
                 try {
                     $this->booking($booking);
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());
                 }
-            }
+            //}
             $booking->log = json_encode($this->log);
             $booking->save();
         }
@@ -74,13 +74,8 @@ class PlaytomicBooking extends Command
 
     public function booking($booking){
         $booked = false;
-        $timetables = []; $resources = [];
-        $timetables_ids = explode(",",$booking->timetables);
-        foreach ($timetables_ids as $id)
-            $timetables[] = Timetable::find($id);
-        $resources_ids = explode(",",$booking->resources);
-        foreach ($resources_ids as $id)
-            $resources[] = Resource::find($id);
+        $timetables = Timetable::whereIn('id', explode(",", $booking->timetables))->get();
+        $resources = Resource::whereIn('id', explode(",", $booking->resources))->get();
 
         $booking_preference = ["timetable" => $timetables, "resource" => $resources];
         foreach ($booking_preference[$booking->booking_preference] as $preference){
