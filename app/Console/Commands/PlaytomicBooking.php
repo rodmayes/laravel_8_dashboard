@@ -48,14 +48,10 @@ class PlaytomicBooking extends Command
     public function handle()
     {
         $this->user = User::byEmail($this->argument('user'))->first();
-        if(!$this->user){
-            Log::error('No user found');
-            return $this->error('No user found');
-        }
+        if(!$this->user) return $this->displayMessage('No user found');
 
         $this->service = new PlaytomicHttpService($this->user);
-        $this->info('Login attempt');
-        $this->log[] = 'Login attempt';
+        $this->displayMessage('Login attempt', 'info');
         $bookings = Booking::ontime()->orderBy('started_at', 'DESC')->get();
         foreach ($bookings as $booking) {
             $day_to_date = (Carbon::now('Europe/Andorra'))->addDays((int)$booking->club->days_min_booking);
@@ -69,7 +65,7 @@ class PlaytomicBooking extends Command
             $booking->log = json_encode($this->log);
             $booking->save();
         }
-        $this->info('Booking scheduled finish');
+        $this->displayMessage('Booking scheduled finish', 'info', $this->log);
     }
 
     public function booking($booking){
@@ -88,39 +84,34 @@ class PlaytomicBooking extends Command
                     $resource = $preference;
                     $timetable = $preference2;
                 }
-                $this->log[] = 'Booking start: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name;
-                $this->line('  Booking start : ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name);
+                $this->displayMessage('Booking start: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name, 'info');
                 $response = $this->makeBooking($booking, $resource, $timetable);
-                $this->log[] = '  Booking end: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name . ' Do it!';
+                $this->displayMessage('Booking end: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name, 'info');
                 if (!isset($response['error'])) {
                     Mail::to($this->user)->send(new PlaytomicBookingConfirmation($booking, $resource, $timetable, $response));
-                    $this->info('Mail sent to ' . $this->user->email);
-                    $this->log[] = 'Mail sent to ' . $this->user->email;
+                    $this->displayMessage('Mail sent to ' . $this->user->email, 'info');
                     $booked = true;
                     break;
                 }
             }
         }
-        Log::info('Booking processed', $this->log);
+        $this->displayMessage('Booking processed', 'info', $this->log);
     }
 
     public function makeBooking(Booking  $booking, Resource $resource, Timetable $timetable){
-        $this->log[] = 'Prebooking '.$timetable->name;
-        $this->line('    PreBooking '.$timetable->name);
+        $this->displayMessage('Prebooking '.$timetable->name, 'info');
         $prebooking = $this->preBooking($booking, $resource, $timetable);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Prebooking error: '.$prebooking['message']];
-        $this->log[] = 'Payment method '.$timetable->name;
-        $this->line('    Payment method '.$timetable->name);
+        $this->displayMessage('Payment method '.$timetable->name, 'info');
         $prebooking = $this->paymentMethodSelection($prebooking);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Payment method selection error: '.$prebooking['message']];
-        $this->log[] = 'Confirmation '.$timetable->name;
-        $this->line('    Confirmation '.$timetable->name);
+        $this->displayMessage('Confirmation '.$timetable->name, 'info');
         $prebooking = $this->confirmation($prebooking);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Confirmation error: '.$prebooking['message']];
-        $this->log[] = 'Confirmation Match '.$timetable->name;
-        $this->line('    Confirmation Match '.$timetable->name);
+        $this->displayMessage('Confirmation Match '.$timetable->name, 'info');
         $prebooking = $this->confirmationMatch($prebooking);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Confirmation match error: '.$prebooking['message']];
+        $this->displayMessage('Confirmation match '.$timetable->name, 'info');
         return $prebooking;
     }
 
@@ -130,15 +121,13 @@ class PlaytomicBooking extends Command
             try{
                 $response = $this->service->preBooking($booking, $resource, $timetable);
                 if(isset($response['status']) && $response['status'] === 'fail') {
-                    $this->error('Prebooking error: '. $response['message']);
-                    Log::error('Prebooking error: '.$timetable->name.' '.$response['message']);
+                    $this->displayMessage('Prebooking error: '.$timetable->name.' '.$response['message']);
                     return ['status' => 'fail', 'message' => 'Prebooking error: '.$timetable->name.' '.$response['message']];
                 }
                 $this->line('Prebooking Ok');
                 return $response;
             }catch(\Exception $e){
-                $this->error('Prebooking error: '. $timetable->name.' '.$e->getMessage());
-                Log::error('Prebooking error: '.$timetable->name.' '.$e->getMessage());
+                $this->displayMessage('Prebooking error: '.$timetable->name.' '.$e->getMessage());
                 return ['status' => 'fail', 'message' => 'Prebooking error: '.$timetable->name.' '.$e->getMessage()];
             }
         }else return ['status' => 'fail', 'message' => 'No logged'];
@@ -147,18 +136,16 @@ class PlaytomicBooking extends Command
     public function paymentMethodSelection($prebooking)
     {
         try{
-            if(!isset($prebooking["payment_intent_id"])) throw new \Exception('No Payment id');
+            if(!isset($prebooking["payment_intent_id"])) return ['status' => 'fail', 'message' => 'Payment method error: No payment_intent_id'];
             $response = $this->service->paymentMethodSelection($prebooking["payment_intent_id"]);
             if(isset($response['status']) && $response['status'] === 'fail') {
-                $this->error('Payment method error: '. $response['message']);
-                Log::error('Payment method error: ' . $response['message']);
-                return ['status' => 'fail', 'message' => 'Payment method error:' . $response['message']];
+                $this->displayMessage('Payment method error: '.$response['message']);
+                return ['status' => 'fail', 'message' => 'Payment method error: ' . $response['message']];
             }
             $this->line(  'Payment method Ok');
             return $response;
         }catch(\Exception $e){
-            $this->error('Payment method error: '. $e->getMessage());
-            Log::error('Payment method error: '.$e->getMessage());
+            $this->displayMessage('Payment method error: '.$e->getMessage());
             return ['status' => 'fail', 'message' => 'Payment method error: '.$e->getMessage()];
         }
     }
@@ -168,15 +155,13 @@ class PlaytomicBooking extends Command
         try{
             $response = $this->service->confirmation($prebooking['payment_intent_id']);
             if(isset($response['status']) && $response['status'] === 'fail') {
-                $this->error('Confirmation error: '. $response['message']);
-                Log::error('Confirmation error: ' . $response['message']);
+                $this->displayMessage('Confirmation error: '.$response['message']);
                 return ['status' => 'fail', 'message' => 'Confirmation error: ' . $response['message']];
             }
             $this->line('Confirmation Ok');
             return $response;
         }catch (\Exception $e) {
-            $this->error('Confirmation error: '. $e->getMessage());
-            Log::error('Confirmation error: '.$e->getMessage());
+            $this->displayMessage('Confirmation error: '.$e->getMessage());
             return ['status' => 'fail', 'message' => 'Confirmation error: '.$e->getMessage()];
         }
     }
@@ -186,16 +171,25 @@ class PlaytomicBooking extends Command
         try{
             $response = $this->service->confirmationMatch($prebooking['cart']['item']['cart_item_data']['match_id']);
             if(isset($response['status']) && $response['status'] === 'fail') {
-                $this->error('Confirmation match error: '. $response['message']);
-                Log::error('Confirmation match error: ' . $response['message']);
+                $this->displayMessage('Confirmation match error: '.$response['message']);
                 return ['status' => 'fail', 'message' => 'Confirmation match error ' . $response['message']];
             }
             $this->line('Confirmation match Ok');
             return $response;
         }catch (\Exception $e) {
-            $this->error('Confirmation match error: '. $e->getMessage());
-            Log::error('Confirmation match error: '.$e->getMessage());
+            $this->displayMessage('Confirmation match error: '.$e->getMessage());
             return ['status' => 'fail', 'message' => 'Confirmation match error: '.$e->getMessage()];
+        }
+    }
+
+    public function displayMessage($message, $type = 'error', $detail_log = []){
+        $this->log[] = $message;
+        if($type === 'error') {
+            $this->error($message);
+            Log::error($message, $detail_log);
+        }else {
+            $this->line($message);
+            Log::info($message, $detail_log);
         }
     }
 }
