@@ -44,7 +44,6 @@ class PlaytomicBookingsSetStatusClosed extends Command
     {
         $this->info('Booking status init');
         $bookings = Booking::notClosed()->orderBy('started_at')->get();
-        dd($bookings);
         foreach($bookings as $booking){
             $day_to_date = (Carbon::createFromDate($booking->started_at))->addDays((int)$booking->club->days_min_booking);
             if(Carbon::now('Europe/Andorra') >= $day_to_date){
