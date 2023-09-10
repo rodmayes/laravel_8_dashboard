@@ -135,10 +135,21 @@
 @push('scripts')
     <script>
         Livewire.on('confirm', e => {
-    if (!confirm("{{ trans('global.areYouSure') }}")) {
-        return
-    }
-@this[e.callback](...e.argv)
-})
+            Swal.fire({
+                title: 'Attention!',
+                text: 'Do you want to delete item?',
+                icon: 'warning',
+                showCancelButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                @this[e.callback](...e.argv)
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+            })
+        })
     </script>
 @endpush

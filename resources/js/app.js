@@ -8,21 +8,16 @@
 import 'bootstrap';
 import 'admin-lte/dist/js/adminlte.min';
 import 'jquery/src/jquery';
-//import flatpickr from "flatpickr";
-//import { Spanish } from "flatpickr/dist/l10n/es"
-//latpickr.localize(Spanish);
+import Swal from 'sweetalert2';
+window.Swal = Swal;
 
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 
 import 'select2/dist/js/select2.full'
 import 'bootstrap4-datetimepicker/build/js/bootstrap-datetimepicker.min';
-require('../../vendor/aliqasemzadeh/livewire-bootstrap-modal/resources/js/modals');
+//require('../../vendor/aliqasemzadeh/livewire-bootstrap-modal/resources/js/modals');
 
-/*
-    import 'select2/dist/js/select2.full.min';
-    import 'bootstrap4-datetimepicker';
-*/
 /* Sidebar - Side navigation menu on mobile/responsive mode */
 window.toggleNavbar = function (collapseID) {
   document.getElementById(collapseID).classList.toggle('hidden')

@@ -83,3 +83,11 @@
         </form>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        $( document ).ready(function() {
+
+        });
+    </script>
+@endpush

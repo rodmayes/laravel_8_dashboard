@@ -179,12 +179,22 @@
 
 @push('scripts')
     <script>
-        $('#playtomic-tabs').IFrame('createTab', 'Home', 'https://playtomic.io/fibra-premium-sports-club/23e59812-5361-4e0e-8223-f0b0503a59db?q=PADEL~2023-09-01~~~', 'index', true)
         Livewire.on('confirm', e => {
-    if (!confirm("{{ trans('global.areYouSure') }}")) {
-        return
-    }
-@this[e.callback](...e.argv)
-})
+            Swal.fire({
+                title: 'Attention!',
+                text: 'Do you want to delete item?',
+                icon: 'warning',
+                showCancelButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    @this[e.callback](...e.argv)
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+            })
+        })
     </script>
 @endpush
