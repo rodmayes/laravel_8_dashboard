@@ -108,7 +108,7 @@ class Booking extends Model
     }
 
     public function scopeNotClosed($query){
-        return $query->where('status', '!=', 'closed');
+        return $query->where('status', '<>', 'closed');
     }
 
     public function setStatusTimeOut(){
