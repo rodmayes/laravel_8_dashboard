@@ -101,15 +101,19 @@ class PlaytomicBooking extends Command
     public function makeBooking(Booking  $booking, Resource $resource, Timetable $timetable){
         $this->displayMessage('Prebooking '.$timetable->name, 'info');
         $prebooking = $this->preBooking($booking, $resource, $timetable);
+        Log::notice('Prebooking '.$timetable->name.' result', $prebooking);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Prebooking error: '.$prebooking['message']];
         $this->displayMessage('Payment method '.$timetable->name, 'info');
         $prebooking = $this->paymentMethodSelection($prebooking);
+        Log::notice('Payment method '.$timetable->name.' result', $prebooking);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Payment method selection error: '.$prebooking['message']];
         $this->displayMessage('Confirmation '.$timetable->name, 'info');
         $prebooking = $this->confirmation($prebooking);
+        Log::notice('Confirmation '.$timetable->name.' result', $prebooking);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Confirmation error: '.$prebooking['message']];
         $this->displayMessage('Confirmation Match '.$timetable->name, 'info');
         $prebooking = $this->confirmationMatch($prebooking);
+        Log::notice('Confirmation match '.$timetable->name.' result', $prebooking);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => 'Confirmation match error: '.$prebooking['message']];
         $this->displayMessage('Confirmation match '.$timetable->name, 'info');
         return $prebooking;
