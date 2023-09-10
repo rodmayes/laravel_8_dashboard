@@ -94,48 +94,46 @@
     </div>
 </div>
 
+@push('scripts')
 <script src="{{asset('js/rellotge.js')}}"></script>
 <script>
-    let element = document.getElementById("btn-open-all");
-
-    element.onclick = function() {
-        openSelecteLinks();
-    }
-
-    function openSelecteLinks(){
-        var links = []
-        var matches = document.querySelectorAll("a.booking-link");
-        for (var i=0; i < matches.length; i++) {
-            links.push(matches[i].href);
-        };
-
-        links.forEach((item,i) => {
-            var el = document.getElementById("ck_link_"+i);
-            if(el.checked) {
-                w = window.open(item);
+        function openSelecteLinks() {
+            var links = []
+            var matches = document.querySelectorAll("a.booking-link");
+            for(var i = 0; i < matches.length; i++) {
+                links.push(matches[i].href);
             }
-        });
-    }
 
-    // Open links automatically
-    @if($booking->isOnTime)
-        function comprobar(){
+            links.forEach((item, i) => {
+                var el = document.getElementById("ck_link_" + i);
+                if (el.checked) {
+                    w = window.open(item);
+                }
+            });
+        }
+
+        let element = document.getElementById("btn-open-all");
+        element.onclick = function () {
+            openSelecteLinks();
+        }
+
+        // Open links automatically
+        function comprobar() {
             today = new Date();
             hour = today.getHours();
             minutes = today.getMinutes();
             seconds = today.getSeconds();
-            if(hour===8 && minutes===0 && seconds >=0 && seconds <= 1){
-                openSelecteLinks();
-            }
+
+            if (hour === 8 && minutes === 0 && seconds >= 0 && seconds <= 1) openSelecteLinks();
         }
         setInterval(comprobar, 1000);
-    @endif
 
-    function toggle(source) {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        for (var i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i] !== source)
-                checkboxes[i].checked = source.checked;
+        function toggle(source) {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i] !== source)
+                    checkboxes[i].checked = source.checked;
+            }
         }
-    }
 </script>
+ @endpush
