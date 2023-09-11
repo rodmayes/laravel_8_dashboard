@@ -19,7 +19,7 @@
             el.select2({
                 placeholder: '{{ __('Select your option') }}',
                 allowClear: !el.attr('multiple')
-            }).on('select2:select', function(e){
+            }).on('select2:select select2:unselect', function(e){
                 var elm = e.params.data.element;
                 $elm = jQuery(elm);
                 $t = jQuery(this);

@@ -25,7 +25,8 @@
         "nesbot/carbon": "^2.69",
         "rap2hpoutre/laravel-log-viewer": "^2.3",
         "robersonfaria/laravel-database-schedule": "^1.3",
-        "spatie/laravel-activitylog": "^3.17"
+        "spatie/laravel-activitylog": "^3.17",
+        "vxm/laravel-async": "^2.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
