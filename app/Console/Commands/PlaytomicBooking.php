@@ -104,19 +104,19 @@ class PlaytomicBooking extends Command
     public function makeBooking(Booking  $booking, Resource $resource, Timetable $timetable){
         $this->displayMessage('Prebooking '.$timetable->name, 'info');
         $prebooking = $this->preBooking($booking, $resource, $timetable);
-        Log::notice('Prebooking', $prebooking);
+        Log::notice('Prebooking: '.(!is_array($prebooking) ? $prebooking : ''), is_array($prebooking) ? $prebooking : []);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => $prebooking['message']];
         $this->displayMessage('Payment method '.$timetable->name, 'info');
         $prebooking = $this->paymentMethodSelection($prebooking);
-        Log::notice('Prebooking', $prebooking);
+        Log::notice('Payment method: '.(!is_array($prebooking) ? $prebooking : ''), is_array($prebooking) ? $prebooking : []);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => $prebooking['message']];
         $this->displayMessage('Confirmation '.$timetable->name, 'info');
-        $prebooking = $this->confirmation($prebooking);
-        Log::notice('Prebooking', $prebooking);
+        $prebooking = $this->confirmation(is_array($prebooking) ? $prebooking : []);
+        Log::notice('Confirmation: '.(!is_array($prebooking) ? $prebooking : ''), is_array($prebooking) ? $prebooking : []);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => $prebooking['message']];
         $this->displayMessage('Confirmation Match '.$timetable->name, 'info');
         $prebooking = $this->confirmationMatch($prebooking);
-        Log::notice('Prebooking', $prebooking);
+        Log::notice('Confirmation match: '.(!is_array($prebooking) ? $prebooking : ''), is_array($prebooking) ? $prebooking : []);
         if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => $prebooking['message']];
         $this->displayMessage('Confirmation match '.$timetable->name, 'info');
         return $prebooking;
