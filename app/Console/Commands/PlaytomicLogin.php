@@ -27,7 +27,7 @@ class PlaytomicLogin extends Command
      *
      * @var string
      */
-    protected $description = 'Logon to PLaytomic and set Token to database';
+    protected $description = 'Login to PLaytomic and set Token to database';
     private $service;
     private $user;
 

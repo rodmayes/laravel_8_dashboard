@@ -70,9 +70,12 @@ class BookingController extends Controller
             return $this->error('No user found');
         }
         $this->service = new PlaytomicHttpService($this->user);
-        $this->log[] = 'Login attempt';
 
         try{
+            $this->log[] = 'Login attempt';
+            $login_response = $this->service->login();
+            if(!$login_response) return $this->displayMessage('NOT Logged');
+            $this->log[] = 'Logged';
             $this->log[] = 'Booking start: ' . $booking->club->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name;
             $prebooking = $this->booking($booking,  $resource, $timetable);
             $this->log[] = 'Booking scheduled finish';
