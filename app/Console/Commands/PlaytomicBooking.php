@@ -51,7 +51,7 @@ class PlaytomicBooking extends Command
         if(!$this->user) return $this->displayMessage('No user found');
 
         $this->service = new PlaytomicHttpService($this->user);
-        $this->displayMessage('Login attempt', 'info');
+        $this->displayMessage('Init process', 'info');
         $bookings = Booking::ontime()->orderBy('started_at', 'DESC')->get();
         foreach ($bookings as $booking) {
             $day_to_date = $booking->started_at->subDays((int)$booking->club->days_min_booking);
