@@ -35,7 +35,7 @@
                                 </a>
                             @endcan
                             <a class="dropdown-item" href="{{ route('playtomic.bookings.booking') }}">
-                                <i class="fa fa-calendar-check"></i> {{ trans('playtomic.bookings.prebooking.title_singular') }}
+                                <i class="fa fa-calendar-check"></i> Booking
                             </a>
                                 <a class="dropdown-item" href="{{ route('playtomic.bookings.view-calendar') }}">
                                     <i class="fa fa-calendar"></i> Calendar mode

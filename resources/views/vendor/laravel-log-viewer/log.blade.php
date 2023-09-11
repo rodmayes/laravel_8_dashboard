@@ -123,6 +123,14 @@
         </div>
     </section>
 @endsection
+@push('styles')
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+@endpush
+
 @push('scripts')
 <!-- jQuery for Bootstrap -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -140,7 +148,7 @@
 <script>
   // this is here so we can get the body dark mode before the page displays
   // otherwise the page will be white for a second...
-  initTheme();
+
 
   window.addEventListener('load', () => {
     if (darkSwitch) {
