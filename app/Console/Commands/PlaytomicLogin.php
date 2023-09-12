@@ -56,4 +56,15 @@ class PlaytomicLogin extends Command
             return $this->displayMessage('NOT Logged');
         $this->displayMessage('Logged', 'info', $login_response);
     }
+
+    public function displayMessage($message, $type = 'error', $detail_log = []){
+        $this->log[] = $message;
+        if($type === 'error') {
+            $this->error($message);
+            Log::error($message, $detail_log);
+        }else {
+            $this->line($message);
+            Log::info($message, $detail_log);
+        }
+    }
 }
