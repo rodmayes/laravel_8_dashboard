@@ -108,6 +108,10 @@ class PreBooking extends Component
             'booking.public' => [
                 'nullable'
             ],
+            'booking.booking_preference' => [
+                'string',
+                'nullable'
+            ],
         ];
     }
 
@@ -125,5 +129,11 @@ class PreBooking extends Component
                 return ['name' => $item->name.'-'.$item->club->name, 'id' => $item->id, 'club' => $item->club->name];
             })->pluck('name','id');
         $this->listsForFields['timetable'] = Timetable::pluck('name','id');
+        $this->listsForFields['booking_preference'] = collect(
+            [
+                ['id' => 'timetable', 'name' => 'Time preference'],
+                ['id' => 'resource', 'name' => 'Resource preference']
+            ]
+        )->pluck('name','id');
     }
 }

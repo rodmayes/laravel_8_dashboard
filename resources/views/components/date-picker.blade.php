@@ -1,12 +1,24 @@
 <div wire:ignore>
-    <div class="form-group">
-        <div class="input-group date" id="{{ $attributes['id'] }}">
-            <input class="form-control flatpickr flatpickr-input" type="text" {{ $attributes }} data-input>
-            <div class="input-group-append" >
-                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+    @if(isset($attributes['inline']))
+        <div style="overflow:hidden;">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="{{ $attributes['id'] }}" class="flatpickr-input"></div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    @else
+        <div class="form-group">
+            <div class="input-group date" id="{{ $attributes['id'] }}">
+                <input class="form-control flatpickr flatpickr-input" type="text" {{ $attributes }} data-input>
+                <div class="input-group-append" >
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
 
 @push('scripts')

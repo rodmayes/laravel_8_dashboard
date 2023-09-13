@@ -4,19 +4,9 @@
             <div class="card-body">
                 @error('error') <small class="text-danger">{{ $message }}</small> @enderror
                 <div class="row">
-                    <div class="form-group {{ $errors->has('booking.club_id') ? 'invalid' : '' }} col-4">
-                        <label class="form-label required" for="club_id">{{ trans('playtomic.bookings.fields.club') }}</label>
-                        <x-select-list class="form-control" required id="club_id" name="club_id" :options="$this->listsForFields['club']" wire:model="booking.club_id"/>
-                        <small class="text-danger">
-                            {{ $errors->first('booking.club_id') }}
-                        </small>
-                        <div class="help-block">
-                            {{ trans('playtomic.bookings.fields.club_helper') }}
-                        </div>
-                    </div>
-                    <div class="form-group {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }} col-3">
+                    <div class="form-group bg-gray-light {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }} col-6">
                         <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
-                        <x-date-picker class="form-control" id="started_at" name="started_at" wire:model="booking.started_at" required/>
+                        <x-date-picker class="form-control" id="started_at" name="started_at" wire:model="booking.started_at" inline required/>
                         <small class="text-danger">
                             {{ $errors->first('booking.started_at') }}
                         </small>
@@ -24,14 +14,28 @@
                             {{ trans('playtomic.bookings.fields.started_at_helper') }}
                         </div>
                     </div>
-                    <div class="form-group {{ $errors->has('timetables') ? 'invalid' : '' }} col-5">
-                        <label class="form-label required" for="timetables">{{ trans('playtomic.bookings.fields.timetable') }}</label>
-                        <x-select-list class="form-control" required id="timetables" name="timetables" :options="$this->listsForFields['timetable']" wire:model="timetables" multiple/>
-                        <small class="text-danger">
-                            {{ $errors->first('timetables') }}
-                        </small>
-                        <div class="help-block">
-                            {{ trans('playtomic.bookings.fields.timetable_helper') }}
+
+                    <div class="col-6">
+                        <div class="form-group {{ $errors->has('booking.club_id') ? 'invalid' : '' }}">
+                            <label class="form-label required" for="club_id">{{ trans('playtomic.bookings.fields.club') }}</label>
+                            <x-select-list class="form-control" required id="club_id" name="club_id" :options="$this->listsForFields['club']" wire:model="booking.club_id"/>
+                            <small class="text-danger">
+                                {{ $errors->first('booking.club_id') }}
+                            </small>
+                            <div class="help-block">
+                                {{ trans('playtomic.bookings.fields.club_helper') }}
+                            </div>
+                        </div>
+
+                        <div class="form-group {{ $errors->has('timetables') ? 'is-invalid' : '' }}">
+                            <label class="form-label required" for="timetables">{{ trans('playtomic.bookings.fields.timetable') }}</label>
+                            <x-select-list class="form-control" required id="timetables" name="timetables" :options="$this->listsForFields['timetable']" wire:model="timetables" multiple/>
+                            <small class="text-danger">
+                                {{ $errors->first('timetables') }}
+                            </small>
+                            <div class="help-block">
+                                {{ trans('playtomic.bookings.fields.timetable_helper') }}
+                            </div>
                         </div>
                     </div>
                 </div>
