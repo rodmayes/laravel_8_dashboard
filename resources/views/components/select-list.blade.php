@@ -1,6 +1,6 @@
 <div>
     <div wire:ignore class="col-12">
-        <select class="select2 form-control" data-minimum-results-for-search="Infinity" data-placeholder="{{ __('Select your option') }}" {{ $attributes }}>
+        <select class="select2 form-control w-100" data-minimum-results-for-search="Infinity" data-placeholder="{{ __('Select your option') }}" {{ $attributes }}>
             @if(!isset($attributes['multiple']))
                 <option></option>
             @endif
@@ -17,6 +17,7 @@
             let el = $('#{{ $attributes['id'] }}');
 
             el.select2({
+                width: '100%',
                 placeholder: '{{ __('Select your option') }}',
                 allowClear: !el.attr('multiple')
             }).on('select2:select select2:unselect', function(e){
