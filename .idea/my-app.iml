@@ -133,6 +133,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/alkhachatryan/laravel-web-console" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/robersonfaria/laravel-database-schedule" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/async" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/vxm/laravel-async" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -97,7 +97,7 @@
                             <tr>
                                 <td><input type="checkbox" value="{{ $booking->id }}" wire:model="selected"></td>
                                 <td>{{ $booking->id }}</td>
-                                <td>{{ $booking->started_at->format('d-m-Y') }}</td>
+                                <td>{{ $booking->started_at->format('d-m-Y') }} ({{ ucfirst($booking->started_at->locale('es')->dayName) }})</td>
                                 <td>
                                     @foreach(explode(",",$booking->timetables) as $id)
                                         <span class="badge badge-warning">{{ \App\Models\Timetable::find($id)->name }}</span>
