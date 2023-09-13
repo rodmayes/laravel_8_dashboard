@@ -4,7 +4,7 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-12">
-                        <div id="{{ $attributes['id'] }}" class="flatpickr-input"></div>
+                        <div id="{{ $attributes['id'] }}" wire:model="{{$attributes['wire:model']}}" class="flatpickr-input"></div>
                     </div>
                 </div>
             </div>
@@ -25,6 +25,7 @@
     <script>
         document.addEventListener("livewire:load", () => {
             $('.flatpickr-input').datetimepicker({
+                defaultDate: '{!! isset($attributes['value']) ? $attributes['value'] : null !!}',
                 locale: 'es',
                 //format: 'YYYY-MM-DD',
                 format: 'DD-MM-YYYY',

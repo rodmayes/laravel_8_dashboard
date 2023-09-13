@@ -6,7 +6,7 @@
                 <div class="row">
                     <div class="form-group border bg-gray-light {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }} col-6">
                         <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
-                        <x-date-picker class="form-control" id="started_at" name="started_at" wire:model="booking.started_at" inline required/>
+                        <x-date-picker class="form-control" id="started_at" name="started_at" wire:model="booking.started_at" inline required value="{{$booking->started_at}}"/>
                         <small class="text-danger">
                             {{ $errors->first('booking.started_at') }}
                         </small>
