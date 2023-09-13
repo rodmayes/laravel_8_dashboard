@@ -19,7 +19,7 @@
             el.select2({
                 width: '100%',
                 placeholder: '{{ __('Select your option') }}',
-                allowClear: !el.attr('multiple')
+                allowClear: {!! isset($attributes['multiple']) ? 'true' : 'false' !!}
             }).on('select2:select select2:unselect', function(e){
                 var elm = e.params.data.element;
                 $elm = jQuery(elm);

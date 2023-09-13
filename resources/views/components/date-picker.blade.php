@@ -20,6 +20,7 @@
                 showTodayButton: true,
                 showClear: true,
                 showClose: true,
+                inline: {!! isset($attributes['inline']) ? 'true' : 'false' !!},
                 icons: {
                     time: 'fa fa-clock',
                     date: 'fa fa-calendar',
