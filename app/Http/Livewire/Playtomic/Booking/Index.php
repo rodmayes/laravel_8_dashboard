@@ -64,9 +64,9 @@ class Index extends Component
     {
         $this->sortBy            = 'started_at';
         $this->sortDirection     = 'desc';
-        $this->perPage           = 100;
+        $this->perPage           = 25;
         $this->perClub           = -1;
-        $this->paginationOptions = config('project.pagination.options');
+        $this->paginationOptions = collect(config('project.pagination.options'))->pluck('id','name');
         $this->orderable         = (new User())->orderable;
     }
 

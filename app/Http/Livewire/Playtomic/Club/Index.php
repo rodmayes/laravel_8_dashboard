@@ -64,7 +64,7 @@ class Index extends Component
         $this->sortBy            = 'name';
         $this->sortDirection     = 'asc';
         $this->perPage           = 100;
-        $this->paginationOptions = config('project.pagination.options');
+        $this->paginationOptions = collect(config('project.pagination.options'))->pluck('id','name');
         $this->orderable         = (new User())->orderable;
     }
 
