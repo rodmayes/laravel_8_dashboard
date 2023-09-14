@@ -46,7 +46,7 @@ class PlaytomicBookingsSetStatusClosed extends Command
         $bookings = Booking::notClosed()->orderBy('started_at','desc')->get();
         foreach($bookings as $booking){
             $day_to_date = (Carbon::createFromDate($booking->started_at))->subDays((int)$booking->club->days_min_booking);
-            if($day_to_date->startOfDay() <= Carbon::now('Europe/Andorra')->startOfDay()){
+            if($day_to_date->startOfDay() < Carbon::now('Europe/Andorra')->startOfDay()){
                 try{
                     $booking->setStatusTimeOut();
                     $this->line('Status Time out: '.$booking->name.' '.$booking->started_at->format('d-m-Y'));
