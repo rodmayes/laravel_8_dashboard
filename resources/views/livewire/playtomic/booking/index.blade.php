@@ -70,7 +70,6 @@
                             </th>
                             <th>
                                 {{ trans('playtomic.bookings.fields.timetable') }}
-                                @include('components.table.sort', ['field' => 'timetable_id'])
                             </th>
                             <th>
                                 {{ trans('playtomic.bookings.fields.resource') }}
@@ -108,7 +107,15 @@
                                         <span class="badge badge-info">{{ \App\Models\Resource::find($id)->name }}</span>
                                     @endforeach
                                 </td>
-                                <td>{{ $booking->started_at->addDays(-((int)$booking->club->days_min_booking))->format('d-m-Y')}}</td>
+                                <td>
+                                    @if($booking->started_at->addDays(-((int)$booking->club->days_min_booking))->format('d-m-Y') === \Carbon\Carbon::now()->format('d-m-Y'))
+                                        <span class="text-danger">
+                                            {{ $booking->started_at->addDays(-((int)$booking->club->days_min_booking))->format('d-m-Y')}}
+                                        </span>
+                                    @else
+                                        {{ $booking->started_at->addDays(-((int)$booking->club->days_min_booking))->format('d-m-Y')}}
+                                    @endif
+                                </td>
                                 <td>{{ $booking->club->name }}</td>
                                 <td>{{ $booking->booking_preference }}</td>
                                 <td>
