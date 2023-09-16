@@ -39,9 +39,10 @@ class Booking extends Model
         'resources',
         'status',
         'started_at',
-        'timetable_id',
+        'timetables',
         'created_by',
-        'public'
+        'public',
+        'booking_preference'
     ];
 
     protected $dates = [
@@ -62,7 +63,8 @@ class Booking extends Model
         'timetable_id',
         'started_at',
         'created_by',
-        'public'
+        'public',
+        'booking_preference'
     ];
 
     public function club()

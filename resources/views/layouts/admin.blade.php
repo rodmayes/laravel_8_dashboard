@@ -59,8 +59,6 @@
     <form id="logoutform" action="{{ route('logout') }}" method="POST" style="display: none;">
         {{ csrf_field() }}
     </form>
-    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/adminlte.js') }}"></script>
     <script>
         /*
         $(document).ready(function() {
@@ -75,6 +73,13 @@
     </script>
     @livewireScripts
     @livewireCalendarScripts
+    <x-laravel-blade-sortable::scripts/>
+    <script
+        src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+        defer
+    ></script>
+    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/adminlte.js') }}"></script>
         @yield('scripts')
         @stack('scripts')
 </body>

@@ -20,6 +20,7 @@
         "jquery": "^3.7.1",
         "jquery-ui": "^1.13.2",
         "laravel-mix": "^5.0.9",
+        "livewire-sortable": "^0.2.2",
         "lodash": "^4.17.19",
         "popper.js": "^1.12",
         "postcss": "^7.0.35",
@@ -37,6 +38,7 @@
         "bootstrap4-datetimepicker": "^5.2.3",
         "jquery-ui-bootstrap": "^1.0.0",
         "select2-bootstrap-theme": "^0.1.0-beta.10",
+        "sortablejs": "^1.15.0",
         "sweetalert2": "^11.7.27"
     }
 }

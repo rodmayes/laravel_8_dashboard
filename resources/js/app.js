@@ -13,6 +13,8 @@ window.Swal = Swal;
 
 import $ from 'jquery';
 window.$ = window.jQuery = $;
+import 'livewire-sortable'
+window.Sortable = require('sortablejs').default
 
 import 'select2/dist/js/select2.full'
 import 'bootstrap4-datetimepicker/build/js/bootstrap-datetimepicker.min';
