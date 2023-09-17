@@ -38,17 +38,16 @@
                                     {{ trans('playtomic.bookings.fields.timetable_helper') }}
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group {{ $errors->has('resources') ? 'invalid' : '' }} col-12">
-                            <label class="form-label required" for="resources">{{ trans('playtomic.bookings.fields.resource') }}</label>
-                            <x-select-list class="form-control" required id="resources" name="resources" :options="$this->listsForFields['resource']" wire:model="resources" multiple/>
-                            <small class="text-danger">
-                                {{ $errors->first('resources') }}
-                            </small>
-                            <div class="help-block">
-                                {{ trans('playtomic.bookings.fields.resource_helper') }}
+
+                            <div class="form-group {{ $errors->has('resources') ? 'invalid' : '' }} ">
+                                <label class="form-label required" for="resources">{{ trans('playtomic.bookings.fields.resource') }}</label>
+                                <x-select-list class="form-control" required id="resources" name="resources" :options="$this->listsForFields['resource']" wire:model="resources"  multiple/>
+                                <small class="text-danger">
+                                    {{ $errors->first('resources') }}
+                                </small>
+                                <div class="help-block">
+                                    {{ trans('playtomic.bookings.fields.resource_helper') }}
+                                </div>
                             </div>
                         </div>
                     </div>

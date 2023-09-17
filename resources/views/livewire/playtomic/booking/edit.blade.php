@@ -98,6 +98,27 @@
 
 @push('scripts')
     <script>
+        function initSelect(items, id) { // pre-select items
+            items.forEach(item => {
+                let value = $('#'+id+' option[value='+item+']').text(); // get items inner text
+                $('#'+id+' option[value='+item+']').remove(); // remove current item from DOM
+                $('#'+id).append(new Option(value, item, true, true)); // append it, making it selected by default
+            });
+        }
+
+        let initValuesResource = [
+            @foreach($resources as $resource)
+                {{$resource}},
+            @endforeach
+        ];
+        initSelect(initValuesResource, 'resources');
+
+        let initValuesTimetable = [
+            @foreach($timetables as $timetable)
+                {{$timetable}},
+            @endforeach
+        ];
+        initSelect(initValuesTimetable, 'timetables');
         $( document ).ready(function() {
 
         });

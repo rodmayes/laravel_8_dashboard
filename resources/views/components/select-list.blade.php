@@ -27,9 +27,11 @@
                 $t = jQuery(this);
                 $t.append($elm);
                 $t.trigger('change.select2');
+
                 let data = $(this).select2("val")
                 @this.set('{{ $attributes['wire:model'] }}', data);
             });
+
         });
     </script>
 @endpush
