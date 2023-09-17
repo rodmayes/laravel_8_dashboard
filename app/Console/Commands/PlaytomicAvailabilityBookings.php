@@ -23,7 +23,7 @@ class PlaytomicAvailabilityBookings extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Load availability resources at 8h!';
 
     /**
      * Create a new command instance.

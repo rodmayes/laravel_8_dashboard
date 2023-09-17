@@ -1,5 +1,5 @@
 <div>
-    <div wire:ignore class="col-12">
+    <div wire:ignore class="col-12 p-0">
         <select class="select2 form-control w-100" data-minimum-results-for-search="Infinity" data-placeholder="{{ __('Select your option') }}" {{ $attributes }}>
             @if(!isset($attributes['multiple']))
                 <option></option>

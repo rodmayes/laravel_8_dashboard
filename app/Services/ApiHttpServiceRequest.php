@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
 class ApiHttpServiceRequest extends Http
@@ -36,24 +37,31 @@ class ApiHttpServiceRequest extends Http
      * @return object
      * @throws \Exception
      */
-    public function sendPost($data, $url = '')
+    public function sendPost($data, $url = '', $retry = false)
     {
         try{
+            if($retry) {
+                $response = $this->httpd->retry(2, 100)->post($this->url . $url, $data)->json();
+                return $response;
+            }
             return $this->httpd->post($this->url.$url, $data)->json();
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
     }
 
-
     /**
      * @param $url
      * @return object
      * @throws \Exception
      */
-    public function sendGet($url = null)
+    public function sendGet($url = null, $retry = false)
     {
         try {
+            if($retry) {
+                $response = $this->httpd->retry(2, 100)->get($url)->json();
+                return $response;
+            }
             return $this->httpd->get($url)->json();
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());

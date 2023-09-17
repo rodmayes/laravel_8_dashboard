@@ -1,10 +1,10 @@
 <div class="row">
-    <div class="card card-primary col-6">
+    <div class="card card-primary col-8">
         <form wire:submit.prevent="submit" class="pt-3">
             <div class="card-body">
                 @error('error') <small class="text-danger">{{ $message }}</small> @enderror
                 <div class="row">
-                    <div class="form-group bg-gray-light {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }} col-6">
+                    <div class="form-group bg-gray-light col-6 {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }}">
                         <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
                         <x-date-picker class="form-control" id="started_at" name="started_at" wire:model="booking.started_at" inline required/>
                         <small class="text-danger">
@@ -15,7 +15,7 @@
                         </div>
                     </div>
 
-                    <div class="col-6">
+                    <div class="col-6 pr-0">
                         <div class="form-group {{ $errors->has('booking.club_id') ? 'invalid' : '' }}">
                             <label class="form-label required" for="club_id">{{ trans('playtomic.bookings.fields.club') }}</label>
                             <x-select-list class="form-control" required id="club_id" name="club_id" :options="$this->listsForFields['club']" wire:model="booking.club_id"/>
@@ -49,11 +49,8 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-                <div class="row">
 
-                </div>
                 <div class="row">
                     <div class="form-group col-2">
                         <div class="custom-control custom-switch">
@@ -61,8 +58,8 @@
                             <label class="custom-control-label" for="ck_public">{{ trans('playtomic.bookings.fields.is_public') }}</label>
                         </div>
                     </div>
-                    <div class="form-group form-inline {{ $errors->has('booking.booking_preference') ? 'invalid' : '' }} col-8">
-                        <label class="form-label required" for="booking_preference">Preference</label>
+                    <div class="form-group form-inline {{ $errors->has('booking.booking_preference') ? 'invalid' : '' }} col-4">
+                        <label class="form-label required" for="booking_preference">Preference: </label>
                         <x-select-list class="form-control" required id="booking_preference" name="booking_preference" :options="$this->listsForFields['booking_preference']" wire:model="booking.booking_preference"/>
                         <small class="text-danger">
                             {{ $errors->first('booking.booking_preference') }}
@@ -71,8 +68,18 @@
                             {{ trans('playtomic.bookings.fields.resource_helper') }}
                         </div>
                     </div>
+                    <div class="form-group form-inline {{ $errors->has('booking.status') ? 'invalid' : '' }} col-4">
+                        <label class="form-label required" for="status">{{ trans('playtomic.bookings.fields.status') }}: </label>
+                        <x-select-list class="form-control" required id="status" name="booking_preference" :options="$this->listsForFields['status']" wire:model="booking.status"/>
+                        <small class="text-danger">
+                            {{ $errors->first('booking.status') }}
+                        </small>
+                        <div class="help-block">
+                            {{ trans('playtomic.bookings.fields.status_helper') }}
+                        </div>
+                    </div>
                     <p class="col-2">
-                        <button class="btn btn-xs btn-warning" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Log</button>
+                        <button class="btn btn-xs btn-warning float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Log</button>
                     </p>
                     <div class="collapse col-12" id="collapseExample">
                         <div class="form-group {{ $errors->has('booking.log') ? 'invalid' : '' }} col-12">

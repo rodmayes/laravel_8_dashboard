@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class PlaytomicBookingWithPrebooking extends Command
+class PlaytomicBookingWithAvailability extends Command
 {
     /**
      * The name and signature of the console command.
@@ -56,13 +56,13 @@ class PlaytomicBookingWithPrebooking extends Command
         $bookings = Booking::ontime()->orderBy('started_at', 'DESC')->get();
         foreach ($bookings as $booking) {
             $day_to_date = $booking->started_at->subDays((int)$booking->club->days_min_booking);
-            if ($day_to_date->startOfDay()->format('d-m-Y') == Carbon::now('Europe/Andorra')->startOfDay()->format('d-m-Y')) {
+            //if ($day_to_date->startOfDay()->format('d-m-Y') == Carbon::now('Europe/Andorra')->startOfDay()->format('d-m-Y')) {
                 try {
                     $this->booking($booking);
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());
                 }
-            }
+            //}
             $booking->log = json_encode($this->log);
             $booking->save();
         }
@@ -87,7 +87,7 @@ class PlaytomicBookingWithPrebooking extends Command
                 }
                 $this->displayMessage('Prebooking availability: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name, 'info');
                 $prebooking = $this->availability($booking, $resource, $timetable);
-                Log::notice('Prebooking availability: '.(!is_array($prebooking) ? $prebooking : ''), is_array($prebooking) ? $prebooking : []);
+                //Log::notice('Prebooking with availability: '.(!is_array($prebooking) ? $prebooking : ''), is_array($prebooking) ? $prebooking : []);
                 if(isset($prebooking['status']) && $prebooking['status'] === 'fail') $this->displayMessage ('No availibility '.$prebooking['message']);
                 else {
                     $response = $this->makeBooking($prebooking, $timetable);
@@ -119,8 +119,8 @@ class PlaytomicBookingWithPrebooking extends Command
                 $this->displayMessage('Prebooking ok: '.$resource->name.' at '.$timetable->name, 'info');
                 return $response;
             }catch(\Exception $e){
-                $this->displayMessage('Prebooking error: '.$timetable->name.' '.$e->getMessage());
-                return ['status' => 'fail', 'message' => 'Prebooking error: '.$timetable->name.' '.$e->getMessage()];
+                $this->displayMessage('Prebooking catch error: '.$timetable->name.' '.$e->getMessage());
+                return ['status' => 'fail', 'message' => 'Prebooking catch error: '.$timetable->name.' '.$e->getMessage()];
             }
         }else return ['status' => 'fail', 'message' => 'No logged'];
     }

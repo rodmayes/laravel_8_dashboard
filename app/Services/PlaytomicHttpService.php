@@ -102,10 +102,10 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
         ];
 
         try {
-            $response = $this->sendPost($data, 'v1/payment_intents');
+            $response = $this->sendPost($data, 'v1/payment_intents', true);
             return $this->response($response);
         }catch(\Exception $e){
-            Log::error($e->getMessage());
+            Log::error('Catch '.$e->getMessage());
             return ['status' => 'fail', 'message' => $e->getMessage()];
         }
     }
@@ -125,18 +125,28 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
     }
 
     public function confirmation($payment_intent_id){
-        $response = $this->sendPost([], 'v1/payment_intents/'.$payment_intent_id.'/confirmation');
-        return $this->response($response);
+        try {
+            $response = $this->sendPost([], 'v1/payment_intents/' . $payment_intent_id . '/confirmation');
+            return $this->response($response);
+        }catch(\Exception $e){
+            Log::error('Catch '.$e->getMessage());
+            return ['status' => 'fail', 'message' => $e->getMessage()];
+        }
     }
 
     public function confirmationMatch($match_id){
+        try{
         $response = $this->sendGet('v1/matches/'.$match_id);
-        Log::info($response);
-        //if($response['status'] === 'RESOURCE_NO_AVAILABLE') return null;
         return env('PLAYTOMIC_URL','https://playtomic.io/api/').'v1/matches/'.$match_id;
+        }catch(\Exception $e){
+            Log::error('Catch '.$e->getMessage());
+            return ['status' => 'fail', 'message' => $e->getMessage()];
+        }
     }
 
     public function response($response){
+        if(isset($response))
+            Log::info('Response prebooking '.(is_array($response) ? '' : $response), is_array($response) ? $response : []);
         if (isset($response['status']) && $response['status'] === 'RESOURCE_NO_AVAILABLE') return ['status' => 'fail', 'message' => $response['localized_message']];
         if (isset($response['status']) && $response['status'] === 'RESERVATION_NOT_PROCESSABLE') return ['status' => 'fail', 'message' => $response['localized_message']];
         if (isset($response['status']) && $response['status'] == 500) return ['status' => 'fail', 'message' => $response['error']];
