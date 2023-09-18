@@ -135,6 +135,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/robersonfaria/laravel-database-schedule" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/async" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/vxm/laravel-async" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/asantibanez/laravel-blade-sortable" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

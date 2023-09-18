@@ -140,6 +140,7 @@
       <path value="$PROJECT_DIR$/vendor/alkhachatryan/laravel-web-console" />
       <path value="$PROJECT_DIR$/vendor/vxm/laravel-async" />
       <path value="$PROJECT_DIR$/vendor/spatie/async" />
+      <path value="$PROJECT_DIR$/vendor/asantibanez/laravel-blade-sortable" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />
