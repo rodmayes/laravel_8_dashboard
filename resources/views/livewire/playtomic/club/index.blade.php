@@ -2,17 +2,19 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <div class="card-title col-8 form-inline">
-                    <div class="form-group col-3">
-                        <label for="perPage" class="col-form-label">{{trans('global.datatables.per_page')}}:</label>
-                        <div class="col-8">
-                            <x-select-list class="form-control" required id="perPage" name="perPage" :options="$paginationOptions" wire:model="perPage"/>
+                <div class="card-title col-6 p-0">
+                    <div class="form-group form-inline p-0">
+                        <div class="col-5 form-inline p-0">
+                            <label for="perPage" class="col-6 col-form-label">{{trans('global.datatables.per_page')}}:</label>
+                            <div class="col-6">
+                                <x-select-list class="form-control" required id="perPage" name="perPage" :options="$paginationOptions" wire:model="perPage"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group form-inline col-5">
-                        <label for="search" class="col-2 col-form-label">Search:</label>
-                        <div class="col-10">
-                            <input type="text" wire:model.debounce.300ms="search" class="form-control col-12" style="width:100%">
+                        <div class="form-group form-inline col-6">
+                            <label for="search" class="col-2 col-form-label">Search:</label>
+                            <div class="col-10">
+                                <input type="text" wire:model.debounce.300ms="search" class="form-control col-12" style="width:100%">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -39,11 +41,11 @@
                     </button>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 <div wire:loading.delay class="col-12 alert alert-info">
                     {{trans('global.datatables.loading')}}...
                 </div>
-                <table class="table table-index w-full">
+                <table class="table table-hover table-sm table-index">
                     <thead>
                         <tr>
                             <th class="w-9">
@@ -79,19 +81,19 @@
                                 <td>{{ $club->playtomic_id }}</td>
                                 <td>{{ $club->days_min_booking }}</td>
                                 <td class="text-right">
-                                    <div class="flex justify-end">
+                                    <div class="btn-group btn-group-sm">
                                         @can('user_show')
-                                            <a class="btn btn-sm btn-info mr-2" href="{{ route('playtomic.clubs.show', $club) }}" title="{{ trans('global.view') }}">
-                                                <i class="fas fa-info"></i>
+                                            <a class="btn btn-sm btn-info" href="{{ route('playtomic.clubs.show', $club) }}" title="{{ trans('global.view') }}">
+                                                <i class="fas fa-eye"></i>
                                             </a>
                                         @endcan
                                         @can('user_edit')
-                                            <a class="btn btn-sm btn-success mr-2" href="{{ route('playtomic.clubs.edit', $club) }}" title="{{ trans('global.edit') }}">
+                                            <a class="btn btn-sm btn-success " href="{{ route('playtomic.clubs.edit', $club) }}" title="{{ trans('global.edit') }}">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                         @endcan
                                         @can('user_delete')
-                                            <button class="btn btn-sm btn-danger mr-2" type="button" wire:click="confirm('delete', {{ $club->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
+                                            <button class="btn btn-sm btn-danger" type="button" wire:click="confirm('delete', {{ $club->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         @endcan

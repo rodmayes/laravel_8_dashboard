@@ -2,17 +2,19 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <div class="card-title col-6">
-                    <div class="form-group form-inline">
-                        <label for="perPage" class="col-2 col-form-label">{{trans('global.datatables.per_page')}}:</label>
-                        <div class="col-4">
-                            <select wire:model="perPage" class="form-control select2 col-4">
-                                @foreach($paginationOptions as $value)
-                                    <option value="{{ $value }}">{{ $value }}</option>
-                                @endforeach
-                            </select>
+                <div class="card-title col-6 p-0">
+                    <div class="form-group form-inline p-0">
+                        <div class="col-5 form-inline p-0">
+                            <label for="perPage" class="col-6 col-form-label">{{trans('global.datatables.per_page')}}:</label>
+                            <div class="col-6">
+                                <select wire:model="perPage" class="form-control select2">
+                                    @foreach($paginationOptions as $value)
+                                        <option value="{{ $value }}">{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group form-inline col-5">
+                        <div class="form-group form-inline col-6">
                             <label for="search" class="col-2 col-form-label">Search:</label>
                             <div class="col-10">
                                 <input type="text" wire:model.debounce.300ms="search" class="form-control col-12" style="width:100%">
@@ -41,11 +43,11 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 <div wire:loading.delay class="col-12 alert alert-info">
                     {{trans('global.datatables.loading')}}...
                 </div>
-            <table class="table table-index w-full">
+            <table class="table table-index table-hover table-sm">
                 <thead>
                     <tr>
                         <th class="w-9">
@@ -95,7 +97,7 @@
                                 @endforeach
                             </td>
                             <td class="text-right">
-                                <div class="flex justify-end">
+                                <div class="btn-group btn-group-sm">
                                     @can('user_show')
                                         <a class="btn btn-sm btn-info" href="{{ route('admin.users.show', $user) }}">
                                             <i class="fas fa-eye"></i>

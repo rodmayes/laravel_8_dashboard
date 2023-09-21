@@ -31,7 +31,7 @@
             </div>
         </div>
     </div>
-    <div class="p-4 bg-white">
+    <div class="p-4 bg-white  table-responsive">
         <div class="pt-3">
             <div class="custom-control custom-switch ml-2">
                 <input type="checkbox" class="custom-control-input" id="check_all" name="check_all" onclick="toggle(this);">
@@ -39,7 +39,7 @@
             </div>
         </div>
         <!-- LINKS -->
-        <table class="table table-sm">
+        <table class="table table-responsive table-sm">
             <thead>
             <tr>
                 <th>Name</th>
