@@ -90,18 +90,18 @@
                                 <td>
                                     <div class="flex justify-end">
                                         @can('user_show')
-                                            <a class="btn btn-sm btn-info mr-2" href="{{ route('playtomic.resources.show', $resource) }}">
-                                                {{ trans('global.view') }}
+                                            <a class="btn btn-sm btn-info mr-2" href="{{ route('playtomic.resources.show', $resource) }}" title="{{ trans('global.view') }}">
+                                                <i class="fas fa-info"></i>
                                             </a>
                                         @endcan
                                         @can('user_edit')
-                                            <a class="btn btn-sm btn-success mr-2" href="{{ route('playtomic.resources.edit', $resource) }}">
-                                                {{ trans('global.edit') }}
+                                            <a class="btn btn-sm btn-success mr-2" href="{{ route('playtomic.resources.edit', $resource) }}" title="{{ trans('global.edit') }}">
+                                                <i class="fas fa-edit"></i>
                                             </a>
                                         @endcan
                                         @can('user_delete')
-                                            <button class="btn btn-sm btn-danger mr-2" type="button" wire:click="confirm('delete', {{ $resource->id }})" wire:loading.attr="disabled">
-                                                {{ trans('global.delete') }}
+                                            <button class="btn btn-sm btn-danger mr-2" type="button" wire:click="confirm('delete', {{ $resource->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         @endcan
                                     </div>

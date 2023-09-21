@@ -74,11 +74,11 @@
                             <th>
                                 {{ trans('playtomic.bookings.fields.resource') }}
                             </th>
-                            <th>Links create</th>
                             <th>
                                 {{ trans('playtomic.bookings.fields.club') }}
                                 @include('components.table.sort', ['field' => 'club_id'])
                             </th>
+                            <th>Links create</th>
                             <th>
                                 Preference
                                 @include('components.table.sort', ['field' => 'booking_preference'])
@@ -96,7 +96,9 @@
                             <tr>
                                 <td><input type="checkbox" value="{{ $booking->id }}" wire:model="selected"></td>
                                 <td>{{ $booking->id }}</td>
-                                <td>{{ $booking->started_at->format('d-m-Y') }} ({{ ucfirst($booking->started_at->locale('es')->dayName) }})</td>
+                                <td>
+                                    {{ $booking->started_at->format('d-m-Y') }} ({{ ucfirst($booking->started_at->locale('es')->dayName) }})
+                                </td>
                                 <td>
                                     @foreach(explode(",",$booking->timetables) as $id)
                                         <span class="badge badge-warning">{{ \App\Models\Timetable::find($id)->name }}</span>
@@ -107,6 +109,7 @@
                                         <span class="badge badge-info">{{ \App\Models\Resource::find($id)->name }}</span>
                                     @endforeach
                                 </td>
+                                <td>{{ $booking->club->name }}</td>
                                 <td>
                                     @if($booking->started_at->addDays(-((int)$booking->club->days_min_booking))->format('d-m-Y') === \Carbon\Carbon::now()->format('d-m-Y'))
                                         <span class="text-danger">
@@ -116,8 +119,13 @@
                                         {{ $booking->started_at->addDays(-((int)$booking->club->days_min_booking))->format('d-m-Y')}}
                                     @endif
                                 </td>
-                                <td>{{ $booking->club->name }}</td>
-                                <td>{{ $booking->booking_preference }}</td>
+                                <td>
+                                    @if($booking->booking_preference === 'timetable')
+                                        <span class="badge badge-info" title="Preference {{$booking->booking_preference}}"><i class="fas fa-clock"></i></span>
+                                    @else
+                                        <span class="badge badge-success" title="Preference {{$booking->booking_preference}}"><i class="fas fa-table-tennis"></i></span>
+                                    @endif
+                                </td>
                                 <td>
                                     @if($booking->status === 'on-time')
                                         <span class="badge bg-green">On time</span>
@@ -130,30 +138,30 @@
                                 <td>
                                     <div class="flex justify-end">
                                         @can('user_show')
-                                            <a class="btn btn-xs btn-info " href="{{ route('playtomic.bookings.show', $booking) }}">
-                                                {{ trans('global.view') }}
+                                            <a class="btn btn-xs btn-info " href="{{ route('playtomic.bookings.show', $booking) }}" title="{{ trans('global.view') }}">
+                                                <i class="fas fa-info"></i>
                                             </a>
                                         @endcan
                                         @can('user_edit')
-                                            <a class="btn btn-xs btn-success" href="{{ route('playtomic.bookings.edit', $booking) }}">
-                                                {{ trans('global.edit') }}
+                                            <a class="btn btn-xs btn-success" href="{{ route('playtomic.bookings.edit', $booking) }}" title="{{ trans('global.edit') }}">
+                                                <i class="fas fa-edit"></i>
                                             </a>
                                         @endcan
-                                        <a class="btn btn-xs btn-warning" href="{{ route('playtomic.bookings.generate-links', $booking->id) }}">
-                                            {{ trans('playtomic.generate-links.title') }}
+                                        <a class="btn btn-xs btn-warning" href="{{ route('playtomic.bookings.generate-links', $booking->id) }}" title="{{ trans('playtomic.generate-links.title')  }}">
+                                            <i class="fas fa-link"></i>
                                         </a>
                                         @if($booking->status != 'closed')
-                                            <button class="btn btn-xs btn-dark" type="button" wire:click="setClosed({{ $booking->id }})" wire:loading.attr="disabled">
-                                                Set closed
+                                            <button class="btn btn-xs btn-dark" type="button" wire:click="setClosed({{ $booking->id }})" wire:loading.attr="disabled" title="Set closed">
+                                                <i class="fas fa-times"></i>
                                             </button>
                                         @else
-                                            <button class="btn btn-xs btn-dark" type="button" wire:click="setOntime({{ $booking->id }})" wire:loading.attr="disabled">
-                                                Set on time
+                                            <button class="btn btn-xs btn-dark" type="button" wire:click="setOntime({{ $booking->id }})" wire:loading.attr="disabled" title="Set On time">
+                                                <i class="fas fa-calendar"></i>
                                             </button>
                                         @endif
                                         @can('user_delete')
-                                            <button class="btn btn-xs btn-danger" type="button" wire:click="confirm('delete', {{ $booking->id }})" wire:loading.attr="disabled">
-                                                {{ trans('global.delete') }}
+                                            <button class="btn btn-xs btn-danger" type="button" wire:click="confirm('delete', {{ $booking->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         @endcan
                                     </div>
