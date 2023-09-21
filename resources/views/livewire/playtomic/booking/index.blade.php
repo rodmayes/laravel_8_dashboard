@@ -49,6 +49,9 @@
                             </button>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-outline-dark btn-sm float-right mr-2" wire:click="$emit('refreshComponent')" data-toggle="tooltip" data-placement="bottom" title="Refresh data">
+                        <i class="fas fa-sync"></i>
+                    </button>
                 </div>
             </div>
             <div class="card-body">
@@ -135,7 +138,7 @@
                                         <span class="badge bg-gray-light">Closed</span>
                                     @endif
                                 </td>
-                                <td>
+                                <td class="text-right">
                                     <div class="flex justify-end">
                                         @can('user_show')
                                             <a class="btn btn-xs btn-info " href="{{ route('playtomic.bookings.show', $booking) }}" title="{{ trans('global.view') }}">

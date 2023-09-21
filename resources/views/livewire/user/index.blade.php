@@ -12,22 +12,32 @@
                                 @endforeach
                             </select>
                         </div>
-                        <button class="btn btn-danger ml-3 disabled:opacity-50 disabled:cursor-not-allowed" type="button" wire:click="confirm('deleteSelected')" wire:loading.attr="disabled" {{ $this->selectedCount ? '' : 'disabled' }}>
-                            {{ __('Delete Selected') }}
-                        </button>
+                        <div class="form-group form-inline col-5">
+                            <label for="search" class="col-2 col-form-label">Search:</label>
+                            <div class="col-10">
+                                <input type="text" wire:model.debounce.300ms="search" class="form-control col-12" style="width:100%">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card-tools col-6">
                     <div class="form-group form-inline float-right">
-                        <label for="search" class="col-2 col-form-label">Search:</label>
-                        <div class="col-7">
-                            <input type="text" wire:model.debounce.300ms="search" class="form-control" />
+                        <div class="btn-group float-right">
+                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52" aria-expanded="false">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" role="menu" style="">
+                                @can('user_create')
+                                    <a class="dropdown-item" href="{{ route('admin.users.create') }}">
+                                        <i class="fa fa-plus-circle"></i> {{ trans('global.add') }} {{ trans('cruds.user.title_singular') }}
+                                    </a>
+                                @endcan
+                                <div class="dropdown-divider"></div>
+                                <button class="dropdown-item bg-danger disabled:opacity-50 disabled:cursor-not-allowed" type="button" wire:click="confirm('deleteSelected')" wire:loading.attr="disabled" {{ $this->selectedCount ? '' : 'disabled' }}>
+                                    <i class="fa fa-trash"></i> {{ __('Delete Selected') }}
+                                </button>
+                            </div>
                         </div>
-                        @can('user_create')
-                            <a class="btn btn-primary" href="{{ route('admin.users.create') }}">
-                                {{ trans('global.add') }} {{ trans('cruds.user.title_singular') }}
-                            </a>
-                        @endcan
                     </div>
                 </div>
             </div>
@@ -84,21 +94,21 @@
                                     <span class="badge badge-dark">{{ $entry->title }}</span>
                                 @endforeach
                             </td>
-                            <td>
+                            <td class="text-right">
                                 <div class="flex justify-end">
                                     @can('user_show')
-                                        <a class="btn btn-sm btn-info mr-2" href="{{ route('admin.users.show', $user) }}">
-                                            {{ trans('global.view') }}
+                                        <a class="btn btn-sm btn-info" href="{{ route('admin.users.show', $user) }}">
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                     @endcan
                                     @can('user_edit')
-                                        <a class="btn btn-sm btn-success mr-2" href="{{ route('admin.users.edit', $user) }}">
-                                            {{ trans('global.edit') }}
+                                        <a class="btn btn-sm btn-success" href="{{ route('admin.users.edit', $user) }}">
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                     @endcan
                                     @can('user_delete')
-                                        <button class="btn btn-sm btn-danger mr-2" type="button" wire:click="confirm('delete', {{ $user->id }})" wire:loading.attr="disabled">
-                                            {{ trans('global.delete') }}
+                                        <button class="btn btn-sm btn-danger" type="button" wire:click="confirm('delete', {{ $user->id }})" wire:loading.attr="disabled">
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     @endcan
                                 </div>

@@ -39,6 +39,8 @@ class Index extends Component
         ],
     ];
 
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
     public function getSelectedCountProperty()
     {
         return count($this->selected);

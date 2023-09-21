@@ -9,16 +9,16 @@
                             <x-select-list class="form-control" required id="perPage" name="perPage" :options="$paginationOptions" wire:model="perPage"/>
                         </div>
                     </div>
-                    <div class="form-group col-3">
+                    <div class="form-group col-4">
                         <label>{{ trans('playtomic.resources.per_club') }}: </label>
                         <div class="col-8">
                             <x-select-list class="form-control" required id="perClub" name="perClub" :options="$clubs->pluck('name','id')" wire:model="perClub"/>
                         </div>
 
                     </div>
-                    <div class="form-group form-inline col-6">
+                    <div class="form-group form-inline col-5">
                         <label for="search" class="col-2 col-form-label">Search:</label>
-                        <div class="col-7">
+                        <div class="col-10">
                             <input type="text" wire:model.debounce.300ms="search" class="form-control col-12" style="width:100%">
                         </div>
                     </div>
@@ -40,6 +40,9 @@
                             </button>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-outline-dark btn-sm float-right mr-2" wire:click="$emit('refreshComponent')" data-toggle="tooltip" data-placement="bottom" title="Refresh data">
+                        <i class="fas fa-sync"></i>
+                    </button>
                 </div>
             </div>
 
@@ -87,7 +90,7 @@
                                 <td>{{ $resource->playtomic_id }}</td>
                                 <td>{{ $resource->club->name }}</td>
                                 <td>{{ $resource->priority }}</td>
-                                <td>
+                                <td class="text-right">
                                     <div class="flex justify-end">
                                         @can('user_show')
                                             <a class="btn btn-sm btn-info mr-2" href="{{ route('playtomic.resources.show', $resource) }}" title="{{ trans('global.view') }}">

@@ -28,6 +28,8 @@ class Index extends Component
     public $selected = [];
     public $paginationOptions;
 
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
     protected $queryString = [
         'search' => [
             'except' => '',

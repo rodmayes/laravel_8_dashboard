@@ -2,33 +2,41 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <div class="card-title col-6">
-                    <div class="form-group form-inline">
-                        <label for="perPage" class="col-2 col-form-label">{{trans('global.datatables.per_page')}}:</label>
-                        <div class="col-4">
-                            <select wire:model="perPage" class="form-control select2 col-4">
-                                @foreach($paginationOptions as $value)
-                                    <option value="{{ $value }}">{{ $value }}</option>
-                                @endforeach
-                            </select>
+                <div class="card-title col-8 form-inline">
+                    <div class="form-group col-3">
+                        <label for="perPage" class="col-form-label">{{trans('global.datatables.per_page')}}:</label>
+                        <div class="col-8">
+                            <x-select-list class="form-control" required id="perPage" name="perPage" :options="$paginationOptions" wire:model="perPage"/>
+                        </div>
+                    </div>
+                    <div class="form-group form-inline col-5">
+                        <label for="search" class="col-2 col-form-label">Search:</label>
+                        <div class="col-10">
+                            <input type="text" wire:model.debounce.300ms="search" class="form-control col-12" style="width:100%">
                         </div>
                     </div>
                 </div>
-                <div class="card-tools col-">
-                    <button class="btn btn-danger  disabled:opacity-50 disabled:cursor-not-allowed float-right" type="button" wire:click="confirm('deleteSelected')" wire:loading.attr="disabled" {{ $this->selectedCount ? '' : 'disabled' }}>
-                        {{ __('Delete Selected') }}
-                    </button>
-                    <div class="form-group form-inline float-right">
-                        <label for="search" class="col-2 col-form-label">Search:</label>
-                        <div class="col-7">
-                            <input type="text" wire:model.debounce.300ms="search" class="form-control" />
+                <div class="card-tools col-4">
+                    <div class="btn-group float-right">
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52" aria-expanded="false">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" role="menu" style="">
+                            @can('user_create')
+                                <a class="dropdown-item" href="{{ route('playtomic.clubs.create') }}">
+                                    <i class="fa fa-plus-circle"></i> {{ trans('global.add') }} {{ trans('playtomic.clubs.title_singular') }}
+                                </a>
+                            @endcan
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item bg-danger disabled:opacity-50 disabled:cursor-not-allowed" type="button" wire:click="confirm('deleteSelected')" wire:loading.attr="disabled" {{ $this->selectedCount ? '' : 'disabled' }}>
+                                <i class="fa fa-trash"></i> {{ __('Delete Selected') }}
+                            </button>
                         </div>
-                        @can('user_create')
-                            <a class="btn btn-primary" href="{{ route('playtomic.clubs.create') }}">
-                                {{ trans('global.add') }} {{ trans('playtomic.clubs.title_singular') }}
-                            </a>
-                        @endcan
                     </div>
+
+                    <button type="button" class="btn btn-outline-dark btn-sm float-right mr-2" wire:click="$emit('refreshComponent')" data-toggle="tooltip" data-placement="bottom" title="Refresh data">
+                        <i class="fas fa-sync"></i>
+                    </button>
                 </div>
             </div>
             <div class="card-body">
@@ -70,7 +78,7 @@
                                 <td>{{ $club->name }}</td>
                                 <td>{{ $club->playtomic_id }}</td>
                                 <td>{{ $club->days_min_booking }}</td>
-                                <td>
+                                <td class="text-right">
                                     <div class="flex justify-end">
                                         @can('user_show')
                                             <a class="btn btn-sm btn-info mr-2" href="{{ route('playtomic.clubs.show', $club) }}" title="{{ trans('global.view') }}">
