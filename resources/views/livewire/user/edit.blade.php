@@ -84,7 +84,7 @@
                     <div class="form-group col-6 {{ $errors->has('user.playtomic_password') ? 'invalid' : '' }}">
                         <label class="form-label required" for="playtomic_password">{{ trans('cruds.user.fields.playtomic_password') }}</label>
                         <div class="input-group">
-                            <input class="form-control" type="playtomic_password" name="playtomic_password" id="playtomic_password" required wire:model.defer="playtomic_password">
+                            <input class="form-control" type="playtomic_password" name="playtomic_password" id="playtomic_password" wire:model.defer="playtomic_password">
                             <div class="input-group-append">
                                 <button class="btn btn-warning" wire:click="storePlaytomicPassword" type="button">
                                     <i class="fa fa-save" title="Save Playtomic password"></i>

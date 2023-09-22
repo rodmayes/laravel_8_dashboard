@@ -2,6 +2,9 @@
 @section('content')
 
     <div class="login-box">
+        <div class="login-logo">
+            <a href="/"><b>Rodmayes</b> ERM</a>
+        </div>
         <div class="card card-outline card-warning">
             <div class="card-header bg-warning text-center">
                 {{ trans('global.login') }}

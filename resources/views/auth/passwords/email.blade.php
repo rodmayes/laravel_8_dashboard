@@ -3,7 +3,7 @@
 
     <div class="login-box">
         <div class="login-logo">
-            <a href="../../index2.html"><b>Rodmayes</b> ERM</a>
+            <a href="/"><b>Rodmayes</b> ERM</a>
         </div>
         <div class="card card-outline card-warning">
             <div class="card-header bg-warning text-center">
