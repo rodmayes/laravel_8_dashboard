@@ -15,7 +15,7 @@
                     <div class="form-group {{ $errors->has('user.name') ? 'invalid' : '' }} col-4">
                         <label class="form-label required" for="name">{{ trans('cruds.user.fields.name') }}</label>
                         <input class="form-control" type="text" name="name" id="name" required wire:model.defer="user.name">
-                        <div class="validation-message">
+                        <div class="text-danger">
                             {{ $errors->first('user.name') }}
                         </div>
                         <div class="help-block">
@@ -25,7 +25,7 @@
                     <div class="form-group {{ $errors->has('user.email') ? 'invalid' : '' }} col-4">
                         <label class="form-label required" for="email">{{ trans('cruds.user.fields.email') }}</label>
                         <input class="form-control" type="email" name="email" id="email" required wire:model.defer="user.email">
-                        <div class="validation-message">
+                        <div class="text-danger">
                             {{ $errors->first('user.email') }}
                         </div>
                         <div class="help-block">
@@ -40,7 +40,7 @@
                                 <button class="btn btn-warning" wire:click="storePassword" type="button"><i class="fa fa-save" title="Save password"></i></button>
                             </div>
                         </div>
-                        <div class="validation-message">
+                        <div class="text-danger">
                             {{ $errors->first('user.password') }}
                         </div>
                         <div class="help-block">
@@ -52,7 +52,7 @@
                     <div class="form-group {{ $errors->has('roles') ? 'invalid' : '' }} col-12">
                         <label class="form-label required" for="roles">{{ trans('cruds.user.fields.roles') }}</label>
                         <x-select-list class="form-control" required id="roles" name="roles" :options="$this->listsForFields['roles']" wire:model="roles" multiple/>
-                        <div class="validation-message">
+                        <div class="text-danger">
                             {{ $errors->first('roles') }}
                         </div>
                         <div class="help-block">
@@ -74,7 +74,7 @@
                     <div class="form-group {{ $errors->has('user.playtomic_id') ? 'invalid' : '' }} col-2">
                         <label class="form-label" for="playtomic_id">{{ trans('playtomic.clubs.fields.playtomic_id') }}</label>
                         <input class="form-control" type="text" name="playtomic_id" id="playtomic_id" wire:model.defer="user.playtomic_id">
-                        <div class="validation-message">
+                        <div class="text-danger">
                             {{ $errors->first('user.playtomic_id') }}
                         </div>
                         <div class="help-block">
@@ -91,7 +91,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="validation-message">
+                        <div class="text-danger">
                             {{ $errors->first('user.playtomic_password') }}
                         </div>
                         <div class="help-block">
@@ -101,7 +101,7 @@
                     <div class="form-group {{ $errors->has('user.playtomic_token') ? 'invalid' : '' }} col-12">
                         <label class="form-label" for="playtomic_token">{{ trans('cruds.user.fields.playtomic_token') }}</label>
                         <p>{{ $this->user->playtomic_token }}</p>
-                        <div class="validation-message">
+                        <div class="text-danger">
                             {{ $errors->first('user.playtomic_token') }}
                         </div>
                         <div class="help-block">
@@ -112,7 +112,7 @@
                 <div class="form-group {{ $errors->has('user.playtomic_refresh_token') ? 'invalid' : '' }}">
                     <label class="form-label" for="playtomic_refresh_token">{{ trans('cruds.user.fields.playtomic_refresh_token') }}</label>
                     <p>{{ $this->user->playtomic_refresh_token }}</p>
-                    <div class="validation-message">
+                    <div class="text-danger">
                         {{ $errors->first('user.playtomic_refresh_token') }}
                     </div>
                     <div class="help-block">

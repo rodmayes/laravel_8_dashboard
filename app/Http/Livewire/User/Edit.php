@@ -86,9 +86,11 @@ class Edit extends Component
                 'string',
             ],
             'user.playtomic_id' => [
+                'nullable',
                 'string'
             ],
             'user.playtomic_token' => [
+                'nullable',
                 'string'
             ],
             'roles' => [
