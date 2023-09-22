@@ -55,8 +55,7 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
     }
 
     public function getInformationClub(Club $club){
-        $information_club = $this->sendGet('v1/tenants/'. $club->playtomic_id);
-        return $information_club;
+        return $this->sendGet('v1/tenants/'. $club->playtomic_id);
     }
 
     public function getAvailabilityClub($information_club){

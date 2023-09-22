@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="card card-primary col-6">
+    <div class="card card-primary col-12">
         <form wire:submit.prevent="submit" class="pt-3">
             <div class="card-body">
                 @error('error') <small class="text-danger">{{ $message }}</small> @enderror

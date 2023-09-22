@@ -6,6 +6,7 @@ use App\Http\Livewire\WithConfirmation;
 use App\Http\Livewire\WithSorting;
 use App\Models\User;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -94,5 +95,10 @@ class Index extends Component
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $user->delete();
+    }
+
+    public function impersonate($user){
+        Auth::user()->impersonate(User::find($user['id']));
+        return redirect()->route('admin.home');
     }
 }

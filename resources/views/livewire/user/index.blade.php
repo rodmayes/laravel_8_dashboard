@@ -99,15 +99,20 @@
                             <td class="text-right">
                                 <div class="btn-group btn-group-sm">
                                     @can('user_show')
-                                        <a class="btn btn-sm btn-info" href="{{ route('admin.users.show', $user) }}">
+                                        <a class="btn btn-sm btn-info" href="{{ route('admin.users.show', $user) }}" title="Show">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     @endcan
                                     @can('user_edit')
-                                        <a class="btn btn-sm btn-success" href="{{ route('admin.users.edit', $user) }}">
+                                        <a class="btn btn-sm btn-success" href="{{ route('admin.users.edit', $user) }}" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                     @endcan
+                                    @canImpersonate($guard = null)
+                                        <button class="btn btn-sm btn-dark" type="button" wire:click="impersonate({{ $user }})" title="Impersonate">
+                                            <i class="fas fa-user-circle"></i>
+                                        </button>
+                                    @endCanImpersonate
                                     @can('user_delete')
                                         <button class="btn btn-sm btn-danger" type="button" wire:click="confirm('delete', {{ $user->id }})" wire:loading.attr="disabled">
                                             <i class="fas fa-trash"></i>

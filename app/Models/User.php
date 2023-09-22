@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Lab404\Impersonate\Models\Impersonate;
 
 class User extends Authenticatable
 {
@@ -18,6 +19,7 @@ class User extends Authenticatable
     use HasAdvancedFilter;
     use SoftDeletes;
     use Notifiable;
+    use Impersonate;
 
     public $table = 'users';
 
@@ -89,6 +91,12 @@ class User extends Authenticatable
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    public function canImpersonate()
+    {
+        // For example
+        return $this->is_admin == 1;
     }
 
     public function scopeByEmail($query, $value){

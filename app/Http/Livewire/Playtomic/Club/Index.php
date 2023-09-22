@@ -5,8 +5,11 @@ namespace App\Http\Livewire\Playtomic\Club;
 use App\Http\Livewire\WithConfirmation;
 use App\Http\Livewire\WithSorting;
 use App\Models\Club;
+use App\Models\Resource;
 use App\Models\User;
+use App\Services\PlaytomicHttpService;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -18,13 +21,9 @@ class Index extends Component
     use WithConfirmation;
 
     public $perPage;
-
     public $orderable;
-
     public $search = '';
-
     public $selected = [];
-
     public $paginationOptions;
 
     protected $queryString = [
@@ -86,16 +85,33 @@ class Index extends Component
     public function deleteSelected()
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
         Club::whereIn('id', $this->selected)->delete();
-
         $this->resetSelected();
     }
 
     public function delete(Club $club)
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
         $club->delete();
+    }
+
+    public function syncResources(Club $club){
+        $service = (new PlaytomicHttpService(Auth::user()));
+        $service->login();
+        $information_club = $service->getInformationClub($club);
+
+        if(isset($information_club['resources']))
+            foreach($information_club['resources'] as $resource){
+                Resource::updateOrCreate(
+                    [
+                        'playtomic_id' => $resource['resource_id'],
+                        'club_id' => $club->id
+                    ],
+                    [
+                        'name' => $resource['name'],
+                        'playtomic_id' => $resource['resource_id'],
+                        'club_id' => $club->id
+                    ]);
+            }
     }
 }

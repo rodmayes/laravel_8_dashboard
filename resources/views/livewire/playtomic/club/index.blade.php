@@ -45,7 +45,7 @@
                 <div wire:loading.delay class="col-12 alert alert-info">
                     {{trans('global.datatables.loading')}}...
                 </div>
-                <table class="table table-hover table-sm table-index">
+                <table class="table table-hover table-sm table-index table-condensed">
                     <thead>
                         <tr>
                             <th class="w-9">
@@ -67,6 +67,9 @@
                                 @include('components.table.sort', ['field' => 'days_min_booking'])
                             </th>
                             <th>
+                                #resources
+                            </th>
+                            <th>
                             </th>
                         </tr>
                     </thead>
@@ -80,6 +83,7 @@
                                 <td>{{ $club->name }}</td>
                                 <td>{{ $club->playtomic_id }}</td>
                                 <td>{{ $club->days_min_booking }}</td>
+                                <td>{{ $club->resources->count() }}</td>
                                 <td class="text-right">
                                     <div class="btn-group btn-group-sm">
                                         @can('user_show')
@@ -92,6 +96,9 @@
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                         @endcan
+                                            <button class="btn btn-sm btn-dark" type="button" wire:click="syncResources({{ $club->id }})" wire:loading.attr="disabled" title="Sync resources">
+                                                <i class="fas fa-sync"></i>
+                                            </button>
                                         @can('user_delete')
                                             <button class="btn btn-sm btn-danger" type="button" wire:click="confirm('delete', {{ $club->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
                                                 <i class="fas fa-trash"></i>

@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-6">
+    <div class="col-lg-6 col-sm-12">
         <div class="card card-success">
             <form wire:submit.prevent="submit" class="pt-3">
                 <div class="card-body">
@@ -78,7 +78,7 @@
             </form>
         </div>
     </div>
-    <div class="col-6">
+    <div class="col-lg-6 col-sm-12">
         <div class="card card-success">
             <div class="card-title p-2">
                 <h4>Booking</h4>

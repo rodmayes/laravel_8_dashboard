@@ -39,6 +39,7 @@ class Resource extends Model
 
     protected $fillable = [
         'name',
+        'club_id',
         'playtomic_id',
         'priority'
     ];

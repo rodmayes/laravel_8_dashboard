@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\UserController;
 use RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController;
 
 Route::redirect('/', '/login');
+Route::impersonate();
 
 Auth::routes(['register' => false]);
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
