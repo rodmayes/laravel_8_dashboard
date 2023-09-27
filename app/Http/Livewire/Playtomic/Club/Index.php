@@ -96,22 +96,33 @@ class Index extends Component
     }
 
     public function syncResources(Club $club){
-        $service = (new PlaytomicHttpService(Auth::user()));
-        $service->login();
-        $information_club = $service->getInformationClub($club);
+        try {
+            $service = (new PlaytomicHttpService(Auth::user()));
+            $service->login();
+            $information_club = $service->getInformationClub($club);
 
-        if(isset($information_club['resources']))
-            foreach($information_club['resources'] as $resource){
-                Resource::updateOrCreate(
-                    [
-                        'playtomic_id' => $resource['resource_id'],
-                        'club_id' => $club->id
-                    ],
-                    [
-                        'name' => $resource['name'],
-                        'playtomic_id' => $resource['resource_id'],
-                        'club_id' => $club->id
-                    ]);
-            }
+            if (isset($information_club['resources']))
+                foreach ($information_club['resources'] as $resource) {
+                    Resource::updateOrCreate(
+                        [
+                            'playtomic_id' => $resource['resource_id'],
+                            'club_id' => $club->id
+                        ],
+                        [
+                            'name' => $resource['name'],
+                            'playtomic_id' => $resource['resource_id'],
+                            'club_id' => $club->id
+                        ]);
+                }
+            $this->notification()->success(
+                $title = 'Notice',
+                $description = 'Data resources synced!'
+            );
+        }catch (\Exception $e){
+            $this->notification()->error(
+                $title = 'Error !!!',
+                $description = $e->getMessage()
+            );
+        }
     }
 }

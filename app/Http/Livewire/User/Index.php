@@ -18,13 +18,9 @@ class Index extends Component
     use WithConfirmation;
 
     public $perPage;
-
     public $orderable;
-
     public $search = '';
-
     public $selected = [];
-
     public $paginationOptions;
 
     protected $queryString = [

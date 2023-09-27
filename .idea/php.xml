@@ -141,6 +141,13 @@
       <path value="$PROJECT_DIR$/vendor/vxm/laravel-async" />
       <path value="$PROJECT_DIR$/vendor/spatie/async" />
       <path value="$PROJECT_DIR$/vendor/asantibanez/laravel-blade-sortable" />
+      <path value="$PROJECT_DIR$/vendor/lab404/laravel-impersonate" />
+      <path value="$PROJECT_DIR$/vendor/spatie/laravel-package-tools" />
+      <path value="$PROJECT_DIR$/vendor/rappasoft/laravel-livewire-tables" />
+      <path value="$PROJECT_DIR$/vendor/power-components/livewire-powergrid" />
+      <path value="$PROJECT_DIR$/vendor/box/spout" />
+      <path value="$PROJECT_DIR$/vendor/wireui/wireui" />
+      <path value="$PROJECT_DIR$/vendor/glebred/search-multiselect-input" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />

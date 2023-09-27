@@ -47,4 +47,10 @@ class ClubController extends Controller
         $info = (new PlaytomicHttpService)->getInformationClub($club);
         return response()->json($info);
     }
+
+    public function getList()
+    {
+        $clubs = Club::all();
+        return response()->json($clubs);
+    }
 }

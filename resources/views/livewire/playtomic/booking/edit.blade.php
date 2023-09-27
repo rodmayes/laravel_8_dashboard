@@ -1,133 +1,131 @@
-<div class="row">
-    <div class="card card-primary col-12">
-        <form wire:submit.prevent="submit" class="pt-3">
-            <div class="card-body">
-                @error('error') <small class="text-danger">{{ $message }}</small> @enderror
-                <div class="row">
-                    <div class="form-group bg-gray-light col-6 {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }}">
-                        <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
-                        <x-date-picker class="form-control" id="started_at" name="started_at" wire:model="booking.started_at" inline required/>
-                        <small class="text-danger">
-                            {{ $errors->first('booking.started_at') }}
-                        </small>
-                        <div class="help-block">
-                            {{ trans('playtomic.bookings.fields.started_at_helper') }}
-                        </div>
+<div class="w-2/3 p-4 border border-gray-200 bg-white rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
+    <h1 class="h3">Edit Booking</h1>
+    <form wire:submit.prevent="submit" class="pt-3">
+        <div class="grid grid-cols-2">
+            @error('error') <small class="text-danger">{{ $message }}</small> @enderror
+            <div class="mb-2 {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }}">
+                <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
+                <div inline-datepicker datepicker-buttons data-date="{{ isset($booking->started_at) ? $booking->started_at->format('d-m-Y') : null }}"
+                     datepicker-format="dd-mm-yyyy" wire:model="booking.started_at" required wire:ignore id="started_at"></div>
+                <small class="text-danger">
+                    {{ $errors->first('booking.started_at') }}
+                </small>
+                <div class="help-block">
+                    {{ trans('playtomic.bookings.fields.started_at_helper') }}
+                </div>
+            </div>
+
+            <div class="col-6 pr-0">
+                <div class="{{ $errors->has('booking.club_id') ? 'invalid' : '' }}">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white required" for="club_id">{{ trans('playtomic.bookings.fields.club') }}</label>
+                    <x-select
+                        placeholder="Select one club"
+                        :options="$this->listsForFields['club']"
+                        wire:model="booking.club_id"
+                        option-value="id"
+                        option-label="name"
+                    />
+                    <small class="text-danger">
+                        {{ $errors->first('booking.club_id') }}
+                    </small>
+                    <div class="help-block">
+                        {{ trans('playtomic.bookings.fields.club_helper') }}
                     </div>
-
-                    <div class="col-6 pr-0">
-                        <div class="form-group {{ $errors->has('booking.club_id') ? 'invalid' : '' }}">
-                            <label class="form-label required" for="club_id">{{ trans('playtomic.bookings.fields.club') }}</label>
-                            <x-select-list class="form-control" required id="club_id" name="club_id" :options="$this->listsForFields['club']" wire:model="booking.club_id"/>
-                            <small class="text-danger">
-                                {{ $errors->first('booking.club_id') }}
-                            </small>
-                            <div class="help-block">
-                                {{ trans('playtomic.bookings.fields.club_helper') }}
-                            </div>
-                        </div>
-
-                        <div class="form-group {{ $errors->has('timetables') ? 'is-invalid' : '' }}">
-                            <label class="form-label required" for="timetables">{{ trans('playtomic.bookings.fields.timetable') }}</label>
-                            <x-select-list class="form-control" required id="timetables" name="timetables" :options="$this->listsForFields['timetable']" wire:model="timetables" multiple/>
-                            <small class="text-danger">
-                                {{ $errors->first('timetables') }}
-                            </small>
-                            <div class="help-block">
-                                {{ trans('playtomic.bookings.fields.timetable_helper') }}
-                            </div>
-                        </div>
-
-                        <div class="form-group {{ $errors->has('resources') ? 'invalid' : '' }} ">
-                            <label class="form-label required" for="resources">{{ trans('playtomic.bookings.fields.resource') }}</label>
-                            <x-select-list class="form-control" required id="resources" name="resources" :options="$this->listsForFields['resource']" wire:model="resources"  multiple/>
-                            <small class="text-danger">
-                                {{ $errors->first('resources') }}
-                            </small>
-                            <div class="help-block">
-                                {{ trans('playtomic.bookings.fields.resource_helper') }}
-                            </div>
-                        </div>
+                </div>
+                <div class="mb-2 {{ $errors->has('resources') ? 'invalid' : '' }} ">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white required" for="resources">{{ trans('playtomic.bookings.fields.resource') }}</label>
+                    <x-select
+                        placeholder="Select many resources"
+                        multiselect
+                        :options="$this->listsForFields['resource']"
+                        wire:model.defer="resources"
+                        option-value="id"
+                        option-label="name"
+                    />
+                    <small class="text-danger">
+                        {{ $errors->first('resources') }}
+                    </small>
+                    <div class="help-block">
+                        {{ trans('playtomic.bookings.fields.resource_helper') }}
+                    </div>
+                </div>
+                <div class="mb-2 {{ $errors->has('timetables') ? 'is-invalid' : '' }}">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white required" for="timetables">{{ trans('playtomic.bookings.fields.timetable') }}</label>
+                    <x-select
+                        placeholder="Select many timetables"
+                        multiselect
+                        :options="$this->listsForFields['timetable']"
+                        wire:model.defer="timetables"
+                        option-value="id"
+                        option-label="name"
+                    />
+                    <small class="text-danger">
+                        {{ $errors->first('timetables') }}
+                    </small>
+                    <div class="help-block">
+                        {{ trans('playtomic.bookings.fields.timetable_helper') }}
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="form-group col-2">
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" value="0" class="custom-control-input" id="ck_public" name="ck_public" wire:model="booking.public" checked>
-                            <label class="custom-control-label" for="ck_public">{{ trans('playtomic.bookings.fields.is_public') }}</label>
-                        </div>
-                    </div>
-                    <div class="form-group form-inline {{ $errors->has('booking.booking_preference') ? 'invalid' : '' }} col-4">
-                        <label class="form-label required" for="booking_preference">Preference: </label>
-                        <x-select-list class="form-control" required id="booking_preference" name="booking_preference" :options="$this->listsForFields['booking_preference']" wire:model="booking.booking_preference"/>
-                        <small class="text-danger">
-                            {{ $errors->first('booking.booking_preference') }}
-                        </small>
-                        <div class="help-block">
-                            {{ trans('playtomic.bookings.fields.resource_helper') }}
-                        </div>
-                    </div>
-                    <div class="form-group form-inline {{ $errors->has('booking.status') ? 'invalid' : '' }} col-4">
-                        <label class="form-label required" for="status">{{ trans('playtomic.bookings.fields.status') }}: </label>
-                        <x-select-list class="form-control" required id="status" name="booking_preference" :options="$this->listsForFields['status']" wire:model="booking.status"/>
-                        <small class="text-danger">
-                            {{ $errors->first('booking.status') }}
-                        </small>
-                        <div class="help-block">
-                            {{ trans('playtomic.bookings.fields.status_helper') }}
-                        </div>
-                    </div>
-                    <p class="col-2">
-                        <button class="btn btn-xs btn-warning float-right" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Log</button>
-                    </p>
-                    <div class="collapse col-12" id="collapseExample">
-                        <div class="form-group {{ $errors->has('booking.log') ? 'invalid' : '' }} col-12">
-                            <label class="form-label" for="log">{{ trans('playtomic.bookings.fields.log') }}</label>
-                            <input class="form-control" type="text" name="log" id="log" wire:model.defer="booking.log">
-                            <small class="text-danger">
-                                {{ $errors->first('booking.log') }}
-                            </small>
-                            <div class="help-block">
-                                {{ trans('playtomic.bookings.fields.log_helper') }}
-                            </div>
-                        </div>
+                <div class="mb-2 {{ $errors->has('booking.booking_preference') ? 'invalid' : '' }} 4">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white required" for="booking_preference">Preference: </label>
+                    <x-select
+                        placeholder="Select a preference"
+                        :options="$this->listsForFields['booking_preference']"
+                        wire:model.defer="booking.booking_preference"
+                        option-value="id"
+                        option-label="name"
+                    />
+                    <small class="text-danger">
+                        {{ $errors->first('booking.booking_preference') }}
+                    </small>
+                    <div class="help-block">
+                        {{ trans('playtomic.bookings.fields.resource_helper') }}
                     </div>
                 </div>
+                <div class="mb-2 {{ $errors->has('booking.status') ? 'invalid' : '' }}">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white required" for="status">{{ trans('playtomic.bookings.fields.status') }}: </label>
+                    <x-select
+                        placeholder="Select a status"
+                        :options="$this->listsForFields['status']"
+                        wire:model.defer="booking.status"
+                        option-value="id"
+                        option-label="name"
+                    />
+                    <small class="text-danger">
+                        {{ $errors->first('booking.status') }}
+                    </small>
+                    <div class="help-block">
+                        {{ trans('playtomic.bookings.fields.status_helper') }}
+                    </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" value="0" class="sr-only peer" id="ck_public" name="ck_public" wire:model="booking.public" checked>
+                    <div
+                        class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                    <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ trans('playtomic.bookings.fields.is_public') }}</span>
+                </label>
             </div>
-            <div class="card-footer">
-                <a href="{{ route('playtomic.bookings.index') }}" class="btn btn-secondary">{{ trans('global.cancel') }}</a>
-                <button class="btn btn-primary mr-2 float-right" type="submit">{{ trans('global.save') }}</button>
-            </div>
-        </form>
-    </div>
+
+        </div>
+        <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <button type="submit" class="text-white bg-green-700 hover:bg-green-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                {{ trans('global.save') }}
+            </button>
+            <a href="{{ route('playtomic.bookings.index') }}" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                {{ trans('global.cancel') }}
+            </a>
+        </div>
+    </form>
 </div>
+
 
 @push('scripts')
     <script>
-        function initSelect(items, id) { // pre-select items
-            items.forEach(item => {
-                let value = $('#'+id+' option[value='+item+']').text(); // get items inner text
-                $('#'+id+' option[value='+item+']').remove(); // remove current item from DOM
-                $('#'+id).append(new Option(value, item, true, true)); // append it, making it selected by default
-            });
-        }
+        const datepickerEl = document.getElementById('started_at');
 
-        let initValuesResource = [
-            @foreach($resources as $resource)
-                {{$resource}},
-            @endforeach
-        ];
-        initSelect(initValuesResource, 'resources');
-
-        let initValuesTimetable = [
-            @foreach($timetables as $timetable)
-                {{$timetable}},
-            @endforeach
-        ];
-        initSelect(initValuesTimetable, 'timetables');
-        $( document ).ready(function() {
-
+        datepickerEl.addEventListener('changeDate', (event) => {
+            window.livewire.emit('dateSelected', event.detail.date);
         });
     </script>
 @endpush

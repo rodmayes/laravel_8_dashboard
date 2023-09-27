@@ -1,134 +1,106 @@
+<!-- start sidebar -->
+<div id="sideBar" class="relative flex flex-col flex-wrap border-r border-gray-300 p-6 flex-none w-64 md:-ml-64 md:fixed md:top-0 md:z-30 md:h-screen md:shadow-xl animated faster bg-green-100">
+    <!-- sidebar content -->
+    <div class="flex flex-col">
 
-    <div class="sidebar os-theme-dark">
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-               <img src="{{asset('images/heroina.webp')}}" class="img-circle elevation-2" alt="User Image" style="height:35px">
-            </div>
-            <div class="info">
-                <a href="#" class="d-block">{{Auth::user()->name}}</a>
-            </div>
+        <!-- sidebar toggle -->
+        <div class="text-right hidden md:block mb-4">
+            <button id="sideBarHideBtn">
+                <i class="fad fa-times-circle"></i>
+            </button>
         </div>
+        <!-- end sidebar toggle -->
 
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-compact text-sm" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item {{ request()->is("admin") ? "menu-is-opening menu-open" : "" }}">
-                    <a href="{{ route("admin.home") }}" class="nav-link {{ request()->is("admin") ? "active" : "" }}">
-                        <i class="fa fas fa-sun"></i>
-                        <p>{{ trans('global.dashboard') }}</p>
-                    </a>
-                </li>
-                <!-- PLAYTOMIC -->
-                <li class="nav-item {{ request()->is("playtomic*")||request()->is("playtomic/**") ? "menu-is-opening menu-open" : "" }}">
-                    <a href="#" class="nav-link {{ request()->is("playtomic*")||request()->is("playtomic/**") ? "active" : "" }}">
-                        <i class="fa fa-play"></i>
-                        <p>
-                            {{ trans('playtomic.title') }}
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        @can('playtomic_club_access')
-                            <li class="class-link {{ request()->is("playtomic/clubs*") ? "menu-is-opening menu-open" : "" }}">
-                                <a href="{{ route("playtomic.clubs.index") }}" class="nav-link {{ request()->is("playtomic/clubs*") ? "active" : "" }}">
-                                    <i class="fa c-sidebar-nav-icon fas fa-medal"></i>
-                                    <p>{{ trans('playtomic.clubs.title') }}</p>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('playtomic_resources_access')
-                            <li class="class-link {{ request()->is("playtomic/resources*") ? "menu-is-opening menu-open" : "" }}">
-                                <a href="{{ route("playtomic.resources.index") }}" class="nav-link {{ request()->is("playtomic/resources*") ? "active" : "" }}">
-                                    <i class="fa-fw c-sidebar-nav-icon fas fa-table-tennis"></i>
-                                    <p>{{ trans('playtomic.resources.title') }}</p>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('playtomic_booking_access')
-                        <li class="class-link {{ request()->is("playtomic/bookings*") ? "menu-is-opening menu-open" : "" }}">
-                            <a href="{{ route("playtomic.bookings.index") }}" class="nav-link {{ request()->is("playtomic/bookings*") ? "active" : "" }}">
-                                <i class="fa-fw c-sidebar-nav-icon fas fa-baseball-ball"></i>
-                                <p>{{ trans('playtomic.bookings.title') }}</p>
-                            </a>
-                        </li>
-                        @endcan
-                    </ul>
-                </li>
-                <!-- END PLAYTOMIC -->
+        <p class="uppercase text-xs text-gray-600 mb-4 tracking-wider">homes</p>
+<!--  {{ request()->is("admin") ? "menu-is-opening menu-open" : "" }} -->
+        <!-- link -->
+        <a href="{{ route("admin.home") }}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+            <i class="fad fa-chart-pie text-xs mr-2"></i>
+            {{ trans('global.dashboard') }}
+        </a>
+        <!-- end link -->
 
-                <!-- USERS -->
-                @can('user_management_access')
-                <li class="nav-item {{ request()->is("admin/permissions*")||request()->is("admin/roles*")||request()->is("admin/users*") ? "menu-is-opening menu-open" : "" }}">
-                    <a href="#" class="nav-link {{ request()->is("admin/permissions*") ? "sidebar-nav-active" : "menu-open" }}">
-                        <i class="fa fas fa-users"></i>
-                        <p>
-                            {{ trans('cruds.userManagement.title') }}
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        @can('permission_access')
-                            <li class="class-link {{ request()->is("admin/permissions*") ? "menu-is-opening menu-open" : "" }}">
-                                <a href="{{ route("admin.permissions.index") }}" class="nav-link {{ request()->is("admin/permissions*") ? "active" : "" }}">
-                                    <i class="fa-fw c-sidebar-nav-icon fas fa-unlock-alt"></i>
-                                    <p>{{ trans('cruds.permission.title') }}</p>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('role_access')
-                            <li class="class-link {{ request()->is("admin/roles*") ? "menu-is-opening menu-open" : "" }}">
-                                <a href="{{ route("admin.roles.index") }}" class="nav-link {{ request()->is("admin/roles*") ? "active" : "" }}">
-                                    <i class="fa-fw c-sidebar-nav-icon fas fa-briefcase"></i>
-                                    <p>{{ trans('cruds.role.title') }}</p>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('user_access')
-                                <li class="class-link {{ request()->is("admin/users*") ? "menu-is-opening menu-open" : "" }}">
-                                    <a href="{{ route("admin.users.index") }}" class="nav-link {{ request()->is("admin/users*") ? "active" : "" }}">
-                                        <i class="fa-fw c-sidebar-nav-icon fas fa-user"></i>
-                                        <p>{{ trans('cruds.user.title') }}</p>
-                                    </a>
-                                </li>
-                        @endcan
-                    </ul>
-                </li>
-                @endcan
-                <!-- END USERS -->
-                <li class="class-link {{ request()->is("logs") ? "menu-is-opening menu-open" : "" }}">
-                    <a href="/logs" class="nav-link {{ request()->is("logs") ? "active" : "" }}">
-                        <i class="fas fa-cogs"></i>
-                        Logs
-                    </a>
-                </li>
+        <!-- PLAYTOMIC -->
+        <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">{{ trans('playtomic.title') }}</p>
+        <!-- link -->
+        <a href="{{ route("playtomic.clubs.index") }}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500
+           @if(Route::is('playtomic.clubs.*')) text-warning-600 @endif">
+            <i class="fad fa-medal text-xs mr-2"></i>
+            {{ trans('playtomic.clubs.title') }}
+        </a>
+        <!-- end link -->
+        <!-- link -->
+        <a href="{{ route("playtomic.resources.index") }}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500
+           @if(Route::is('playtomic.resources.*')) text-warning-600 @endif">
+            <i class="fad fa-table-tennis text-xs mr-2"></i>
+            {{ trans('playtomic.resources.title') }}
+        </a>
+        <!-- end link -->
+        <!-- link -->
+        <a href="{{ route("playtomic.bookings.index") }}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500
+        @if(Route::is('playtomic.bookings.*')) text-warning-600 @endif">
+            <i class="fad fa-baseball-ball text-xs mr-2"></i>
+            {{ trans('playtomic.bookings.title') }}
+        </a>
+        <!-- end link -->
 
-                <li class="class-link {{ request()->is("telescope") ? "menu-is-opening menu-open" : "" }}">
-                    <a href="/telescope" class="nav-link {{ request()->is("telescope") ? "active" : "" }}" target="_blank">
-                        <i class="fas fa-cogs"></i>
-                        Telescope
-                    </a>
-                </li>
+        <!-- USERS -->
+        <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">{{ trans('cruds.userManagement.title') }}</p>
+        <!-- link -->
+        <a href="{{ route("admin.users.index") }}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500
+        @if(Route::is('admin.users.*')) text-warning-600 @endif">
+            <i class="fad fa-medal text-xs mr-2"></i>
+            {{ trans('cruds.user.title') }}
+        </a>
+        <!-- end link -->
+        <!-- link -->
+        <a href="{{ route("admin.roles.index") }}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500
+        @if(Route::is('admin.roles.*')) text-warning-600 @endif">
+            <i class="fad fa-table-tennis text-xs mr-2"></i>
+            {{ trans('cruds.role.title') }}
+        </a>
+        <!-- end link -->
+        <!-- link -->
+        <a href="{{ route("admin.permissions.index") }}" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500
+        @if(Route::is('admin.permissions.*')) text-warning-600 @endif">
+            <i class="fad fa-baseball-ball text-xs mr-2"></i>
+            {{ trans('cruds.permission.title') }}
+        </a>
+        <!-- end link -->
 
-                <li class="class-link {{ request()->is("schedule") ? "menu-is-opening menu-open" : "" }}">
-                    <a href="/schedule" class="nav-link {{ request()->is("schedule") ? "active" : "" }}" target="_blank">
-                        <i class="fas fa-cogs"></i>
-                        Scheduled tasks
-                    </a>
-                </li>
-
-                <li class="class-link {{ request()->is("console") ? "menu-is-opening menu-open" : "" }}">
-                    <a href="/console" class="nav-link {{ request()->is("console") ? "active" : "" }}" target="_blank">
-                        <i class="fas fa-cogs"></i>
-                        Console
-                    </a>
-                </li>
-
-                <li class="class-link">
-                    <a href="#" onclick="event.preventDefault(); document.getElementById('logoutform').submit();" class="nav-link">
-                        <i class="fa-fw fas fa-sign-out-alt"></i>
-                        {{ trans('global.logout') }}
-                    </a>
-                </li>
-
-            </ul>
-        </nav>
+        <p class="uppercase text-xs text-gray-600 mb-4 mt-4 tracking-wider">Administration</p>
+        <!-- link -->
+        <a href="/logs" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500 @if(Route::is('logs')) text-warning-600 @endif">
+            <i class="fad fa-cogs text-xs mr-2"></i>
+            Logs
+        </a>
+        <!-- end link -->
+        <!-- link -->
+        <a href="/telescope" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+            <i class="fad fa-cogs text-xs mr-2"></i>
+            Telescope
+        </a>
+        <!-- end link -->
+        <!-- link -->
+        <a href="/schedule" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+            <i class="fad fa-cogs text-xs mr-2"></i>
+            Scheduled tasks
+        </a>
+        <!-- end link -->
+        <!-- link -->
+        <a href="/console" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500 @if(Route::is('console')) text-warning-600 @endif">
+            <i class="fad fa-cogs text-xs mr-2"></i>
+            Console
+        </a>
+        <!-- end link -->
+        <!-- link -->
+        <a onclick="event.preventDefault(); document.getElementById('logoutform').submit();" class="mb-3 capitalize font-medium text-sm hover:text-teal-600 transition ease-in-out duration-500">
+            <i class="fad fa-sign-out-alt text-xs mr-2"></i>
+            {{ trans('global.logout') }}
+        </a>
+        <form id="logoutform" action="{{ route('logout') }}" method="POST" style="display: none;">
+            {{ csrf_field() }}
+        </form>
+        <!-- end link -->
     </div>
+</div>

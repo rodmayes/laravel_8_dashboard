@@ -136,6 +136,13 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/async" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/vxm/laravel-async" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/asantibanez/laravel-blade-sortable" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/box/spout" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/glebred/search-multiselect-input" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/lab404/laravel-impersonate" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/power-components/livewire-powergrid" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rappasoft/laravel-livewire-tables" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/laravel-package-tools" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/wireui/wireui" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

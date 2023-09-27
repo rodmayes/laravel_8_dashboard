@@ -19,14 +19,23 @@ class PreBooking extends Component
     public $url_prebooking;
     public $url_checkout;
     public $execution_response;
-    public $resources;
-    public $timetables;
+    public $resources = [];
+    public $timetables = [];
     public $log;
 
     public $listsForFields = [];
 
-    public function updatedClubId(){
-        //$this->initListsForFields();
+    protected $listeners = ['dateSelected' => 'updateDate'];
+
+    public function updateDate($date)
+    {
+        $this->booking->started_at = \Carbon\Carbon::createFromTimeString($date)->addDay();
+    }
+
+    public function updated($name){
+        if($name === 'booking.club_id') {
+            $this->initListsForFields();
+        }
     }
 
     public function mount(Booking $booking)
@@ -34,13 +43,14 @@ class PreBooking extends Component
         $this->log = [];
         $this->playtomic_url_checkout = env('PLAYTOMIC_URL_CHECKOUT','https://playtomic.io/checkout/booking');
         $this->booking = $booking;
-        $this->resources = explode(",",$this->booking->resources);
-        $this->timetables = explode(",",$this->booking->timetables);
         $this->initListsForFields();
     }
 
     public function render()
     {
+        if(!empty($this->booking->club_id)) {
+            $this->listsForFields['resource'] = Resource::byClub($this->booking->club_id)->get();
+        }
         return view('livewire.playtomic.booking.pre-booking');
     }
 
@@ -56,7 +66,7 @@ class PreBooking extends Component
             $this->url_prebooking = null;
             $this->booking->created_by = Auth::user()->id;
             $this->booking->public = $this->booking->public ?? false;
-            $this->booking->name = $this->booking->club->name . ' ' . $this->booking->started_at->format('d-m-Y');
+            $this->booking->name = $this->booking->club->name . ' ' . $this->booking->started_at;
             $this->booking->status = 'on-time';
 
             $timetables = Timetable::whereIn('id', $this->timetables)->get();
@@ -117,23 +127,21 @@ class PreBooking extends Component
 
     protected function initListsForFields(): void
     {
-        /*
-          when((int)$this->booking->resource_id > -1, function($q){
-                return $q->byClub($this->booking->club_id);
-            })->get()->map(function ($item) {
-                return ['name' => $item->name.'-'.$item->club->name, 'id' => $item->id, 'club' => $item->club->name];
-            })->pluck('name','id');
-         */
-        $this->listsForFields['club'] = Club::pluck('name','id');
-        $this->listsForFields['resource'] = Resource::get()->map(function ($item) {
-                return ['name' => $item->name.'-'.$item->club->name, 'id' => $item->id, 'club' => $item->club->name];
-            })->pluck('name','id');
-        $this->listsForFields['timetable'] = Timetable::pluck('name','id');
+        $this->listsForFields['club'] = Club::all();
+        $this->listsForFields['resource'] = Resource::all();
+        $this->listsForFields['timetable'] = Timetable::all();
         $this->listsForFields['booking_preference'] = collect(
             [
                 ['id' => 'timetable', 'name' => 'Time preference'],
                 ['id' => 'resource', 'name' => 'Resource preference']
             ]
-        )->pluck('name','id');
+        );
+        $this->listsForFields['status'] = collect(
+            [
+                ['id' => 'on-time', 'name' => 'On time'],
+                ['id' => 'time-out', 'name' => 'Time out'],
+                ['id' => 'closed', 'name' => 'Closed']
+            ]
+        );
     }
 }

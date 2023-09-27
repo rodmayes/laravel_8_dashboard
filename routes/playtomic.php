@@ -22,3 +22,6 @@ use App\Http\Controllers\Playtomic\PlaytomicController;
         Route::get('{booking}', [BookingController::class, 'show'])->name('show');
         Route::get('pre-booking', [BookingController::class, 'prebooking'])->name('pre-booking');
     });
+
+    Route::get('club/get-list',[ClubController::class, 'getList'])->name('club.get-list');
+    Route::get('resources/get-list/{club?}',[ResourceController::class, 'getList'])->name('resources.get-list');

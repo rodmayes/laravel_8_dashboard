@@ -6,7 +6,6 @@ use App\Http\Livewire\WithConfirmation;
 use App\Http\Livewire\WithSorting;
 use App\Models\Booking;
 use App\Models\Club;
-use App\Models\Resource;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -14,12 +13,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class Index extends Component
 {
     use WithPagination;
     use WithSorting;
     use WithConfirmation;
+    use Actions;
 
     public $perPage;
     public $perClub;
@@ -96,10 +97,31 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function delete(Booking $booking)
+    public function confirmDelete(Booking $booking)
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        // use a full syntax
+        $this->dialog()->confirm([
+            'title'       => 'Are you Sure?',
+            'description' => 'Delete the information?',
+            'icon'        => 'question',
+            'accept'      => [
+                'label'  => 'Yes, delete it',
+                'method' => 'delete',
+                'params' => $booking,
+            ],
+            'reject' => [
+                'label'  => 'No, cancel',
+                'method' => 'render',
+            ],
+        ]);
+    }
+
+    public function delete(Booking $booking)
+    {
         $booking->delete();
+        return redirect()->route('playtomic.bookings.index');
     }
 
     public function setClosed(Booking $booking){
@@ -115,7 +137,17 @@ class Index extends Component
     }
 
     public function truncateResources(){
-        DB::table('playtomic_booking')->truncate();
-        $this->addError('action', 'Truncated');
+        try{
+            DB::table('playtomic_booking')->truncate();
+            $this->notification()->success(
+                $title = 'Action',
+                $description = 'Bookings truncated!'
+            );
+        }catch (\Exception $e){
+            $this->notification()->error(
+            $title = 'Error !!!',
+            $description = $e->getMessage()
+            );
+        }
     }
 }

@@ -6,14 +6,31 @@ use App\Models\Booking;
 use App\Models\Club;
 use App\Models\Resource;
 use App\Models\Timetable;
+use Carbon\Carbon;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class Edit extends Component
 {
+    use Actions;
+
     public $listsForFields = [];
     public $booking;
     public $resources;
     public $timetables;
+
+    protected $listeners = ['dateSelected' => 'updateDate'];
+
+    public function updateDate($date)
+    {
+        $this->booking->started_at = Carbon::createFromTimeString($date)->addDay();
+    }
+
+    public function updated($name){
+        if($name === 'booking.club_id') {
+            $this->resources = [];
+        }
+    }
 
     public function mount(Booking $booking)
     {
@@ -25,19 +42,33 @@ class Edit extends Component
 
     public function render()
     {
+        if(!empty($this->booking->club_id)) {
+            $this->listsForFields['resource'] = Resource::byClub($this->booking->club_id)->get();
+        }
         return view('livewire.playtomic.booking.edit');
     }
 
     public function submit()
     {
         $this->validate();
-        $this->booking->resources = implode(",",$this->resources);
-        $this->booking->timetables = implode(",", $this->timetables);
-        $this->booking->name = $this->booking->club->name.' '.$this->booking->start_at;
-        $this->booking->public = isset($this->public) ? $this->public : false;
-        $this->booking->save();
+        try {
+            $this->booking->resources = implode(",", $this->resources);
+            $this->booking->timetables = implode(",", $this->timetables);
+            $this->booking->name = $this->booking->club->name . ' ' . $this->booking->start_at;
+            $this->booking->public = isset($this->public) ? $this->public : false;
+            $this->booking->save();
 
-        return redirect()->route('playtomic.bookings.index');
+            $this->notification()->success(
+                $title = 'Item saved',
+                $description = 'This items has been saved successfully'
+            );
+            return redirect()->route('playtomic.bookings.index');
+        }catch (\Exception $e){
+            $this->notification()->error(
+                $title = 'Error !!!',
+                $description = $e->getMessage()
+            );
+        }
     }
 
     protected function rules(): array
@@ -76,23 +107,23 @@ class Edit extends Component
 
     public function initListsForFields(): void
     {
-        $this->listsForFields['club'] = Club::pluck('name','id');
-        $this->listsForFields['resource'] = Resource::get()->map(function ($item) {
-            return ['name' => $item->name.'-'.$item->club->name, 'id' => $item->id, 'club' => $item->club->name];
-        })->pluck('name','id');
-        $this->listsForFields['timetable'] = Timetable::pluck('name','id');
+        $this->listsForFields['club'] = Club::all();
+        if(!empty($this->booking->club_id)) {
+            $this->listsForFields['resource'] = Resource::byClub($this->booking->club_id)->get();
+        }
+        $this->listsForFields['timetable'] = Timetable::all();
         $this->listsForFields['booking_preference'] = collect(
             [
                 ['id' => 'timetable', 'name' => 'Time preference'],
                 ['id' => 'resource', 'name' => 'Resource preference']
             ]
-        )->pluck('name','id');
+        );
         $this->listsForFields['status'] = collect(
             [
                 ['id' => 'on-time', 'name' => 'On time'],
                 ['id' => 'time-out', 'name' => 'Time out'],
                 ['id' => 'closed', 'name' => 'Closed']
             ]
-        )->pluck('name','id');
+        );
     }
 }

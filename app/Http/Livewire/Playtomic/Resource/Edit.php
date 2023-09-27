@@ -53,6 +53,6 @@ class Edit extends Component
 
     protected function initListsForFields(): void
     {
-        $this->listsForFields['club'] = Club::pluck('name', 'id');
+        $this->listsForFields['club'] = Club::all();
     }
 }

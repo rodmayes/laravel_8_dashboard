@@ -9,49 +9,69 @@ use App\Models\Timetable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class Create extends Component
 {
+    use Actions;
+
     public $listsForFields = [];
     public $booking;
-    public $resources;
-    public $timetables;
+    public $resources = [];
+    public $timetables = [];
 
-    public function updatedBooking(){
-        //dd(1);
-        //$this->initListsForFields();
+    protected $listeners = ['dateSelected' => 'updateDate'];
+
+    public function updateDate($date)
+    {
+        $this->booking->started_at = \Carbon\Carbon::createFromTimeString($date)->addDay();
+    }
+
+    public function updated($name){
+        if($name === 'booking.club_id') {
+            $this->initListsForFields();
+        }
     }
 
     public function mount(Booking $booking)
     {
         $this->booking = $booking;
-        $this->resources = explode(",",$this->booking->resources);
-        $this->timetables = explode(",",$this->booking->timetables);
         $this->initListsForFields();
     }
 
     public function render()
     {
+        if(!empty($this->booking->club_id)) {
+            $this->listsForFields['resource'] = Resource::byClub($this->booking->club_id)->get();
+        }
         return view('livewire.playtomic.booking.create');
     }
 
     public function submit()
     {
+        $this->validate();
         try{
-            $this->validate();
+
             $this->booking->resources = implode(",",$this->resources);
             $this->booking->timetables = implode(",", $this->timetables);
             $this->booking->created_by = Auth::user()->id;
             $this->booking->public = isset($this->public) ? $this->public : false;
-            $this->booking->name = $this->booking->club->name.' '.$this->booking->started_at->format('d-m-yyy');
+            $this->booking->name = $this->booking->club->name.' '.$this->booking->started_at;
             $this->booking->started_at = $this->booking->started_at ?: Carbon::now()->addDays((int)$this->booking->club->days_min_booking);
             if(Carbon::now('Europe/Andorra')->startOfDay()->diffInDays($this->booking->started_at->startOfDay()) >= (int)$this->booking->club->days_min_booking) $this->booking->status = 'on-time';
             else $this->booking->status = 'time-out';
             $this->booking->save();
 
+            $this->notification()->success(
+                $title = 'Item saved',
+                $description = 'This items has been saved successfully'
+            );
             return redirect()->route('playtomic.bookings.index');
-        } catch (\Exception $e) {
-            $this->addError('error', 'Dramatic error you will die. '. $e->getMessage());
+        }catch (\Exception $e){
+            $this->notification()->error(
+                $title = 'Error !!!',
+                $description = $e->getMessage()
+            );
         }
     }
 
@@ -86,24 +106,21 @@ class Create extends Component
 
     protected function initListsForFields(): void
     {
-        $this->listsForFields['club'] = Club::pluck('name','id');
-        $this->listsForFields['resource'] = Resource::get()->map(function ($item) {
-            return ['name' => $item->name.'-'.$item->club->name, 'id' => $item->id, 'club' => $item->club->name];
-        })->pluck('name','id');
-        $this->listsForFields['timetable'] = Timetable::pluck('name','id');
+        $this->listsForFields['club'] = Club::all();
+        $this->listsForFields['resource'] = Resource::all();
+        $this->listsForFields['timetable'] = Timetable::all();
         $this->listsForFields['booking_preference'] = collect(
             [
                 ['id' => 'timetable', 'name' => 'Time preference'],
                 ['id' => 'resource', 'name' => 'Resource preference']
             ]
-        )->pluck('name','id');
-/*
-        $this->listsForFields['resource'] = Resource::
-            when((int)$this->club > -1, function($q){
-                return $q->byClub($this->club);
-            })->get()->map(function ($item) {
-                return ['name' => $item->name.'-'.$item->club->name, 'id' => $item->id, 'club' => $item->club->name];
-            })->pluck('name','id');
-*/
+        );
+        $this->listsForFields['status'] = collect(
+            [
+                ['id' => 'on-time', 'name' => 'On time'],
+                ['id' => 'time-out', 'name' => 'Time out'],
+                ['id' => 'closed', 'name' => 'Closed']
+            ]
+        );
     }
 }

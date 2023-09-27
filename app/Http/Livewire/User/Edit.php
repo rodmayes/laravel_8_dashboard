@@ -106,6 +106,6 @@ class Edit extends Component
 
     protected function initListsForFields(): void
     {
-        $this->listsForFields['roles'] = Role::pluck('title', 'id');
+        $this->listsForFields['roles'] = Role::orderBy('title')->get();
     }
 }

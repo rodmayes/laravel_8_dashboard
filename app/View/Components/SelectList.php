@@ -7,6 +7,7 @@ use Illuminate\View\Component;
 class SelectList extends Component
 {
     public $options;
+    protected $listeners = ['refreshResources' => 'refreshResources'];
 
     /**
      * Create a new component instance.
@@ -19,6 +20,10 @@ class SelectList extends Component
         $this->options = $options;
     }
 
+    public function refreshResources($options){
+        dd(2);
+        if(count($options) > 0) $this->options = $options;
+    }
     /**
      * Get the view / contents that represent the component.
      *
