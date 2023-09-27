@@ -128,7 +128,7 @@
         <div class="w-full">
             <div class="m-2 {{ $errors->has('user.playtomic_token') ? 'invalid' : '' }}">
                 <label class="form-label" for="playtomic_token">{{ trans('cruds.user.fields.playtomic_token') }}</label>
-                <p class="truncate mb-3 text-gray-500 dark:text-gray-400">{{ $this->user->playtomic_token }}</p>
+                <p class="mb-3 text-gray-500 dark:text-gray-400" style="overflow: hidden">{{ substr($this->user->playtomic_token,0,100) }}...</p>
                 <div class="text-danger">
                     {{ $errors->first('user.playtomic_token') }}
                 </div>
@@ -138,7 +138,7 @@
             </div>
             <div class="m-2 {{ $errors->has('user.playtomic_refresh_token') ? 'invalid' : '' }}">
                 <label class="form-label" for="playtomic_refresh_token">{{ trans('cruds.user.fields.playtomic_refresh_token') }}</label>
-                <p class=" truncate mb-3 text-gray-500 dark:text-gray-400 ">{{ $this->user->playtomic_refresh_token }}</p>
+                <p class=" truncate mb-3 text-gray-500 dark:text-gray-400 ">{{ substr($this->user->playtomic_refresh_token,0,100) }}...</p>
                 <div class="text-danger">
                     {{ $errors->first('user.playtomic_refresh_token') }}
                 </div>
