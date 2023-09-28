@@ -25,6 +25,7 @@ class Index extends Component
     public $orderable;
     public $search = '';
     public $selected = [];
+    public $selected_resource;
 
     public $paginationOptions;
 
@@ -64,6 +65,7 @@ class Index extends Component
 
     public function mount()
     {
+        $this->selected_resource = new Resource(); $this->selected_resource->id = 0;
         $this->sortBy            = 'priority';
         $this->sortDirection     = 'asc';
         $this->perPage           = 100;
@@ -92,9 +94,7 @@ class Index extends Component
     public function deleteSelected()
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
         Resource::whereIn('id', $this->selected)->delete();
-
         $this->resetSelected();
     }
 
@@ -123,5 +123,9 @@ class Index extends Component
     {
         $resource->delete();
         return redirect()->route('playtomic.resources.index');
+    }
+
+    public function showItem(Resource $resource){
+        $this->selected_resource = $resource;
     }
 }

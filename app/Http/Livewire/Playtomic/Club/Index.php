@@ -65,7 +65,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->selected_club = new Club();
+        $this->selected_club = new Club(); $this->selected_club->id = 0;
         $this->sortBy            = 'name';
         $this->sortDirection     = 'asc';
         $this->perPage           = 100;
