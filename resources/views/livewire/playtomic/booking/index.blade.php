@@ -3,7 +3,7 @@
             {{trans('global.datatables.loading')}}...
         </div>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <div class="flex items-center justify-between pb-4 bg-white dark:bg-gray-900">
+            <div class="flex items-center justify-between bg-white dark:bg-gray-900">
                 <div class="flex">
                     <div class="flex-initial px-4 py-2 m-2">
                         <div>
