@@ -7,17 +7,4 @@
 // Bootstrap
 // @import '~bootstrap/scss/bootstrap';
 
-@tailwind base
-@tailwind components
-
-// font imports
-@import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap')
-    // external
-@import  "./external/prism"
-    // apply
-@import "apply"
-    // index
-@import "index/report-card"
-@tailwind utilities
-
-
+@import "@moesaid/cleopatra/dist/css/style.css";

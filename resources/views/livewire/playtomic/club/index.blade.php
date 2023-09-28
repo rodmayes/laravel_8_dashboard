@@ -19,18 +19,6 @@
                 </div>
                 <div class="flex-initial px-4 py-2 m-2">
                     <div>
-                        <label class="block font-bold md:text-right mb-1 md:mb-0 pr-4" for="perClub">
-                            {{ trans('playtomic.clubs.per_club') }}:
-                        </label>
-                        <select wire:model="perClub" class="block appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            @foreach($clubs as $club)
-                                <option value="{{ $club->id }}">{{ $club->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="flex-initial px-4 py-2 m-2">
-                    <div>
                         <label class="block text-gray-700 font-bold md:text-right mb-1 md:mb-0 pr-4" for="perPage">
                             Search:
                         </label>
@@ -104,28 +92,30 @@
                             <input type="checkbox" value="{{ $club->id }}" wire:model="selected" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         </div>
                     </td>
-                    <td class="px-6 py-4">{{ $club->id }}</td>
-                    <td class="px-6 py-4">{{ $club->name }}</td>
-                    <td class="px-6 py-4">{{ $club->playtomic_id }}</td>
-                    <td class="px-6 py-4">{{ $club->days_min_booking }}</td>
-                    <td class="px-6 py-4">{{ $club->resources->count() }}</td>
-                    <td class="px-6 py-4">
+                    <td class="px-2 py-2">{{ $club->id }}</td>
+                    <td class="px-2 py-2">{{ $club->name }}</td>
+                    <td class="px-2 py-2">{{ $club->playtomic_id }}</td>
+                    <td class="px-2 py-2">{{ $club->days_min_booking }}</td>
+                    <td class="px-2 py-2">{{ $club->resources->count() }}</td>
+                    <td class="px-2 py-2">
                         <div class="inline-flex">
                             @can('user_show')
-                                <a class="btn btn-xs btn-info mr-1" href="{{ route('playtomic.clubs.show', $club) }}" title="{{ trans('global.view') }}">
+                                <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" wire:click="showItem({{ $club}})" wire:loading.attr="disabled"
+                                        class="px-2 py-2 text-xs text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">
                                     <i class="fas fa-eye"></i>
-                                </a>
+                                </button>
                             @endcan
                             @can('user_edit')
-                                <a class="btn btn-xs btn-indigo mr-1" href="{{ route('playtomic.clubs.edit', $club) }}" title="{{ trans('global.edit') }}">
+                                <a class="px-2 py-2 text-xs text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('playtomic.clubs.edit', $club) }}" title="{{ trans('global.edit') }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             @endcan
-                            <button class="btn btn-xs btn-gray mr-1" wire:click="syncResources({{ $club->id }})" wire:loading.attr="disabled" title="Sync resources">
-                                <i class="fas fa-sync"></i>
-                            </button>
+                                <button class="px-2 py-2 text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" wire:click="syncResources({{ $club->id }})" wire:loading.attr="disabled" title="Sync resources">
+                                    <i class="fas fa-sync"></i>
+                                </button>
                             @can('user_delete')
-                                <button class="btn btn-xs btn-danger" wire:click="confirmDelete({{ $club->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
+                                <button class="px-2 py-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                                        wire:click="confirmDelete({{ $club->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             @endcan
@@ -134,12 +124,12 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="10">{{trans('global.datatables.no_items_found')}}</td>
+                    <td colspan="5">{{trans('global.datatables.no_items_found')}}</td>
                 </tr>
             @endforelse
         </tbody>
         </table>
-        <nav class="flex items-center justify-between p-4" aria-label="Table navigation">
+        <nav class="flex items-center justify-between p-4 " aria-label="Table navigation">
             <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> <span class="font-semibold text-gray-900 dark:text-white">{{$clubs->currentPage()}}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{ $clubs->total() }}</span></span>
             @if($this->selectedCount)
                 <p class="text-sm leading-5">
@@ -153,7 +143,7 @@
                 </li>
                 @foreach($clubs->getUrlRange(1,ceil($clubs->total()/$clubs->perPage())) as $index => $page)
                     <li>
-                        <a href="{{$page}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{$index}}</a>
+                        <a href="{{$clubs->url($index)}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{$index}}</a>
                     </li>
                 @endforeach
                 <li>
@@ -162,26 +152,62 @@
             </ul>
         </nav>
     </div>
+
+
+    <!-- Main modal -->
+    <div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full" wire:ignore.self>
+        <div class="relative w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        {{ $selected_club->name ?: null }} #{{ $selected_club->id ?: null }}
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-6 space-y-6">
+                    <div>
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.clubs.fields.name') }}: </label>
+                        {{ $selected_club->name ?: null }}
+                    </div>
+                    <div>
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.clubs.fields.playtomic_id') }}: </label>
+                        {{ $selected_club->playtomic_id ?: null }}
+                    </div>
+                    <div>
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.clubs.fields.days_min_booking') }}: </label>
+                        {{ $selected_club->days_min_booking ?: null }}
+                    </div>
+                    <div>
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.clubs.fields.resources') }}: </label>
+                        @foreach($selected_club->resources as  $resource)
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ $resource->name }}</span>
+                        @endforeach
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <a href="{{ route('playtomic.clubs.show', $club) }}"
+                       type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        {{ trans('global.edit') }}
+                    </a>
+                    <button data-modal-hide="defaultModal" type="button"
+                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                        {{ trans('global.cancel') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @push('scripts')
-    <script>
-        Livewire.on('confirm', e => {
-            Swal.fire({
-                title: 'Attention!',
-                text: 'Do you want to delete item?',
-                icon: 'warning',
-                showCancelButton: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                @this[e.callback](...e.argv)
-                    Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
-                }
-            })
-        })
-    </script>
+
 @endpush

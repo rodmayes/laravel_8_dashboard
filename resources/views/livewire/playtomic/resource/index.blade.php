@@ -100,30 +100,31 @@
         <tbody>
             @forelse($resources as $resource)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="w-4 p-4">
+                    <td class="w-2 p-4">
                         <div class="flex items-center">
                             <input type="checkbox" value="{{ $resource->id }}" wire:model="selected" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         </div>
                     </td>
-                    <td class="px-6 py-4">{{ $resource->id }}</td>
-                    <td class="px-6 py-4">{{ $resource->name }}</td>
-                    <td class="px-6 py-4">{{ $resource->playtomic_id }}</td>
-                    <td class="px-6 py-4">{{ $resource->club->name }}</td>
-                    <td class="px-6 py-4">{{ $resource->priority }}</td>
-                    <td class="px-6 py-4">
+                    <td class="px-2 py-2">{{ $resource->id }}</td>
+                    <td class="px-2 py-2">{{ $resource->name }}</td>
+                    <td class="px-2 py-2">{{ $resource->playtomic_id }}</td>
+                    <td class="px-2 py-2">{{ $resource->club->name }}</td>
+                    <td class="px-2 py-2">{{ $resource->priority }}</td>
+                    <td class="px-2 py-2">
                         <div class="inline-flex">
                             @can('user_show')
-                                <a class="btn btn-xs btn-info mr-1" href="{{ route('playtomic.resources.show', $resource) }}" title="{{ trans('global.view') }}">
+                                <a class="px-2 py-2 text-xs text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900" href="{{ route('playtomic.resources.show', $resource) }}" title="{{ trans('global.view') }}">
                                     <i class="fas fa-eye"></i>
                                 </a>
                             @endcan
                             @can('user_edit')
-                                <a class="btn btn-xs btn-indigo mr-1" href="{{ route('playtomic.resources.edit', $resource) }}" title="{{ trans('global.edit') }}">
+                                <a class="px-2 py-2 text-xs text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('playtomic.resources.edit', $resource) }}" title="{{ trans('global.edit') }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             @endcan
                             @can('user_delete')
-                                <button class="btn btn-xs btn-danger" wire:click="confirmDelete({{ $resource->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
+                                <button class="px-2 py-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                                        wire:click="confirmDelete({{ $resource->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             @endcan
@@ -145,19 +146,7 @@
                     {{ __('Entries selected') }}
                 </p>
             @endif
-            <ul class="inline-flex -space-x-px text-sm h-8">
-                <li>
-                    <a href="{{$resources->previousPageUrl()}}" class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                </li>
-                @foreach($resources->getUrlRange(1,ceil($resources->total()/$resources->perPage())) as $index => $page)
-                <li>
-                    <a href="{{$page}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{$index}}</a>
-                </li>
-                @endforeach
-                <li>
-                    <a href="{{$resources->nextPageUrl()}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                </li>
-            </ul>
+            {{$resources->links()}}
         </nav>
     </div>
 </div>

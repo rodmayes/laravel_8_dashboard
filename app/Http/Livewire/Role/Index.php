@@ -89,10 +89,31 @@ class Index extends Component
         $this->resetSelected();
     }
 
+    public function confirmDelete(Role $role)
+    {
+        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        // use a full syntax
+        $this->dialog()->confirm([
+            'title'       => 'Are you Sure?',
+            'description' => 'Delete the information?',
+            'icon'        => 'question',
+            'accept'      => [
+                'label'  => 'Yes, delete it',
+                'method' => 'delete',
+                'params' => $role,
+            ],
+            'reject' => [
+                'label'  => 'No, cancel',
+                'method' => 'render',
+            ],
+        ]);
+    }
+
     public function delete(Role $role)
     {
-        abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
         $role->delete();
+        return redirect()->route('admin.roles.index');
     }
+
 }

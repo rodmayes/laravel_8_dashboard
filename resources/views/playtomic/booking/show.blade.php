@@ -53,13 +53,11 @@
                             Log
                         </th>
                         <td>
-                            <span class="badge badge-relationship">
-                                @if($booking->log)
-                                    @foreach(json_decode($booking->log, true) as $item)
-                                        <p class="text-left">{{ $item }}</p>
-                                    @endforeach
-                                @endif
-                            </span>
+                            @if($booking->log)
+                                @foreach(json_decode($booking->log, true) as $item)
+                                    <p class="text-left">{{ $item }}</p>
+                                @endforeach
+                            @endif
                         </td>
                     </tr>
                 </tbody>

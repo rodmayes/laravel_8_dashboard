@@ -13,18 +13,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class Index extends Component
 {
     use WithPagination;
     use WithSorting;
     use WithConfirmation;
+    use Actions;
 
     public $perPage;
     public $orderable;
     public $search = '';
     public $selected = [];
     public $paginationOptions;
+    public $selected_club;
 
     protected $queryString = [
         'search' => [
@@ -62,6 +65,7 @@ class Index extends Component
 
     public function mount()
     {
+        $this->selected_club = new Club();
         $this->sortBy            = 'name';
         $this->sortDirection     = 'asc';
         $this->perPage           = 100;
@@ -89,10 +93,36 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function delete(Club $club)
+    public function confirmDelete(Club $club)
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        // use a full syntax
+        $this->dialog()->confirm([
+            'title'       => 'Are you Sure?',
+            'description' => 'Delete the information?',
+            'icon'        => 'error',
+            'accept'      => [
+                'label'  => 'Yes, delete it',
+                'method' => 'delete',
+                'params' => $club,
+            ],
+            'reject' => [
+                'label'  => 'No, cancel',
+                'method' => 'render'
+            ],
+            'style' => 'center'
+        ]);
+    }
+
+    public function delete(Club $club)
+    {
         $club->delete();
+        return redirect()->route('playtomic.clubs.index');
+    }
+
+    public function showItem(Club $club){
+        $this->selected_club = $club;
     }
 
     public function syncResources(Club $club){

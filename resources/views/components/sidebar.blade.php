@@ -103,4 +103,6 @@
         </form>
         <!-- end link -->
     </div>
+    <!-- end sidebar content -->
 </div>
+<!-- end sidbar -->

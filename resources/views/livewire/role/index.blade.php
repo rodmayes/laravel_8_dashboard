@@ -93,21 +93,22 @@
                     <td class="px-6 py-4">
                         <div class="inline-flex">
                             @can('user_show')
-                                <a class="btn btn-xs btn-info mr-1" href="{{ route('admin.roles.show', $role) }}" title="{{ trans('global.view') }}">
+                                <a class="px-2 py-2 text-xs text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900" href="{{ route('admin.roles.show', $role) }}" title="{{ trans('global.view') }}">
                                     <i class="fas fa-eye"></i>
                                 </a>
                             @endcan
                             @can('user_edit')
-                                <a class="btn btn-xs btn-indigo mr-1" href="{{ route('admin.roles.edit', $role) }}" title="{{ trans('global.edit') }}">
+                                <a class="px-2 py-2 text-xs text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('admin.roles.edit', $role) }}" title="{{ trans('global.edit') }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             @endcan
                             @can('user_delete')
-                                <button class="btn btn-xs btn-danger" wire:click="confirmDelete({{ $role->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
+                                <button class="px-2 py-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" wire:click="confirmDelete({{ $role->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             @endcan
                         </div>
+
                     </td>
                 </tr>
                 @empty

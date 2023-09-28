@@ -1,94 +1,159 @@
-<div class="row">
-    <div class="card card-success col-8">
-        <form wire:submit.prevent="submit" class="pt-3">
-            <div class="card-body">
-                <div class="form-group {{ $errors->has('user.name') ? 'invalid' : '' }}">
-                    <label class="form-label required" for="name">{{ trans('cruds.user.fields.name') }}</label>
-                    <input class="form-control" type="text" name="name" id="name" required wire:model.defer="user.name">
-                    <div class="validation-message">
-                        {{ $errors->first('user.name') }}
-                    </div>
-                    <div class="help-block">
-                        {{ trans('cruds.user.fields.name_helper') }}
-                    </div>
+<div class="w-2/3 sm:w-full p-4 border border-gray-200 bg-white rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
+    <h1 class="h3">Edit User</h1>
+    <form wire:submit.prevent="submit" class="pt-3">
+        <div class="w-full">
+            <h1 class="h5">App data
+                <button type="button" wire:click="refreshData"
+                        class="float-right px-3 py-2 text-xs text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">
+                    <i class="fa fa-sync" title="Refresh Playtomic Token"></i> Refresh Data
+                </button>
+            </h1>
+            <div wire:loading wire:target="refreshData">
+                Processing Refresh...
+            </div>
+        </div>
+        <div class="w-full grid grid-cols-3">
+            <div class="{{ $errors->has('user.name') ? 'invalid' : '' }} mr-2">
+                <label class="form-label required" for="name">{{ trans('cruds.user.fields.name') }}</label>
+                <x-input name="name" id="name" required wire:model.defer="user.name"/>
+                <div class="text-danger">
+                    {{ $errors->first('user.name') }}
                 </div>
-                <div class="form-group {{ $errors->has('user.email') ? 'invalid' : '' }}">
-                    <label class="form-label required" for="email">{{ trans('cruds.user.fields.email') }}</label>
-                    <input class="form-control" type="email" name="email" id="email" required wire:model.defer="user.email">
-                    <div class="validation-message">
-                        {{ $errors->first('user.email') }}
-                    </div>
-                    <div class="help-block">
-                        {{ trans('cruds.user.fields.email_helper') }}
-                    </div>
-                </div>
-                <div class="form-group {{ $errors->has('user.password') ? 'invalid' : '' }}">
-                    <label class="form-label required" for="password">{{ trans('cruds.user.fields.password') }}</label>
-                    <input class="form-control" type="password" name="password" id="password" required wire:model.defer="password">
-                    <div class="validation-message">
-                        {{ $errors->first('user.password') }}
-                    </div>
-                    <div class="help-block">
-                        {{ trans('cruds.user.fields.password_helper') }}
-                    </div>
-                </div>
-                <div class="form-group {{ $errors->has('user.playtomic_id') ? 'invalid' : '' }}">
-                    <label class="form-label" for="playtomic_id">{{ trans('cruds.user.fields.playtomic_id') }}</label>
-                    <input class="form-control" type="text" name="playtomic_id" id="playtomic_id" wire:model.defer="user.playtomic_id">
-                    <div class="validation-message">
-                        {{ $errors->first('user.playtomic_id') }}
-                    </div>
-                    <div class="help-block">
-                        {{ trans('cruds.user.fields.playtomic_id_helper') }}
-                    </div>
-                </div>
-                <div class="form-group {{ $errors->has('user.playtomic_password') ? 'invalid' : '' }}">
-                    <label class="form-label required" for="playtomic_password">{{ trans('cruds.user.fields.playtomic_password') }}</label>
-                    <input class="form-control" type="playtomic_password" name="playtomic_password" id="playtomic_password" required wire:model.defer="playtomic_password">
-                    <div class="validation-message">
-                        {{ $errors->first('user.playtomic_password') }}
-                    </div>
-                    <div class="help-block">
-                        {{ trans('cruds.user.fields.playtomic_password_helper') }}
-                    </div>
-                </div>
-                <div class="form-group {{ $errors->has('user.playtomic_token') ? 'invalid' : '' }}">
-                    <label class="form-label" for="playtomic_token">{{ trans('cruds.user.fields.playtomic_token') }}</label>
-                    <input class="form-control" type="text" name="playtomic_token" id="playtomic_token" wire:model.defer="user.playtomic_token">
-                    <div class="validation-message">
-                        {{ $errors->first('user.playtomic_token') }}
-                    </div>
-                    <div class="help-block">
-                        {{ trans('cruds.user.fields.playtomic_token_helper') }}
-                    </div>
-                </div>
-                <div class="form-group {{ $errors->has('user.playtomic_refresh_token') ? 'invalid' : '' }}">
-                    <label class="form-label" for="playtomic_refresh_token">{{ trans('cruds.user.fields.playtomic_refresh_token') }}</label>
-                    <input class="form-control" type="text" name="playtomic_refresh_token" id="playtomic_refresh_token" wire:model.defer="user.playtomic_refresh_token">
-                    <div class="validation-message">
-                        {{ $errors->first('user.playtomic_refresh_token') }}
-                    </div>
-                    <div class="help-block">
-                        {{ trans('cruds.user.fields.playtomic_token_helper') }}
-                    </div>
-                </div>
-                <div class="form-group {{ $errors->has('roles') ? 'invalid' : '' }}">
-                    <label class="form-label required" for="roles">{{ trans('cruds.user.fields.roles') }}</label>
-                    <x-select-list class="form-control" required id="roles" name="roles" wire:model="roles" :options="$this->listsForFields['roles']" multiple />
-                    <div class="validation-message">
-                        {{ $errors->first('roles') }}
-                    </div>
-                    <div class="help-block">
-                        {{ trans('cruds.user.fields.roles_helper') }}
-                    </div>
+                <div class="help-block">
+                    {{ trans('cruds.user.fields.name_helper') }}
                 </div>
             </div>
-            <div class="card-footer">
-                <div class="form-group">
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">{{ trans('global.cancel') }}</a>
-                    <button class="btn btn-primary mr-2 float-right" type="submit">{{ trans('global.save') }}</button>
+
+            <div class="{{ $errors->has('user.email') ? 'invalid' : '' }} mr-2">
+                <label class="form-label required" for="email">{{ trans('cruds.user.fields.email') }}</label>
+                <x-input  name="email" id="email" required wire:model.defer="user.email"/>
+                <div class="text-danger">
+                    {{ $errors->first('user.email') }}
+                </div>
+                <div class="help-block">
+                    {{ trans('cruds.user.fields.email_helper') }}
                 </div>
             </div>
-        </form>
-    </div>
+            <div class="{{ $errors->has('user.password') ? 'invalid' : '' }}">
+                <label class="form-label" for="password">{{ trans('cruds.user.fields.password') }}</label>
+                <x-input name="password" id="password" wire:model.defer="password">
+                    <x-slot name="append">
+                        <div class="absolute inset-y-0 right-0 flex items-center p-0.5">
+                            <x-button
+                                wire:click="storePassword"
+                                class="h-full rounded-r-md"
+                                icon="save"
+                                primary
+                                flat
+                                squared
+                            />
+                        </div>
+                    </x-slot>
+                </x-input>
+                <div class="text-danger">
+                    {{ $errors->first('user.password') }}
+                </div>
+                <div class="help-block">
+                    {{ trans('cruds.user.fields.password_helper') }}
+                </div>
+            </div>
+        </div>
+        <div class="w-full mt-2">
+            <div class="form-group {{ $errors->has('roles') ? 'invalid' : '' }}">
+                <label class="form-label required" for="roles">{{ trans('cruds.user.fields.roles') }}</label>
+                <x-select
+                    placeholder="Select many roles"
+                    multiselect
+                    :options="$this->listsForFields['roles']"
+                    wire:model.defer="roles"
+                    option-value="id"
+                    option-label="title"
+                />
+                <div class="text-danger">
+                    {{ $errors->first('roles') }}
+                </div>
+                <div class="help-block">
+                    {{ trans('cruds.user.fields.roles_helper') }}
+                </div>
+            </div>
+        </div>
+        <div class="w-full mt-6">
+            <h1 class="h5">
+                Playtomic data
+                <button
+                    class="float-right px-3 py-2 text-xs text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                    wire:click="refreshToken" type="button"><i class="fa fa-sync" title="Refresh Playtomic Token"></i> Refresh Playtomic Token</button>
+                <div wire:loading wire:target="refreshToken">
+                    Processing Refresh...
+                </div>
+
+            </h1>
+        </div>
+        <div class="w-full grid grid-cols-2">
+            <div class="{{ $errors->has('user.playtomic_id') ? 'invalid' : '' }} mr-2">
+                <label class="form-label" for="playtomic_id">{{ trans('playtomic.clubs.fields.playtomic_id') }}</label>
+                <x-input name="playtomic_id" id="playtomic_id" wire:model.defer="user.playtomic_id"/>
+                <div class="text-danger">
+                    {{ $errors->first('user.playtomic_id') }}
+                </div>
+                <div class="help-block">
+                    {{ trans('playtomic.clubs.fields.playtomic_id_helper') }}
+                </div>
+            </div>
+            <div class="{{ $errors->has('user.playtomic_password') ? 'invalid' : '' }}">
+                <label class="form-label required" for="playtomic_password">{{ trans('cruds.user.fields.playtomic_password') }}</label>
+                <x-input name="playtomic_password" id="v" wire:model.defer="playtomic_password">
+                    <x-slot name="append">
+                        <div class="absolute inset-y-0 right-0 flex items-center p-0.5">
+                            <x-button
+                                wire:click="storePlaytomicPassword"
+                                class="h-full rounded-r-md"
+                                icon="save"
+                                primary
+                                flat
+                                squared
+                            />
+                        </div>
+                    </x-slot>
+                </x-input>
+                <div class="text-danger">
+                    {{ $errors->first('user.playtomic_password') }}
+                </div>
+                <div class="help-block">
+                    {{ trans('cruds.user.fields.playtomic_password_helper') }}
+                </div>
+            </div>
+        </div>
+        <div class="w-full">
+            <div class="m-2 {{ $errors->has('user.playtomic_token') ? 'invalid' : '' }}">
+                <label class="form-label" for="playtomic_token">{{ trans('cruds.user.fields.playtomic_token') }}</label>
+                <p class="mb-3 text-gray-500 dark:text-gray-400" style="overflow: hidden">{{ substr($this->user->playtomic_token,0,100) }}...</p>
+                <div class="text-danger">
+                    {{ $errors->first('user.playtomic_token') }}
+                </div>
+                <div class="help-block">
+                    {{ trans('cruds.user.fields.playtomic_token_helper') }}
+                </div>
+            </div>
+            <div class="m-2 {{ $errors->has('user.playtomic_refresh_token') ? 'invalid' : '' }}">
+                <label class="form-label" for="playtomic_refresh_token">{{ trans('cruds.user.fields.playtomic_refresh_token') }}</label>
+                <p class=" truncate mb-3 text-gray-500 dark:text-gray-400 ">{{ substr($this->user->playtomic_refresh_token,0,100) }}...</p>
+                <div class="text-danger">
+                    {{ $errors->first('user.playtomic_refresh_token') }}
+                </div>
+                <div class="help-block">
+                    {{ trans('cruds.user.fields.playtomic_token_helper') }}
+                </div>
+            </div>
+        </div>
+        <div class="w-full items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <button type="submit" class="float-right text-white bg-green-700 hover:bg-green-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                {{ trans('global.save') }}
+            </button>
+            <a href="{{ route('admin.users.index') }}" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                {{ trans('global.cancel') }}
+            </a>
+        </div>
+    </form>
 </div>
+

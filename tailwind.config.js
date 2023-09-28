@@ -4,12 +4,12 @@ module.exports = {
             require('./vendor/wireui/wireui/tailwind.config.js')
     ],
     content: [
+        "./node_modules/flowbite/**/*.js",
         './resources/views/**/*.blade.php',
         './vendor/wireui/wireui/resources/**/*.blade.php',
         './vendor/wireui/wireui/ts/**/*.ts',
         './vendor/wireui/wireui/src/View/**/*.php',
-        './vendor/rappasoft/laravel-livewire-tables/resources/views/**/*.blade.php',
-        "./node_modules/flowbite/**/*.js"
+        './vendor/rappasoft/laravel-livewire-tables/resources/views/**/*.blade.php'
     ],
   purge: {
     enabled: true,
@@ -55,7 +55,8 @@ module.exports = {
       require('@tailwindcss/forms')(),
       require('@tailwindcss/typography')(),
       require('@tailwindcss/aspect-ratio'),
-      require('flowbite/plugin')
-
+      require('flowbite/plugin'),
+      require('tailwindcss'),
+      require('autoprefixer'),
   ]
 }

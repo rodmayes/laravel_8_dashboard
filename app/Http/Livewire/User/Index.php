@@ -4,18 +4,21 @@ namespace App\Http\Livewire\User;
 
 use App\Http\Livewire\WithConfirmation;
 use App\Http\Livewire\WithSorting;
+use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class Index extends Component
 {
     use WithPagination;
     use WithSorting;
     use WithConfirmation;
+    use Actions;
 
     public $perPage;
     public $orderable;
@@ -86,11 +89,31 @@ class Index extends Component
         $this->resetSelected();
     }
 
-    public function delete(User $user)
+    public function confirmDelete(User $user)
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        // use a full syntax
+        $this->dialog()->confirm([
+            'title'       => 'Are you Sure?',
+            'description' => 'Delete the information?',
+            'icon'        => 'question',
+            'accept'      => [
+                'label'  => 'Yes, delete it',
+                'method' => 'delete',
+                'params' => $user,
+            ],
+            'reject' => [
+                'label'  => 'No, cancel',
+                'method' => 'render',
+            ],
+        ]);
+    }
+
+    public function delete(User $user)
+    {
         $user->delete();
+        return redirect()->route('admin.users.index');
     }
 
     public function impersonate($user){

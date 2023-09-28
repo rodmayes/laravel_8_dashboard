@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Permission;
 use App\Http\Livewire\WithConfirmation;
 use App\Http\Livewire\WithSorting;
 use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
@@ -88,11 +89,30 @@ class Index extends Component
 
         $this->resetSelected();
     }
+    public function confirmDelete(Permission $permission)
+    {
+        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        // use a full syntax
+        $this->dialog()->confirm([
+            'title'       => 'Are you Sure?',
+            'description' => 'Delete the information?',
+            'icon'        => 'question',
+            'accept'      => [
+                'label'  => 'Yes, delete it',
+                'method' => 'delete',
+                'params' => $permission,
+            ],
+            'reject' => [
+                'label'  => 'No, cancel',
+                'method' => 'render',
+            ],
+        ]);
+    }
 
     public function delete(Permission $permission)
     {
-        abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
         $permission->delete();
+        return redirect()->route('admin.permissions.index');
     }
 }
