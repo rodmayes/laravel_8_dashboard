@@ -1,10 +1,10 @@
-<div class="row">
-    <div class="w-2/3 p-4 border border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
-        <h1 class="h3" >Create Booking</h1>
+<div>
+    <h1 class="h3" >Create Booking</h1>
+    <div class="w-full p-4 border border-gray-200 bg-white rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
         <form wire:submit.prevent="submit" class="pt-3">
-            <div class="w-full flex">
+            <div class="grid lg:grid-cols-2 md:grid-cols-2 xs:grid-cols-1 xl:grid-cols-1">
                 @error('error') <small class="text-danger">{{ $message }}</small> @enderror
-                <div class="w-1/3 {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }}">
+                <div class="mr-5 {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }}">
                     <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
                     <div inline-datepicker datepicker-buttons data-date="{{ isset($booking->started_at) ? $booking->started_at->format('d-m-Y') : now()->format('d-m-Y') }}"
                          datepicker-format="dd-mm-yyyy" wire:model="booking.started_at" required wire:ignore id="started_at"></div>
@@ -16,8 +16,8 @@
                     </div>
                 </div>
 
-                <div class="w-2/3">
-                    <div class="form-group {{ $errors->has('booking.club_id') ? 'invalid' : '' }}">
+                <div class="w-full">
+                    <div class="{{ $errors->has('booking.club_id') ? 'invalid' : '' }}">
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white required" for="club_id">{{ trans('playtomic.bookings.fields.club') }}</label>
                         <x-select
                             placeholder="Select one club"

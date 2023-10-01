@@ -66,12 +66,12 @@ class Index extends Component
     public function mount()
     {
         $this->selected_resource = new Resource(); $this->selected_resource->id = 0;
-        $this->sortBy            = 'priority';
+        $this->sortBy            = 'name';
         $this->sortDirection     = 'asc';
-        $this->perPage           = 100;
+        $this->perPage           = 10;
         $this->perClub           = -1;
         $this->paginationOptions = collect(config('project.pagination.options'))->pluck('id','name');
-        $this->orderable         = (new User())->orderable;
+        $this->orderable         = (new Resource())->orderable;
     }
 
     public function render()
@@ -81,10 +81,10 @@ class Index extends Component
             'order_column'    => $this->sortBy,
             'order_direction' => $this->sortDirection,
         ])
-        ->when((int)$this->perClub > -1, function($q){
+        ->when((int)$this->perClub != -1, function($q){
             return $q->byClub($this->perClub);
         });
-
+        if(!isset($this->selected_resource->id)){ $this->selected_resource = new Resource(); $this->selected_resource->id = 0; }
         $resources = $query->paginate($this->perPage);
         $clubs = Club::all();
 

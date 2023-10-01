@@ -70,7 +70,7 @@ class Index extends Component
         $this->sortDirection     = 'asc';
         $this->perPage           = 100;
         $this->paginationOptions = collect(config('project.pagination.options'))->pluck('id','name');
-        $this->orderable         = (new User())->orderable;
+        $this->orderable         = (new Club())->orderable;
     }
 
     public function render()
@@ -81,6 +81,7 @@ class Index extends Component
             'order_direction' => $this->sortDirection,
         ]);
 
+       if(!isset($this->selected_club->id)){ $this->selected_club = new Club(); $this->selected_club->id = 0; }
         $clubs = $query->paginate($this->perPage);
 
         return view('livewire.playtomic.club.index', compact('query', 'clubs'));

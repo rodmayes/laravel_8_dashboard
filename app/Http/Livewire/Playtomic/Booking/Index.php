@@ -27,6 +27,7 @@ class Index extends Component
     public $orderable;
     public $search = '';
     public $selected = [];
+    public $selected_booking;
     public $paginationOptions;
 
     protected $listeners = ['refreshComponent' => '$refresh'];
@@ -65,6 +66,7 @@ class Index extends Component
 
     public function mount()
     {
+        $this->selected_booking = new Booking(); $this->selected_booking->id = 0;
         $this->sortBy            = 'started_at';
         $this->sortDirection     = 'desc';
         $this->perPage           = 25;
@@ -84,6 +86,7 @@ class Index extends Component
             return $q->byClub($this->perClub);
         });
 
+        if(!isset($this->selected_booking->id)){ $this->selected_booking = new Booking(); $this->selected_booking->id = 0; }
         $clubs = Club::all();
         $bookings = $query->paginate($this->perPage);
 
@@ -149,5 +152,9 @@ class Index extends Component
             $description = $e->getMessage()
             );
         }
+    }
+
+    public function showItem(Booking $booking){
+        $this->selected_booking = $booking;
     }
 }
