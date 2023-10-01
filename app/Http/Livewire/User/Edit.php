@@ -133,6 +133,7 @@ class Edit extends Component
                 $title = 'Error !!!',
                 $description = $e->getMessage()
             );
+            throw new \Exception($e->getMessage());
         }
 
     }

@@ -112,21 +112,25 @@ class User extends Authenticatable
     }
 
     public function saveAvatar($image){
-        //$image_path = file_get_contents($image);//$image->store('image', 'public');
-        $img_name = 'img_'.time().'.'.$image->getClientOriginalExtension();
-        $image->move(public_path('img/'), $img_name);
-        $imagePath = 'img/'.$img_name;
+        try {
+            //$image_path = file_get_contents($image);//$image->store('image', 'public');
+            $img_name = 'img_' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('img/'), $img_name);
+            $imagePath = 'img/' . $img_name;
 
-        $image = Image::updateOrCreate(
-            [
-            'imageable_type' => 'App\\Models\\User',
-            'imageable_id' => $this->id
-            ],
-            [
-                'imageable_type' => 'App\\Models\\User',
-                'imageable_id' => $this->id,
-                'name' => 'Avatar '.$this->id,
-                'image' => $imagePath
-            ]);
+            $image = Image::updateOrCreate(
+                [
+                    'imageable_type' => 'App\\Models\\User',
+                    'imageable_id' => $this->id
+                ],
+                [
+                    'imageable_type' => 'App\\Models\\User',
+                    'imageable_id' => $this->id,
+                    'name' => 'Avatar ' . $this->id,
+                    'image' => $imagePath
+                ]);
+        }catch (\Exception $e){
+            throw new \Exception($e->getMessage());
+        }
     }
 }
