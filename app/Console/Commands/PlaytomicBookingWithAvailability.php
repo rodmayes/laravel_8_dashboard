@@ -52,7 +52,7 @@ class PlaytomicBookingWithAvailability extends Command
         if(!$this->user) return $this->displayMessage('No user found');
 
         $this->service = new PlaytomicHttpService($this->user);
-        $this->displayMessage('Init process', 'info');
+        $this->displayMessage('Init process - '.now()->format('d-m-Y H:i:s'));
         $bookings = Booking::ontime()->orderBy('started_at', 'DESC')->get();
         foreach ($bookings as $booking) {
             $day_to_date = $booking->started_at->subDays((int)$booking->club->days_min_booking);
@@ -60,13 +60,15 @@ class PlaytomicBookingWithAvailability extends Command
                 try {
                     $this->booking($booking);
                 } catch (\Exception $e) {
+                    $this->log[] = $e->getMessage();
                     Log::error($e->getMessage());
                 }
             }
             $booking->log = json_encode($this->log);
             $booking->save();
         }
-        $this->displayMessage('Booking scheduled finish', 'info', $this->log);
+        $this->displayMessage('Booking scheduled finish', 'info');
+        Log::info('Booking scheduled finish', $this->log);
     }
 
     public function booking($booking){
@@ -191,14 +193,12 @@ class PlaytomicBookingWithAvailability extends Command
         }
     }
 
-    public function displayMessage($message, $type = 'error', $detail_log = []){
+    public function displayMessage($message, $type = 'error'){
         $this->log[] = $message;
         if($type === 'error') {
             $this->error($message);
-            Log::error($message, $detail_log);
         }else {
             $this->line($message);
-            Log::info($message, $detail_log);
         }
     }
 }
