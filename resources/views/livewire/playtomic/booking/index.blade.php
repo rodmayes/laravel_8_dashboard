@@ -122,7 +122,7 @@
                     </div>
                 </td>
                 <td class="px-2 py-2">{{ $booking->id }}</td>
-                <td class="px-2 py-2">
+                <td class="px-2 py-2 text-xs">
                     {{ $booking->started_at->format('d-m-Y') }} ({{ ucfirst($booking->started_at->locale('es')->dayName) }})
                 </td>
                 <td class="px-2 py-2">
@@ -138,7 +138,7 @@
                 <td class="px-2 py-2">
                     {{ $booking->club->name }}
                 </td>
-                <td class="px-2 py-2">
+                <td class="px-2 py-2 text-xs">
                     @if($booking->started_at->addDays(-((int)$booking->club->days_min_booking))->format('d-m-Y') === \Carbon\Carbon::now()->format('d-m-Y'))
                         <span class="text-red-500">
                                 {{ $booking->started_at->addDays(-((int)$booking->club->days_min_booking))->format('d-m-Y')}}
