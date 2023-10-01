@@ -28,7 +28,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::resource('contact-companies', ContactCompanyController::class, ['except' => ['store', 'update', 'destroy']]);
     Route::resource('contact-contacts', ContactContactController::class, ['except' => ['store', 'update', 'destroy']]);
     Route::resource('transactions', TransactionController::class, ['except' => ['store', 'update', 'destroy']]);
+    Route::post('user/set-avatar/{user}', [\App\Http\Livewire\User\Edit::class, 'uploadAvatar'])->name('user.set-avatar');
 });
+
 
 Route::get('send-mail', function () {
 

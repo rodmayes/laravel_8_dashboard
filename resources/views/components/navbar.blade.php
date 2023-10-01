@@ -35,7 +35,7 @@
 
                 <button class="menu-btn focus:outline-none focus:shadow-outline flex flex-wrap items-center">
                     <div class="w-8 h-8 overflow-hidden rounded-full">
-                        <img class="w-full h-full object-cover" src="{{ asset('images/heroina.webp') }}" >
+                        <img class="w-full h-full object-cover" src="{{ asset(auth()->user()->getAVatar()) }}" >
                     </div>
 
                     <div class="ml-2 capitalize flex ">
@@ -74,12 +74,15 @@
                     <!-- end item -->
                     <hr>
                     <!-- item -->
-                    <a class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out" href="#">
-                        <i class="fad fa-user-times text-xs mr-1"></i>
-                        log out
+                    <a onclick="event.preventDefault(); document.getElementById('logoutform').submit();"
+                        class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out" href="#">
+                        <i class="fad fa-sign-out-alt text-xs mr-2"></i>
+                        {{ trans('global.logout') }}
                     </a>
                     <!-- end item -->
-
+                    <form id="logoutform" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
                 </div>
             </div>
             <!-- end user -->

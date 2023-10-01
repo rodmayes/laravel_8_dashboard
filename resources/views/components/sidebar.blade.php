@@ -94,6 +94,7 @@
         </a>
         <!-- end link -->
         <!-- link -->
+        <!--
         <a onclick="event.preventDefault(); document.getElementById('logoutform').submit();" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500">
             <i class="fad fa-sign-out-alt text-xs mr-2"></i>
             {{ trans('global.logout') }}
@@ -101,6 +102,7 @@
         <form id="logoutform" action="{{ route('logout') }}" method="POST" style="display: none;">
             {{ csrf_field() }}
         </form>
+        -->
         <!-- end link -->
     </div>
     <!-- end sidebar content -->

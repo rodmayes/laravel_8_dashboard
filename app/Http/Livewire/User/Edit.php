@@ -5,15 +5,18 @@ namespace App\Http\Livewire\User;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\PlaytomicHttpService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class Edit extends Component
 {
+    use Actions;
+
     public $user;
-
     public $roles = [];
-
+    public $avatar;
     public $password = '';
     public $playtomic_password;
 
@@ -24,6 +27,10 @@ class Edit extends Component
         $this->user  = $user;
         $this->roles = $this->user->roles()->pluck('id')->toArray();
         $this->initListsForFields();
+    }
+
+    public function updatedAvatar(){
+
     }
 
     public function render()
@@ -107,5 +114,26 @@ class Edit extends Component
     protected function initListsForFields(): void
     {
         $this->listsForFields['roles'] = Role::orderBy('title')->get();
+    }
+
+    public function uploadAvatar(Request $request, User $user){
+        $request->validate([
+            'avatar' => 'required|mimes:png,jpg,jpeg,webp|max:2048'
+        ]);
+
+        try {
+            if ($request->hasFile('avatar')) $user->saveAvatar($request->avatar);
+            $this->notification()->success(
+                $title = 'Avatar saved',
+                $description = 'Your avatar was successfull saved'
+            );
+            $this->render();
+        }catch(\Exception $e){
+            $this->notification()->error(
+                $title = 'Error !!!',
+                $description = $e->getMessage()
+            );
+        }
+
     }
 }

@@ -5,9 +5,7 @@ namespace App\Models;
 use \DateTimeInterface;
 use App\Support\HasAdvancedFilter;
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -88,6 +86,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function avatar()
+    {
+        return $this->morphOne('App\Models\Image', 'imageable');
+    }
+
+
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
@@ -101,5 +105,28 @@ class User extends Authenticatable
 
     public function scopeByEmail($query, $value){
         return $query->where('email', $value);
+    }
+
+    public function getAvatar(){
+        return $this->avatar ? $this->avatar->image : asset('/images/avatar-default.jpeg');
+    }
+
+    public function saveAvatar($image){
+        //$image_path = file_get_contents($image);//$image->store('image', 'public');
+        $img_name = 'img_'.time().'.'.$image->getClientOriginalExtension();
+        $image->move(public_path('img/'), $img_name);
+        $imagePath = 'img/'.$img_name;
+
+        $image = Image::updateOrCreate(
+            [
+            'imageable_type' => 'App\\Models\\User',
+            'imageable_id' => $this->id
+            ],
+            [
+                'imageable_type' => 'App\\Models\\User',
+                'imageable_id' => $this->id,
+                'name' => 'Avatar '.$this->id,
+                'image' => $imagePath
+            ]);
     }
 }
