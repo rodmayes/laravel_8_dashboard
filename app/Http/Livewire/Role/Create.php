@@ -11,12 +11,12 @@ class Create extends Component
     public $role;
 
     public $permissions = [];
-
     public $listsForFields = [];
 
     public function mount(Role $role)
     {
         $this->role = $role;
+        $this->permissions = $this->role->permissions()->pluck('id')->toArray();
         $this->initListsForFields();
     }
 
@@ -55,6 +55,6 @@ class Create extends Component
 
     protected function initListsForFields(): void
     {
-        $this->listsForFields['permissions'] = Permission::pluck('title', 'id');
+        $this->listsForFields['permissions'] = Permission::orderBy('title')->get();
     }
 }

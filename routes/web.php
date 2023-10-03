@@ -24,7 +24,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::resource('permissions', PermissionController::class, ['except' => ['store', 'update', 'destroy']]);
     Route::resource('roles', RoleController::class, ['except' => ['store', 'update', 'destroy']]);
-    Route::resource('users', UserController::class, ['except' => ['store', 'update', 'destroy']]);
+    Route::resource('users', UserController::class, ['except' => ['store', 'update', 'destroy'], 'middleware' => ['can:user_management_access']]);
     Route::resource('contact-companies', ContactCompanyController::class, ['except' => ['store', 'update', 'destroy']]);
     Route::resource('contact-contacts', ContactContactController::class, ['except' => ['store', 'update', 'destroy']]);
     Route::resource('transactions', TransactionController::class, ['except' => ['store', 'update', 'destroy']]);

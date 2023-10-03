@@ -285,6 +285,10 @@
                             @endforeach
                         @endif
                     </div>
+                    <div>
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Log: </label>
+                        {{ $selected_booking ? $selected_booking->log : null }}
+                    </div>
                 </div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">

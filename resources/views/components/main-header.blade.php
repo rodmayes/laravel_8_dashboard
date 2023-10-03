@@ -5,13 +5,6 @@
     <li class="nav-item d-none d-sm-inline-block">
         <a href="index3.html" class="nav-link">Home</a>
     </li>
-    @impersonating($guard = null)
-    <li class="nav-item d-none d-sm-inline-block">
-        @impersonating($guard = null)
-        <a href="{{ route('impersonate.leave') }}">Leave impersonation</a>
-        @endImpersonating
-    </li>
-    @endImpersonating
 </ul>
 
 <ul class="navbar-nav ml-auto">

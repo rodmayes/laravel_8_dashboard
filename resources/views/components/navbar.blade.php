@@ -73,6 +73,10 @@
                     </a>
                     <!-- end item -->
                     <hr>
+                    @impersonating($guard = null)
+                    <a href="{{ route('impersonate.leave') }}" class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out">Leave impersonation</a>
+                    @endImpersonating
+                    <hr>
                     <!-- item -->
                     <a onclick="event.preventDefault(); document.getElementById('logoutform').submit();"
                         class="px-4 py-2 block capitalize font-medium text-sm tracking-wide bg-white hover:bg-gray-200 hover:text-gray-900 transition-all duration-300 ease-in-out" href="#">
