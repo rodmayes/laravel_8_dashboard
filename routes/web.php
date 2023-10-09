@@ -15,6 +15,7 @@ Route::redirect('/', '/login');
 Route::impersonate();
 
 Auth::routes(['register' => false]);
+
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('logs');
 Route::get('schedule', [ScheduleController::class, 'index'])->name('database-schedule');
 Route::get('console', [\App\Http\Controllers\ConsoleController::class, 'index'])->name('console');

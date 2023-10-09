@@ -148,7 +148,7 @@ class PlaytomicBookingWithAvailability extends Command
     {
         try{
             if(!isset($prebooking["payment_intent_id"])) return ['status' => 'fail', 'message' => 'Payment method error: No payment_intent_id'];
-            $response = $this->service->paymentMethodSelection($prebooking["payment_intent_id"]);
+            $response = $this->service->paymentMethodSelection($prebooking);
             if(isset($response['status']) && $response['status'] === 'fail') {
                 $this->displayMessage('Payment method error: '.$response['message']);
                 return ['status' => 'fail', 'message' => 'Payment method error: ' . $response['message']];
