@@ -85,6 +85,7 @@ class BookingController extends Controller
             }
             $this->log['data'][] = 'Booking start: ' . $booking->club->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name;
             $prebooking = $this->booking($booking,  $resource, $timetable);
+            dd($prebooking);
             $this->log['data'][] = 'Booking scheduled finish';
             if(isset($prebooking['error'])) throw new \Exception('Prebooking error '.$prebooking['error']);
             $booking->name = $booking->club->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name;
@@ -145,7 +146,7 @@ class BookingController extends Controller
     public function paymentMethodSelection($prebooking)
     {
         try{
-            $response = $this->service->paymentMethodSelection($prebooking["payment_intent_id"]);
+            $response = $this->service->paymentMethodSelection($prebooking);
             if(isset($response['status']) && $response['status'] === 'fail') {
                 $this->log['data'][] = 'Payment method error '. $response['message'];
                 Log::error('Payment method error '.$response['message']);

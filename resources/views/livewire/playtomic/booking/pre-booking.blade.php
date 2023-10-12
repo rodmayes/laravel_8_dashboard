@@ -131,7 +131,7 @@
                     <div class="callout callout-info">
                         <h5>Process info</h5>
                         @foreach($log as $l)
-                            <p>{{$l}}</p>
+                                <p>{{ $l }}</p>
                         @endforeach
                     </div>
                 @endif
