@@ -148,7 +148,8 @@
       <path value="$PROJECT_DIR$/vendor/box/spout" />
       <path value="$PROJECT_DIR$/vendor/wireui/wireui" />
       <path value="$PROJECT_DIR$/vendor/glebred/search-multiselect-input" />
-      <path value="$PROJECT_DIR$/vendor/spatie/laravel-permission" />
+      <path value="$PROJECT_DIR$/vendor/opcodesio/log-viewer" />
+      <path value="$PROJECT_DIR$/vendor/opcodesio/mail-parser" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Opcodes\LogViewer\LogFile;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,10 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('viewDatabaseSchedule', function ($user) {
+            return Gate::denies('admin');
+        });
+
+        Gate::define('downloadLogFile', function (User $user, LogFile $file) {
             return Gate::denies('admin');
         });
     }

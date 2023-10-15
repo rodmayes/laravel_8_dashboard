@@ -88,6 +88,12 @@
         <!-- link -->
         <a href="/logs" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500 @if(Route::is('logs')) text-warning-600 @endif">
             <i class="fad fa-cogs text-xs mr-2"></i>
+            Logs old
+        </a>
+        <!-- end link -->
+        <!-- link -->
+        <a href="/log-viewer" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500 @if(Route::is('log-viewer/*')) text-warning-600 @endif">
+            <i class="fad fa-cogs text-xs mr-2"></i>
             Logs
         </a>
         <!-- end link -->
