@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Lab404\Impersonate\Models\Impersonate;
 
 class User extends Authenticatable
@@ -108,15 +109,16 @@ class User extends Authenticatable
     }
 
     public function getAvatar(){
-        return $this->avatar ? $this->avatar->image : asset('/images/avatar-default.jpeg');
+        return $this->avatar ? Storage::url($this->avatar->image) : asset('/images/avatar-default.jpeg');
     }
 
     public function saveAvatar($image){
         try {
             //$image_path = file_get_contents($image);//$image->store('image', 'public');
-            $img_name = 'img_' . time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('img/'), $img_name);
-            $imagePath = 'img/' . $img_name;
+            $imagePath = 'public/profiles/img/';
+            $img_name = 'img_' . time() . '.' . $image->extension();
+            Storage::disk('local')->put($imagePath.$img_name, file_get_contents($image));
+            //$image->move(public_path('img/'), $img_name);
 
             $image = Image::updateOrCreate(
                 [
@@ -127,7 +129,7 @@ class User extends Authenticatable
                     'imageable_type' => 'App\\Models\\User',
                     'imageable_id' => $this->id,
                     'name' => 'Avatar ' . $this->id,
-                    'image' => $imagePath
+                    'image' => $imagePath.$img_name
                 ]);
         }catch (\Exception $e){
             throw new \Exception($e->getMessage());
