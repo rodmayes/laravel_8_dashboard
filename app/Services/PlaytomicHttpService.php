@@ -17,7 +17,6 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
     private $user;
     private $playtomic_token;
     private $headers;
-    private $data_cart;
 
     public function __construct(User $user, $headers = [])
     {
@@ -104,7 +103,7 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
             $response = $this->sendPost($data, 'v1/payment_intents', true);
             return $this->response($response);
         }catch(\Exception $e){
-            Log::error('Catch '.$e->getMessage());
+            Log::error('Catch preboooking '.$e->getMessage());
             return ['status' => 'fail', 'message' => $e->getMessage()];
         }
     }
@@ -116,10 +115,13 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
                 'Authorization' => "Bearer ".$this->user->playtomic_token
             ]
         ]);
+
+        $available_payment_methods = $prebooking['available_payment_methods'];
+        if(is_array($prebooking['available_payment_methods'])) $available_payment_methods = $prebooking['available_payment_methods'][0];
         $response = $client->patch(env('PLAYTOMIC_URL','https://playtomic.io/api/').'v1/payment_intents/'. $prebooking['payment_intent_id'], [
             RequestOptions::JSON => [
-                "selected_payment_method_id" => $prebooking['available_payment_methods']['payment_method_id'],
-                "selected_payment_method_data" => $prebooking['available_payment_methods']['data']
+                "selected_payment_method_id" => $available_payment_methods['payment_method_id'],
+                "selected_payment_method_data" => $available_payment_methods['data']
                 ]
         ]);
         if($response->getStatusCode() === 200) return json_decode($response->getBody()->getContents(),true);
@@ -131,7 +133,7 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
             $response = $this->sendPost([], 'v1/payment_intents/' . $payment_intent_id . '/confirmation');
             return $this->response($response);
         }catch(\Exception $e){
-            Log::error('Catch '.$e->getMessage());
+            Log::error('Catch confirmation '.$e->getMessage());
             return ['status' => 'fail', 'message' => $e->getMessage()];
         }
     }
@@ -141,14 +143,14 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
         $response = $this->sendGet('v1/matches/'.$match_id);
         return env('PLAYTOMIC_URL','https://playtomic.io/api/').'v1/matches/'.$match_id;
         }catch(\Exception $e){
-            Log::error('Catch '.$e->getMessage());
+            Log::error('Catch confirmation match '.$e->getMessage());
             return ['status' => 'fail', 'message' => $e->getMessage()];
         }
     }
 
     public function response($response){
         if(isset($response))
-            Log::info('Response prebooking '.(is_array($response) ? '' : $response), is_array($response) ? $response : []);
+            Log::info('Response '.(is_array($response) ? '' : $response), is_array($response) ? $response : []);
         if (isset($response['status']) && $response['status'] === 'RESOURCE_NO_AVAILABLE') return ['status' => 'fail', 'message' => $response['localized_message']];
         if (isset($response['status']) && $response['status'] === 'RESERVATION_NOT_PROCESSABLE') return ['status' => 'fail', 'message' => $response['localized_message']];
         if (isset($response['status']) && $response['status'] == 500) return ['status' => 'fail', 'message' => $response['error']];
