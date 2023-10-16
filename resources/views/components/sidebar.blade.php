@@ -108,7 +108,7 @@
         @endcan
         @can('access_scheduled_tasks')
         <!-- link -->
-        <a href="/schedule" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500">
+        <a href="/totem" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500">
             <i class="fad fa-cogs text-xs mr-2"></i>
             Scheduled tasks
         </a>
