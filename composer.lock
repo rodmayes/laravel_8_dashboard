@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "19a9992076ee87150fd283a87316d7cc",
+    "content-hash": "51f92420acb99e0bad88bcff3a5e694f",
     "packages": [
         {
             "name": "alkhachatryan/laravel-web-console",

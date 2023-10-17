@@ -25,7 +25,7 @@
         "laravel/telescope": "^4.10",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
-        "livewire/livewire": "^2.3",
+        "livewire/livewire": "^2.12",
         "nesbot/carbon": "^2.69",
         "opcodesio/log-viewer": "^3.1",
         "power-components/livewire-powergrid": "^2.4",
