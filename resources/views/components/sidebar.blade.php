@@ -83,36 +83,37 @@
         @endcan
         @endcan
         @can('administration_access')
-        <p class="uppercase text-xs text-gray-800 mb-4 mt-4 tracking-wider">Administration</p>
-        @can('access_logs')
-        <!-- link -->
-        <a href="/logs" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500 @if(Route::is('logs')) text-warning-600 @endif">
-            <i class="fad fa-cogs text-xs mr-2"></i>
-            Logs old
-        </a>
-        <!-- end link -->
-        <!-- link -->
-        <a href="/log-viewer" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500 @if(Route::is('log-viewer/*')) text-warning-600 @endif">
-            <i class="fad fa-cogs text-xs mr-2"></i>
-            Logs
-        </a>
-        <!-- end link -->
-        @endcan
+            <p class="uppercase text-xs text-gray-800 mb-4 mt-4 tracking-wider">Logs</p>
+            @can('access_logs')
+            <!-- link -->
+            <a href="/logs" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500 @if(Route::is('logs')) text-warning-600 @endif">
+                <i class="fad fa-cogs text-xs mr-2"></i>
+                Old
+            </a>
+            <!-- end link -->
+            <!-- link -->
+            <a href="/log-viewer" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500 @if(Route::is('log-viewer/*')) text-warning-600 @endif">
+                <i class="fad fa-cogs text-xs mr-2"></i>
+                New
+            </a>
+            <!-- end link -->
+            @endcan
+            <p class="uppercase text-xs text-gray-800 mb-4 mt-4 tracking-wider">Administration</p>
         @can('access_telescope')
-        <!-- link -->
-        <a href="/telescope" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500" target="_blank">
-            <i class="fad fa-cogs text-xs mr-2"></i>
-            Telescope
-        </a>
-        <!-- end link -->
+            <!-- link -->
+            <a href="/telescope" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500" target="_blank">
+                <i class="fad fa-cogs text-xs mr-2"></i>
+                Telescope
+            </a>
+            <!-- end link -->
         @endcan
         @can('access_scheduled_tasks')
-        <!-- link -->
-        <a href="/totem" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500" target="_blank">
-            <i class="fad fa-cogs text-xs mr-2"></i>
-            Scheduled tasks
-        </a>
-        <!-- end link -->
+            <!-- link -->
+            <a href="/totem" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500" target="_blank">
+                <i class="fad fa-cogs text-xs mr-2"></i>
+                Scheduled tasks
+            </a>
+            <!-- end link -->
         @endcanany
         @can('access_console')
         <!-- link -->

@@ -35,7 +35,7 @@
         "spatie/laravel-activitylog": "^3.17",
         "studio/laravel-totem": "^10.0",
         "vxm/laravel-async": "^2.2",
-        "wireui/wireui": "^0.17.1"
+        "wireui/wireui": "^1.17"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
