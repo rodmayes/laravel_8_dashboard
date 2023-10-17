@@ -12,9 +12,10 @@
     <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
 
     <title>{{ trans('panel.site_title') }}</title>
-    @wireUiScripts
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @stack('scripts-header')
+    @wireUiScripts
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.1/dist/cdn.min.js"></script>
+
     @stack('styles')
     @livewireStyles
 </head>
