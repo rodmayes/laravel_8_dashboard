@@ -7,7 +7,7 @@
                 <div class="mr-5 {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }}">
                     <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
                     <div inline-datepicker datepicker-buttons data-date="{{ isset($booking->started_at) ? $booking->started_at->format('d-m-Y') : null }}"
-                         datepicker-format="dd-mm-yyyy" wire:model="booking.started_at" required wire:ignore id="started_at"></div>
+                         datepicker-format="dd-mm-yyyy" wire:model="booking.started_at" required wire:ignore id="started_at" week-start="1"></div>
                     <small class="text-danger">
                         {{ $errors->first('booking.started_at') }}
                     </small>
@@ -36,12 +36,13 @@
                     <div class="mb-2 {{ $errors->has('resources') ? 'invalid' : '' }} ">
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white required" for="resources">{{ trans('playtomic.bookings.fields.resource') }}</label>
                         <x-select
-                            placeholder="Select many resources"
+                            placeholder="Select one or many resources"
                             multiselect
                             :options="$this->listsForFields['resource']"
                             wire:model.defer="resources"
                             option-value="id"
                             option-label="name"
+
                         />
                         <small class="text-danger">
                             {{ $errors->first('resources') }}
@@ -53,7 +54,7 @@
                     <div class="mb-2 {{ $errors->has('timetables') ? 'is-invalid' : '' }}">
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white required" for="timetables">{{ trans('playtomic.bookings.fields.timetable') }}</label>
                         <x-select
-                            placeholder="Select many timetables"
+                            placeholder="Select one or many timetables"
                             multiselect
                             :options="$this->listsForFields['timetable']"
                             wire:model.defer="timetables"

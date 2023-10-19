@@ -34,6 +34,7 @@
         "chart.js": "^2.9.3",
         "clipboard": "^2.0.11",
         "flowbite": "^1.8.1",
+        "flowbite-datepicker": "^1.2.2",
         "laravel-mix": "^6.0.49",
         "postcss-import": "^15.1.0",
         "sass": "^1.68.0",

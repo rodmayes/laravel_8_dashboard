@@ -39,9 +39,10 @@
                             placeholder="Select many resources"
                             multiselect
                             :options="$this->listsForFields['resource']"
-                            wire:model="resources"
+                            wire:model.defer="resources"
                             option-value="id"
                             option-label="name"
+
                         />
                         <small class="text-danger">
                             {{ $errors->first('resources') }}
@@ -56,7 +57,7 @@
                             placeholder="Select many timetables"
                             multiselect
                             :options="$this->listsForFields['timetable']"
-                            wire:model="timetables"
+                            wire:model.defer="timetables"
                             option-value="id"
                             option-label="name"
                         />

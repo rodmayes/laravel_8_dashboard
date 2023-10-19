@@ -1,7 +1,6 @@
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 
-
 import 'flowbite';
 
 import "@moesaid/cleopatra/src/js/base/name";

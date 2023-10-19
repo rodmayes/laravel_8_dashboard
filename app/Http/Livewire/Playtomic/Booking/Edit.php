@@ -16,8 +16,8 @@ class Edit extends Component
 
     public $listsForFields = [];
     public $booking;
-    public $resources;
-    public $timetables;
+    public $resources = [];
+    public $timetables = [];
 
     protected $listeners = ['dateSelected' => 'updateDate'];
 
@@ -35,8 +35,8 @@ class Edit extends Component
     public function mount(Booking $booking)
     {
         $this->booking = $booking;
-        $this->resources = explode(",",$this->booking->resources);
-        $this->timetables = explode(",",$this->booking->timetables);
+        $this->resources = array_map('intval',explode(",",$this->booking->resources));
+        $this->timetables = array_map('intval',explode(",",$this->booking->timetables));
         $this->initListsForFields();
     }
 
