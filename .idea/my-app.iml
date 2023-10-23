@@ -145,6 +145,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/wireui/wireui" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/opcodesio/log-viewer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/opcodesio/mail-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/slack-notification-channel" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravelcollective/html" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/studio/laravel-totem" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/yaml" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

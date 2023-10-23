@@ -150,6 +150,10 @@
       <path value="$PROJECT_DIR$/vendor/glebred/search-multiselect-input" />
       <path value="$PROJECT_DIR$/vendor/opcodesio/log-viewer" />
       <path value="$PROJECT_DIR$/vendor/opcodesio/mail-parser" />
+      <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/vendor/laravelcollective/html" />
+      <path value="$PROJECT_DIR$/vendor/studio/laravel-totem" />
+      <path value="$PROJECT_DIR$/vendor/laravel/slack-notification-channel" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />

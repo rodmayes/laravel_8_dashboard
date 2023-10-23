@@ -36,11 +36,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 Route::get('send-mail', function () {
 
     $details = [
-        'title' => 'Mail from unpoquitodemayorga.es',
+        'title' => 'Mail from rodmayes.ddns.net',
         'body' => 'This is for testing email using smtp'
     ];
 
-    \Mail::to('rodmayes@gmail.com')->send(new \App\Mail\MyTestMail($details));
+    \Mail::to(env('MAIL_TEST'))->send(new \App\Mail\MyTestMail($details));
 
     dd("Email is Sent.");
 });
