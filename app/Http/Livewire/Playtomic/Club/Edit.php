@@ -22,6 +22,7 @@ class Edit extends Component
     public function submit()
     {
         $this->validate();
+        $this->club->timetable_summer = $this->club->timetable_summer == 1;
         $this->club->save();
 
         return redirect()->route('playtomic.clubs.index');
@@ -41,7 +42,11 @@ class Edit extends Component
             'club.days_min_booking' => [
                 'integer',
                 'required',
-            ]
+            ],
+            'club.timetable_summer' => [
+                'integer',
+                'required',
+            ],
         ];
     }
 }

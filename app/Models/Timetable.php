@@ -19,13 +19,15 @@ class Timetable extends Model
     public $orderable = [
         'id',
         'name',
-        'playtomic_id'
+        'playtomic_id',
+        'playtomic_id_summer'
     ];
 
     public $filterable = [
         'id',
         'name',
-        'playtomic_id'
+        'playtomic_id',
+        'playtomic_id_summer'
     ];
 
     protected $dates = [
@@ -36,7 +38,8 @@ class Timetable extends Model
 
     protected $fillable = [
         'name',
-        'playtomic_id'
+        'playtomic_id',
+        'playtomic_id_summer'
     ];
 
     protected function serializeDate(DateTimeInterface $date)

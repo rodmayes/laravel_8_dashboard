@@ -72,8 +72,9 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
     }
 
     public function preBooking(Booking $booking, Resource $resource, Timetable $timetable = null){
+        $timetable_summer = $booking->club->getTimetableSummerActiveAttribute;
         $selected_timetable = $timetable ?: $booking->timetable;
-        $time = str_replace("%3A",":",$selected_timetable->playtomic_id);
+        $time = str_replace("%3A",":",($timetable_summer ? $selected_timetable->playtomic_id_summer : $selected_timetable->playtomic_id));
         $data = [
             "allowed_payment_method_types" => ["OFFER", "CASH", "MERCHANT_WALLET", "DIRECT", "SWISH", "IDEAL", "BANCONTACT", "PAYTRAIL", "CREDIT_CARD", "QUICK_PAY"],
             'user_id' => $this->user->playtomic_id,

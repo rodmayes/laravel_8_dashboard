@@ -55,7 +55,7 @@ class Edit extends Component
             $this->booking->resources = implode(",", $this->resources);
             $this->booking->timetables = implode(",", $this->timetables);
             $this->booking->name = $this->booking->club->name . ' ' . $this->booking->start_at;
-            $this->booking->public = isset($this->public) ? $this->public : false;
+            $this->booking->public = $this->booking->public ?? false;
             $this->booking->save();
 
             $this->notification()->success(

@@ -23,6 +23,15 @@
         <!-- PLAYTOMIC -->
         <p class="uppercase text-xs text-gray-800 mb-4 mt-4 tracking-wider">{{ trans('playtomic.title') }}</p>
         @can('playtomic_club_access')
+            <!-- link -->
+            <a href="{{ route("playtomic.timetables.index") }}" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500
+           @if(Route::is('playtomic.timetables.*')) text-warning-600 @endif">
+                <i class="fad fa-medal text-xs mr-2"></i>
+                {{ trans('playtomic.timetable.title') }}
+            </a>
+            <!-- end link -->
+        @endcan
+        @can('playtomic_club_access')
         <!-- link -->
         <a href="{{ route("playtomic.clubs.index") }}" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500
            @if(Route::is('playtomic.clubs.*')) text-warning-600 @endif">

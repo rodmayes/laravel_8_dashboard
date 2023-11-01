@@ -36,8 +36,8 @@
                 <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 mr-2">
                     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                         <li>
-                            <a class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-primary-100 hover:text-gray" href="{{ route('playtomic.clubs.create') }}">
-                                <i class="fa fa-plus-circle"></i> {{ trans('global.add') }} {{ trans('playtomic.clubs.title_singular') }}
+                            <a class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-primary-100 hover:text-gray" href="{{ route('playtomic.timetables.create') }}">
+                                <i class="fa fa-plus-circle"></i> {{ trans('global.add') }} {{ trans('playtomic.timetable.title_singular') }}
                             </a>
                         </li>
                         <li>
@@ -62,71 +62,53 @@
                     </div>
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    {{ trans('playtomic.clubs.fields.id') }}
+                    {{ trans('playtomic.timetable.fields.id') }}
                     @include('components.table.sort', ['field' => 'id'])
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    {{ trans('playtomic.clubs.fields.name') }}
+                    {{ trans('playtomic.timetable.fields.name') }}
                     @include('components.table.sort', ['field' => 'name'])
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    {{ trans('playtomic.clubs.fields.playtomic_id') }}
+                    {{ trans('playtomic.timetable.fields.playtomic_id') }}
                     @include('components.table.sort', ['field' => 'playtomic_id'])
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    {{ trans('playtomic.clubs.fields.days_min_booking') }}
-                    @include('components.table.sort', ['field' => 'days_min_booking'])
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    {{ trans('playtomic.clubs.fields.timetable_summer') }}
-                    @include('components.table.sort', ['field' => 'timetable_summer'])
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    #resources
+                    {{ trans('playtomic.timetable.fields.playtomic_id_summer') }}
+                    @include('components.table.sort', ['field' => 'playtomic_id_summer'])
                 </th>
                 <th scope="col" class="px-6 py-3">
                 </th>
             </tr>
         </thead>
         <tbody class="text-left text-gray-600">
-            @forelse($clubs as $club)
+            @forelse($timetables as $timetable)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4">
                         <div class="flex items-center">
-                            <input type="checkbox" value="{{ $club->id }}" wire:model="selected" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input type="checkbox" value="{{ $timetable->id }}" wire:model="selected" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         </div>
                     </td>
-                    <td class="px-2 py-2">{{ $club->id }}</td>
-                    <td class="px-2 py-2">{{ $club->name }}</td>
-                    <td class="px-2 py-2">{{ $club->playtomic_id }}</td>
-                    <td class="px-2 py-2">{{ $club->days_min_booking }}</td>
-                    <td class="px-2 py-2">
-                        @if($club->timetable_summer)
-                            <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Activate</span>
-                        @else
-                            <span class="bg-indigo-100 text-indigo-900 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300">No activate</span>
-                        @endif
-                    </td>
-                    <td class="px-2 py-2">{{ $club->resources->count() }}</td>
+                    <td class="px-2 py-2">{{ $timetable->id }}</td>
+                    <td class="px-2 py-2">{{ $timetable->name }}</td>
+                    <td class="px-2 py-2">{{ $timetable->playtomic_id }}</td>
+                    <td class="px-2 py-2">{{ $timetable->playtomic_id_summer }}</td>
                     <td class="px-2 py-2">
                         <div class="inline-flex">
                             @can('user_show')
-                                <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" wire:click="showItem({{ $club}})" wire:loading.attr="disabled"
+                                <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" wire:click="showItem({{ $timetable}})" wire:loading.attr="disabled"
                                         class="px-2 py-2 text-xs text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             @endcan
                             @can('user_edit')
-                                <a class="px-2 py-2 text-xs text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('playtomic.clubs.edit', $club) }}" title="{{ trans('global.edit') }}">
+                                <a class="px-2 py-2 text-xs text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('playtomic.timetables.edit', $timetable) }}" title="{{ trans('global.edit') }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             @endcan
-                                <button class="px-2 py-2 text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" wire:click="syncResources({{ $club->id }})" wire:loading.attr="disabled" title="Sync resources">
-                                    <i class="fas fa-sync"></i>
-                                </button>
                             @can('user_delete')
                                 <button class="px-2 py-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-                                        wire:click="confirmDelete({{ $club->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
+                                        wire:click="confirmDelete({{ $timetable->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             @endcan
@@ -141,7 +123,7 @@
         </tbody>
         </table>
         <nav class="flex items-center justify-between p-4 " aria-label="Table navigation">
-            <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> <span class="font-semibold text-gray-900 dark:text-white">{{$clubs->currentPage()}}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{ $clubs->total() }}</span></span>
+            <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> <span class="font-semibold text-gray-900 dark:text-white">{{$timetables->currentPage()}}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{ $timetables->total() }}</span></span>
             @if($this->selectedCount)
                 <p class="text-sm leading-5">
                     {{ $this->selectedCount }}
@@ -150,15 +132,15 @@
             @endif
             <ul class="inline-flex -space-x-px text-sm h-8">
                 <li>
-                    <a href="{{$clubs->previousPageUrl()}}" class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+                    <a href="{{$timetables->previousPageUrl()}}" class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
                 </li>
-                @foreach($clubs->getUrlRange(1,ceil($clubs->total()/$clubs->perPage())) as $index => $page)
+                @foreach($timetables->getUrlRange(1,ceil($timetables->total()/$timetables->perPage())) as $index => $page)
                     <li>
-                        <a href="{{$clubs->url($index)}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{$index}}</a>
+                        <a href="{{$timetables->url($index)}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{$index}}</a>
                     </li>
                 @endforeach
                 <li>
-                    <a href="{{$clubs->nextPageUrl()}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                    <a href="{{$timetables->nextPageUrl()}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
                 </li>
             </ul>
         </nav>
@@ -172,7 +154,7 @@
                 <!-- Modal header -->
                 <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                        {{ $selected_club->name ?: null }} #{{ $selected_club->id ?: null }}
+                        {{ $selected_timetable->name ?: null }} #{{ $selected_timetable->id ?: null }}
                     </h3>
                     <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -184,27 +166,21 @@
                 <!-- Modal body -->
                 <div class="p-6 space-y-6">
                     <div>
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.clubs.fields.name') }}: </label>
-                        {{ $selected_club->name ?: null }}
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.timetable.fields.name') }}: </label>
+                        {{ $selected_timetable->name ?: null }}
                     </div>
                     <div>
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.clubs.fields.playtomic_id') }}: </label>
-                        {{ $selected_club->playtomic_id ?: null }}
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.timetable.fields.playtomic_id') }}: </label>
+                        {{ $selected_timetable->playtomic_id ?: null }}
                     </div>
                     <div>
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.clubs.fields.days_min_booking') }}: </label>
-                        {{ $selected_club->days_min_booking ?: null }}
-                    </div>
-                    <div>
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.clubs.fields.resources') }}: </label>
-                        @foreach($selected_club->resources as  $resource)
-                            <span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ $resource->name }}</span>
-                        @endforeach
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.timetable.fields.playtomic_id_summer') }}: </label>
+                        {{ $selected_timetable->playtomic_id_summer ?: null }}
                     </div>
                 </div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <a href="{{ route('playtomic.clubs.show', $selected_club) }}"
+                    <a href="{{ route('playtomic.timetables.show', $selected_timetable) }}"
                        type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         {{ trans('global.edit') }}
                     </a>

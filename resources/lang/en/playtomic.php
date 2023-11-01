@@ -34,7 +34,7 @@ return [
             'name_helper'              => ' ',
             'playtomic_id'        => 'Playtomic Id',
             'playtomic_id_helper' => ' ',
-            'days_min_booking'    =>  'Dias reserva',
+            'days_min_booking'    =>  'Booking days',
             'days_min_booking_helper' => '',
             'resources'           => 'Resources',
             'resource_helper'     => ' ',
@@ -44,6 +44,8 @@ return [
             'updated_at_helper'  => ' ',
             'deleted_at'         => 'Deleted at',
             'deleted_at_helper'  => ' ',
+            'timetable_summer'  => 'Timetable Summer',
+            'timetable_summer_helper'  => ''
         ],
     ],
     'resources' => [
@@ -149,6 +151,8 @@ return [
             'name_helper'              => ' ',
             'playtomic_id'             => 'Playtomic Id',
             'playtomic_id_helper'      => ' ',
+            'playtomic_id_summer'      => 'Playtomic Id Summer',
+            'playtomic_id_summer_helper' => ' ',
             'club'                     => 'Club',
             'club_helper'              => '',
             'roles'                    => 'Roles',

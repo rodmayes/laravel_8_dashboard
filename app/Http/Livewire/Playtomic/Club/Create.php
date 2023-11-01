@@ -47,7 +47,11 @@ class Create extends Component
             'club.days_min_booking' => [
                 'integer',
                 'required',
-            ]
+            ],
+            'club.timetable_summer' => [
+                'integer',
+                'required',
+            ],
         ];
     }
 

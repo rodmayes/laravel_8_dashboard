@@ -20,14 +20,16 @@ class Club extends Model
         'id',
         'name',
         'playtomic_id',
-        'days_min_booking'
+        'days_min_booking',
+        'timetable_summer'
     ];
 
     public $filterable = [
         'id',
         'name',
         'playtomic_id',
-        'days_min_booking'
+        'days_min_booking',
+        'timetable_summer'
     ];
 
     protected $dates = [
@@ -39,7 +41,8 @@ class Club extends Model
     protected $fillable = [
         'name',
         'playtomic_id',
-        'days_min_booking'
+        'days_min_booking',
+        'timetable_summer'
     ];
 
     public function resources()
@@ -50,5 +53,9 @@ class Club extends Model
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    public function getTimetableSummerActiveAttribute(){
+        return $this->timetable_summer;
     }
 }
