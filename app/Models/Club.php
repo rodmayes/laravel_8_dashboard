@@ -56,6 +56,6 @@ class Club extends Model
     }
 
     public function getTimetableSummerActiveAttribute(){
-        return $this->timetable_summer;
+        return $this->timetable_summer == 1;
     }
 }
