@@ -31,7 +31,8 @@ class MyTestMail extends Mailable
     public function build()
     {
         return $this
+            ->from(env('MAIL_FROM_ADDRESS', 'rodmayes@gmail.com'))
             ->subject('Mail from rodmayes.cloudns.nz')
-            ->view('emails.myTestMail');
+            ->markdown('emails.myTestMail', ['details' => $this->details]);
     }
 }
