@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Unpoquitodemayorga.es</title>
+    <title>rodmayes.cloudns.nz</title>
 </head>
 <body>
 <h1>{{ $details['title'] }}</h1>
