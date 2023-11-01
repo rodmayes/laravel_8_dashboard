@@ -52,21 +52,20 @@ class PlaytomicBooking extends Command
         if(!$this->user) return $this->displayMessage('No user found');
 
         $this->service = new PlaytomicHttpService($this->user);
-        $this->displayMessage('Init process', 'info');
+        $this->displayMessage('Init process - '.now()->format('d-m-Y H:i:s'));
         $bookings = Booking::ontime()->orderBy('started_at', 'DESC')->get();
         foreach ($bookings as $booking) {
-            $day_to_date = $booking->started_at->subDays((int)$booking->club->days_min_booking);
-            if ($day_to_date->startOfDay()->format('d-m-Y') == Carbon::now('Europe/Andorra')->startOfDay()->format('d-m-Y')) {
-                try {
-                    $this->booking($booking);
-                } catch (\Exception $e) {
-                    Log::error($e->getMessage());
-                }
+            try {
+                $this->booking($booking);
+            } catch (\Exception $e) {
+                $this->log[] = $e->getMessage();
+                Log::error($e->getMessage());
             }
             $booking->log = json_encode($this->log);
             $booking->save();
         }
-        $this->displayMessage('Booking scheduled finish', 'info', $this->log);
+        $this->displayMessage('Booking scheduled finish', 'info');
+        Log::info('Booking scheduled finish', $this->log);
     }
 
     public function booking($booking){
@@ -75,7 +74,6 @@ class PlaytomicBooking extends Command
         $resources = Resource::whereIn('id', explode(",", $booking->resources))->orderByRaw(DB::raw("FIELD(id, ".$booking->resources.")"))->get();
 
         $booking_preference = ["timetable" => $timetables, "resource" => $resources];
-
         foreach ($booking_preference[$booking->booking_preference] as $preference){
             if($booked) break;
             foreach ($booking_preference[$booking->booking_preference === 'timetable' ? 'resource' : 'timetable'] as $preference2) {
@@ -86,28 +84,47 @@ class PlaytomicBooking extends Command
                     $resource = $preference;
                     $timetable = $preference2;
                 }
-                $this->displayMessage('Booking start: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name, 'info');
-                $response = $this->makeBooking($booking, $resource, $timetable);
-                $this->displayMessage('Booking end: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name, 'info');
-                if (!isset($response['error'])) {
-                    Mail::to($this->user)->send(new PlaytomicBookingConfirmation($booking, $resource, $timetable, $response));
-                    $this->displayMessage('Mail sent to ' . $this->user->email, 'info');
-                    $booked = true;
-                    break;
-                }else{
-                    Log::error($response['error'], $this->log);
-                    $this->displayMessage('Error: '.$response['error'], 'error');
+                $this->displayMessage('Prebooking availability: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name, 'info');
+                $prebooking = $this->availability($booking, $resource, $timetable);
+                //Log::notice('Prebooking with availability: '.(!is_array($prebooking) ? $prebooking : ''), is_array($prebooking) ? $prebooking : []);
+                if(isset($prebooking['status']) && $prebooking['status'] === 'fail') $this->displayMessage ('No availibility '.$prebooking['message']);
+                else {
+                    $response = $this->makeBooking($prebooking, $timetable);
+                    if (!isset($response['error'])) {
+                        Mail::to($this->user)->send(new PlaytomicBookingConfirmation($booking, $resource, $timetable, $response));
+                        $this->displayMessage('Mail sent to ' . $this->user->email, 'info');
+                        $booked = true;
+                        break;
+                    } else {
+                        Log::error($response['error'], $this->log);
+                        $this->displayMessage('Error: ' . $response['error']);
+
+                    }
                 }
             }
         }
-        $this->displayMessage('Booking processed', 'info', $this->log);
+        $this->displayMessage('Booking end: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name, 'info', $this->log);
     }
 
-    public function makeBooking(Booking  $booking, Resource $resource, Timetable $timetable){
-        $this->displayMessage('Prebooking '.$timetable->name, 'info');
-        $prebooking = $this->preBooking($booking, $resource, $timetable);
-        Log::notice('Prebooking: '.(!is_array($prebooking) ? $prebooking : ''), is_array($prebooking) ? $prebooking : []);
-        if(isset($prebooking['status']) && $prebooking['status'] === 'fail') return ['error' => $prebooking['message']];
+    public function availability(Booking $booking, Resource $resource, Timetable $timetable)
+    {
+        if($this->service->login()){
+            try{
+                $response = $this->service->preBooking($booking, $resource, $timetable);
+                if(isset($response['status']) && $response['status'] === 'fail') {
+                    $this->displayMessage('Prebooking error: '.$timetable->name.' '.$response['message']);
+                    return ['status' => 'fail', 'message' => 'Prebooking error: '.$timetable->name.' '.$response['message']];
+                }
+                $this->displayMessage('Prebooking ok: '.$resource->name.' at '.$timetable->name, 'info');
+                return $response;
+            }catch(\Exception $e){
+                $this->displayMessage('Prebooking catch error: '.$timetable->name.' '.$e->getMessage());
+                return ['status' => 'fail', 'message' => 'Prebooking catch error: '.$timetable->name.' '.$e->getMessage()];
+            }
+        }else return ['status' => 'fail', 'message' => 'No logged'];
+    }
+
+    public function makeBooking($prebooking, Timetable $timetable){
         $this->displayMessage('Payment method '.$timetable->name, 'info');
         $prebooking = $this->paymentMethodSelection($prebooking);
         Log::notice('Payment method: '.(!is_array($prebooking) ? $prebooking : ''), is_array($prebooking) ? $prebooking : []);
@@ -124,29 +141,11 @@ class PlaytomicBooking extends Command
         return $prebooking;
     }
 
-    public function preBooking(Booking $booking, Resource $resource, Timetable $timetable)
-    {
-        if($this->service->login()){
-            try{
-                $response = $this->service->preBooking($booking, $resource, $timetable);
-                if(isset($response['status']) && $response['status'] === 'fail') {
-                    $this->displayMessage('Prebooking error: '.$timetable->name.' '.$response['message']);
-                    return ['status' => 'fail', 'message' => 'Prebooking error: '.$timetable->name.' '.$response['message']];
-                }
-                $this->line('Prebooking Ok');
-                return $response;
-            }catch(\Exception $e){
-                $this->displayMessage('Prebooking error: '.$timetable->name.' '.$e->getMessage());
-                return ['status' => 'fail', 'message' => 'Prebooking error: '.$timetable->name.' '.$e->getMessage()];
-            }
-        }else return ['status' => 'fail', 'message' => 'No logged'];
-    }
-
     public function paymentMethodSelection($prebooking)
     {
         try{
             if(!isset($prebooking["payment_intent_id"])) return ['status' => 'fail', 'message' => 'Payment method error: No payment_intent_id'];
-            $response = $this->service->paymentMethodSelection($prebooking["payment_intent_id"]);
+            $response = $this->service->paymentMethodSelection($prebooking);
             if(isset($response['status']) && $response['status'] === 'fail') {
                 $this->displayMessage('Payment method error: '.$response['message']);
                 return ['status' => 'fail', 'message' => 'Payment method error: ' . $response['message']];
@@ -191,14 +190,12 @@ class PlaytomicBooking extends Command
         }
     }
 
-    public function displayMessage($message, $type = 'error', $detail_log = []){
+    public function displayMessage($message, $type = 'error'){
         $this->log[] = $message;
         if($type === 'error') {
             $this->error($message);
-            Log::error($message, $detail_log);
         }else {
             $this->line($message);
-            Log::info($message, $detail_log);
         }
     }
 }
