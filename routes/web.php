@@ -36,11 +36,18 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 Route::get('send-mail', function () {
 
     $details = [
-        'title' => 'Mail from rodmayes.ddns.net',
+        'title' => 'Mail from '.env('APP_URL','rodmayes'),
         'body' => 'This is for testing email using smtp'
     ];
 
     \Mail::to(env('MAIL_TEST'))->send(new \App\Mail\MyTestMail($details));
 
     dd("Email is Sent.");
+});
+
+Route::get('datetime-iso', function(){
+    $booking = App\Models\Booking::all()->last();
+    $timetable = App\Models\Timetable::where('name', '18:00')->first();
+    $data = Carbon\Carbon::createFromFormat('d-m-Y H:i', $booking->started_at->format('d-m-Y').' '.$timetable->name, 'Europe/Andorra')->format(DateTime::ISO8601);
+    dd($data);
 });

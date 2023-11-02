@@ -1,6 +1,6 @@
 <div class="row">
     <div class="w-2/3 p-4 border border-gray-200 bg-gray-50 rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
-        <h1 class="h3">Create Club</h1>
+        <h1 class="h3">Create Timetable</h1>
         <form wire:submit.prevent="submit" class="pt-3">
             <div class="w-full mb-2">
                 <div class="{{ $errors->has('club.name') ? 'invalid' : '' }}">
@@ -36,16 +36,28 @@
                         </div>
                     </div>
                 </div>
-                <div class="col col-6">
-                    <div class="form-group {{ $errors->has('club.timetable_summer') ? 'invalid' : '' }}">
-                        <label class="form-label required" for="timetable_summer">{{ trans('playtomic.clubs.fields.timetable_summer') }}</label>
-                        <x-input  name="timetable_summer" id="timetable_summer" required wire:model.defer="club.timetable_summer"/>
-                        <div class="validation-message">
-                            {{ $errors->first('club.timetable_summer') }}
+                <div class="grid lg:grid-cols-2 md:grid-cols-2 xs:grid-cols-1 xl:grid-cols-1">
+                    <div class="mr-2">
+                        <div class="{{ $errors->has('timetable.playtomic_id') ? 'invalid' : '' }}">
+                            <label class="form-label required" for="playtomic_id">{{ trans('playtomic.timetable.fields.playtomic_id') }}</label>
+                            <x-input  name="playtomic_id" id="playtomic_id" required wire:model.defer="timetable.playtomic_id"/>
+                            <div class="validation-message">
+                                {{ $errors->first('timetable.playtomic_id') }}
+                            </div>
+                            <div class="help-block">
+                                {{ trans('playtomic.timetable.fields.playtomic_id_helper') }}
+                            </div>
                         </div>
-                        <div class="help-block">
-                            {{ trans('playtomic.clubs.fields.timetable_summer') }}
-                        </div>
+                    </div>
+                    <div class="pt-2>
+                     <div class="{{ $errors->has('timetable.playtomic_id') ? 'invalid' : '' }}">
+                    <label class="form-label required" for="playtomic_id">{{ trans('playtomic.timetable.fields.playtomic_id') }}</label>
+                    <x-input  name="playtomic_id" id="playtomic_id" required wire:model.defer="timetable.playtomic_id"/>
+                    <div class="validation-message">
+                        {{ $errors->first('timetable.playtomic_id') }}
+                    </div>
+                    <div class="help-block">
+                        {{ trans('playtomic.timetable.fields.playtomic_id_summer_helper') }}
                     </div>
                 </div>
             </div>
