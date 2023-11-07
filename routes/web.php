@@ -32,9 +32,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::post('user/set-avatar/{user}', [\App\Http\Livewire\User\Edit::class, 'uploadAvatar'])->name('user.set-avatar');
 });
 
+// CAPTCHA
+Route::get('refresh_captcha', function(){
+    return response()->json(['captcha'=> captcha_img()]);
+})->name('refresh_captcha');
 
 Route::get('send-mail', function () {
-
     $details = [
         'title' => 'Mail from '.env('APP_URL','rodmayes'),
         'body' => 'This is for testing email using smtp'

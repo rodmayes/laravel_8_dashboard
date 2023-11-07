@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         //$schedule->command('playtomic:booking-on-date rodmayes@gmail.com')->dailyAt('08:00');
         //$schedule->command('playtomic:bookings-status-closed')->dailyAt('01:00');
         //$schedule->command('schedule:run');
+        $schedule->command('telescope:prune')->weeklyOn(1,'5:00');
     }
 
     /**

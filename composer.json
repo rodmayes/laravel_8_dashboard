@@ -26,6 +26,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "livewire/livewire": "^2.12",
+        "mews/captcha": "^3.3",
         "nesbot/carbon": "^2.69",
         "opcodesio/log-viewer": "^3.1",
         "power-components/livewire-powergrid": "^2.4",
@@ -34,6 +35,7 @@
         "robersonfaria/laravel-database-schedule": "^1.3",
         "spatie/laravel-activitylog": "^3.17",
         "studio/laravel-totem": "^10.0",
+        "symfony/mailer": "^6.1",
         "vxm/laravel-async": "^2.2",
         "wireui/wireui": "^1.17"
     },
