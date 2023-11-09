@@ -40,9 +40,9 @@
                 <a class="block px-4 py-2 text-sm hover:bg-primary-100 hover:text-gray" href="{{ route('playtomic.bookings.create', $loopdate->format('Y-m-d')) }}">
                 @php
                     $day_key = array_search($loopdate->format('Y-m-d'),array_map(function($item){ return explode(" ",$item)[0];},array_column($bookings,'started_at')), true);
-                    echo $day_key."-";
+                    echo (int)$day_key."-";
                 @endphp
-                @if((int)$day_key >= 0)
+                @if(!epmty($day_key) && (int)$day_key >= 0)
                     <span class="text-yellow-600 font-bold" data-popover-target="popover-{{$loopdate}}">
                         {{ $loopdate->format('j') }}
                     </span>
