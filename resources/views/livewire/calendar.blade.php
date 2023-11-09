@@ -39,7 +39,7 @@
                      ">
                 <a class="block px-4 py-2 text-sm hover:bg-primary-100 hover:text-gray" href="{{ route('playtomic.bookings.create', $loopdate->format('Y-m-d')) }}">
                 @php
-                    $day_key = array_search($loopdate->format('Y-m-d'),array_map(function($item){ return explode(" ",$item)[0];},array_column($bookings,'started_at')), true);
+                    $day_key = array_search($loopdate->format('Y-m-d'),array_map(function($item){ return explode(" ",$item)[0];},array_column($bookings,'started_at')));
                     echo $day_key == 0;
                 @endphp
                 @if(!empty($day_key) && (int)$day_key >= 0)
