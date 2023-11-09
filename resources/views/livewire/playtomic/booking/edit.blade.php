@@ -121,7 +121,6 @@
     </div>
 </div>
 
-
 @push('scripts')
     <script>
         const datepickerEl = document.getElementById('started_at');

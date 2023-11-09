@@ -7,7 +7,7 @@
                 <div class="mr-5 {{ $errors->has('booking.started_at') ? 'is-invalid' : '' }}">
                     <label class="form-label required" for="started_at">{{ trans('playtomic.bookings.fields.started_at') }}</label>
                     <div inline-datepicker datepicker-buttons data-date="{{ isset($booking->started_at) ? $booking->started_at->format('d-m-Y') : ($start_date ?? now()->format('d-m-Y')) }}"
-                         datepicker-format="dd-mm-yyyy" wire:model="booking.started_at" required wire:ignore id="started_at"></div>
+                         datepicker-format="dd-mm-yyyy" wire:model="booking.started_at" required wire:ignore id="started_at" week-start="1"></div>
                     <small class="text-danger">
                         {{ $errors->first('booking.started_at') }}
                     </small>
