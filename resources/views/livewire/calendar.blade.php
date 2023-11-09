@@ -51,7 +51,7 @@
                         </div>
                         <div class="px-3 py-2">
                             <p>Date: {{$loopdate->format('Y-m-d')}}</p>
-                            <p>Hour's: @foreach(explode(",",$bookings[$day_key]['timetables']) as $timetable) {{\App\Models\Timetable::find($timetable)->activeName}} @endforeach </p>
+                            <p>Hour's: @foreach(explode(",",$bookings[$day_key]['timetables']) as $timetable) {{\App\Models\Timetable::find($timetable)->name}} @endforeach </p>
                         </div>
                         <div data-popper-arrow></div>
                     </div>
