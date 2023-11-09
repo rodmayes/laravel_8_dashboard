@@ -42,7 +42,7 @@
                     $day_key = array_search($loopdate->format('Y-m-d'),array_map(function($item){ return explode(" ",$item)[0];},array_column($bookings,'started_at')), true);
                     echo $day_key."-";
                 @endphp
-                @if(!empty($day_key))
+                @if($day_key)
                     <span class="text-yellow-600 font-bold" data-popover-target="popover-{{$loopdate}}">
                         {{ $loopdate->format('j') }}
                     </span>
