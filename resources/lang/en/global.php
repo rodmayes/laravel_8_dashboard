@@ -19,7 +19,7 @@ return [
     'forgot_password'                => 'Forgot your password?',
     'home'                           => 'Home',
     'list'                           => 'List',
-    'login'                          => 'Login',
+    'login'                          => 'Sign in',
     'login_email'                    => 'Email',
     'login_password'                 => 'Password',
     'login_password_confirmation'    => 'Password confirmation',

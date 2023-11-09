@@ -22,7 +22,7 @@
                      <form class="mt-4" method="POST" action="{{ route('login') }}">
                          @csrf
                          <div class="mb-3">
-                             <label class="mb-2 block text-xs font-semibold">Email</label>
+                             <label class="mb-2 block text-xs font-semibold">{{ trans('global.login_email') }}</label>
                              <input id="email"
                                     name="email"
                                     type="text"
@@ -40,7 +40,7 @@
                          </div>
 
                          <div class="mb-3">
-                             <label class="mb-2 block text-xs font-semibold">Password</label>
+                             <label class="mb-2 block text-xs font-semibold">{{ trans('global.login_password') }}</label>
                              <input id="password"
                                     name="password"
                                     type="password"
@@ -63,11 +63,11 @@
                                  <label for="remember" class="mr-auto text-xs font-semibold">
                                      {{ trans('global.remember_me') }}
                                  </label>
-                             <a href="{{ route('password.request') }}" class="text-xs font-semibold text-teal-700">Forgot password?</a>
+                             <a href="{{ route('password.request') }}" class="text-xs font-semibold text-teal-700">{{ trans('global.forgot_password') }}</a>
                          </div>
 
                          <div class="mb-3">
-                             <button class="mb-1.5 block w-full text-center text-white bg-teal-400 hover:bg-teal-900 px-2 py-1.5 rounded-md">{{ trans('global.login') }}</button>
+                             <button class="mb-1.5 block w-full text-center text-white bg-green-600 hover:bg-green-400 px-2 py-1.5 rounded-md">{{ trans('global.login') }}</button>
                          </div>
 
                          <!-- Footer -->
@@ -81,7 +81,7 @@
                                         class="block w-full rounded-md border border-gray-300 focus:border-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-700 py-1 px-1.5 text-gray-500"
                                  >
                                  <button type="button" title="Refresh captcha"
-                                         class="btn-refresh flex-shrink-0 inline-flex justify-center items-center gap-x-2 text-center text-white bg-teal-400 hover:bg-teal-900 px-2 py-1.5 rounded-md">
+                                         class="btn-refresh flex-shrink-0 inline-flex justify-center items-center gap-x-2 text-center text-white bg-green-600 hover:bg-green-400 px-2 py-1.5 rounded-md">
                                      <i class="flex-shrink-0 h-4 w-4  fas fa-sync"></i>
                                  </button>
                              </div>
