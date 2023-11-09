@@ -14,7 +14,6 @@
     </div>
 
     <div class="flex flex-wrap text-xs text-center transition" wire:loading.class="opacity-20">
-
         <div class="flex w-full py-2">
             <div style="width: 14.28%">Mo</div>
             <div style="width: 14.28%">Tu</div>
@@ -24,7 +23,6 @@
             <div style="width: 14.28%">Sa</div>
             <div style="width: 14.28%">Su</div>
         </div>
-
         @php
             $startdate = $date->clone()->startOfMonth()->startOfWeek()->subDay()->addDAy(1);
             $enddate = $date->clone()->endOfMonth()->endOfWeek()->subDay()->addDay(1);
@@ -40,7 +38,10 @@
                      @endif
                      ">
                 <a class="block px-4 py-2 text-sm hover:bg-primary-100 hover:text-gray" href="{{ route('playtomic.bookings.create', $loopdate->format('Y-m-d')) }}">
-                @if(in_array($loopdate->format('Y-m-d'),array_map(function($item){ return explode(" ",$item)[0];},array_column($bookings,'started_at')),true))
+                @php
+                    $day_key = array_search($loopdate->format('Y-m-d'),array_map(function($item){ return explode(" ",$item)[0];},array_column($bookings,'started_at')));
+                @endphp
+                @if($day_key)
                     <span class="text-yellow-600 font-bold" data-popover-target="popover-{{$loopdate}}">
                         {{ $loopdate->format('j') }}
                     </span>
@@ -50,7 +51,7 @@
                         </div>
                         <div class="px-3 py-2">
                             <p>Date: {{$loopdate->format('Y-m-d')}}</p>
-                            <p>Hour's: </p>
+                            <p>Hour's: @foreach(explode(",",$bookings[$day_key]['timetables']) as $timetable) {{\App\Models\Timetable::find($timetable)->activeName}} @endforeach </p>
                         </div>
                         <div data-popper-arrow></div>
                     </div>
