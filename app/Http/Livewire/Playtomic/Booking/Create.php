@@ -36,7 +36,7 @@ class Create extends Component
 
     public function mount($start_date = null, Booking $booking)
     {
-        $this->start_date = $start_date;
+        $this->start_date = Carbon::createFromFormat('Y-m-d',$start_date)->format('d-m-Y');
         $this->booking = $booking;
         $this->initListsForFields();
     }
