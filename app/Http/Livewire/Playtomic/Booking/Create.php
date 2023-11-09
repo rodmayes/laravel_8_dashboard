@@ -19,6 +19,7 @@ class Create extends Component
     public $booking;
     public $resources = [];
     public $timetables = [];
+    public $start_date = null;
 
     protected $listeners = ['dateSelected' => 'updateDate'];
 
@@ -33,8 +34,9 @@ class Create extends Component
         }
     }
 
-    public function mount(Booking $booking)
+    public function mount($start_date = null, Booking $booking)
     {
+        $this->start_date = $start_date;
         $this->booking = $booking;
         $this->initListsForFields();
     }

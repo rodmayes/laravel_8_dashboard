@@ -69,7 +69,7 @@ class Index extends Component
         $this->selected_booking = new Booking(); $this->selected_booking->id = 0;
         $this->sortBy            = 'started_at';
         $this->sortDirection     = 'desc';
-        $this->perPage           = 25;
+        $this->perPage           = 10;
         $this->perClub           = -1;
         $this->paginationOptions = collect(config('project.pagination.options'))->pluck('id','name');
         $this->orderable         = (new User())->orderable;
@@ -88,9 +88,10 @@ class Index extends Component
 
         if(!isset($this->selected_booking->id)){ $this->selected_booking = new Booking(); $this->selected_booking->id = 0; }
         $clubs = Club::all();
+        $allBookings = $query->get();
         $bookings = $query->paginate($this->perPage);
 
-        return view('livewire.playtomic.booking.index', compact('query', 'bookings', 'clubs'));
+        return view('livewire.playtomic.booking.index', compact('query', 'bookings', 'clubs', 'allBookings'));
     }
 
     public function deleteSelected()

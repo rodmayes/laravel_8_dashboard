@@ -47,7 +47,7 @@
                         </li>
                     </ul>
                 </div>
-                <button class="bg-emerald-500 hover:bg-blue-500 text-white  hover:text-white py-2 px-4 mr-2 border rounded" wire:click="$emit('refreshComponent')" data-toggle="tooltip" data-placement="bottom" title="Refresh data">
+                <button class="bg-emerald-500 hover:bg-blue-500 text-white hover:text-white py-2 px-4 mr-2 border rounded" wire:click="$emit('refreshComponent')" data-toggle="tooltip" data-placement="bottom" title="Refresh data">
                     <i class="fas fa-sync"></i>
                 </button>
             </div>
@@ -102,7 +102,7 @@
                                 </button>
                             @endcan
                             @can('user_edit')
-                                <a class="px-2 py-2 text-xs text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('playtomic.timetables.edit', $timetable) }}" title="{{ trans('global.edit') }}">
+                                <a class="px-2 py-2 text-xs text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('playtomic.timetables.edit', $timetable) }}" title="{{ trans('global.edit') }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             @endcan

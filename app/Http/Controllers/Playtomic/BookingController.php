@@ -35,10 +35,10 @@ class BookingController extends Controller
         return view('livewire.playtomic.booking.playtomic-calendar', compact('bookings'));
     }
 
-    public function create()
+    public function create($start_date = null)
     {
         abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        return view('playtomic.booking.create');
+        return view('playtomic.booking.create', compact('start_date'));
     }
 
     public function edit(Booking $booking)

@@ -2,6 +2,9 @@
     <div wire:loading.delay class="col-12 alert alert-info">
         {{trans('global.datatables.loading')}}...
     </div>
+    <div>
+        @livewire('calendar', [$allBookings->toArray()])
+    </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="flex items-center justify-between bg-white dark:bg-gray-900">
             <div class="flex">
@@ -171,7 +174,7 @@
                         </button>
                         @endcan
                         @can('user_edit')
-                            <a class="px-2 py-2 text-xs mr-1 mb-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('playtomic.bookings.edit', $booking) }}" title="{{ trans('global.edit') }}">
+                            <a class="px-2 py-2 text-xs mr-1 mb-2 text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('playtomic.bookings.edit', $booking) }}" title="{{ trans('global.edit') }}">
                                 <i class="fas fa-edit"></i>
                             </a>
                         @endcan
@@ -305,3 +308,7 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+
+@endpush
