@@ -1,4 +1,4 @@
-<div>
+<div class="bg-gray-200 p3">
     <div class="px-2 py-1 flex w-full">
         <div class="w-4/6 font-bold">
             {{ $date->format('F Y') }}
@@ -37,7 +37,7 @@
                          opacity-50
                      @endif
                      ">
-                <a class="block px-4 py-2 text-sm hover:bg-primary-100 hover:text-gray" href="{{ route('playtomic.bookings.create', $loopdate->format('Y-m-d')) }}">
+                <a class="block px-4 py-2 text-sm hover:bg-gray-600 hover:text-gray" href="{{ route('playtomic.bookings.create', $loopdate->format('Y-m-d')) }}">
                 @php
                     $items = array_map(function($item){ return explode(" ",$item)[0];},array_column($bookings,'started_at'));
                 @endphp
