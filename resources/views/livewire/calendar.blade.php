@@ -1,4 +1,4 @@
-<div class="bg-gray-200 p3">
+<div class="bg-gray-200 p-3">
     <div class="px-2 py-1 flex w-full">
         <div class="w-4/6 font-bold">
             {{ $date->format('F Y') }}
