@@ -14,14 +14,14 @@
     </div>
 
     <div class="flex flex-wrap text-xs text-center transition" wire:loading.class="opacity-20">
-        <div class="flex w-full py-2">
-            <div style="width: 14.28%">Mo</div>
-            <div style="width: 14.28%">Tu</div>
-            <div style="width: 14.28%">We</div>
-            <div style="width: 14.28%">Th</div>
-            <div style="width: 14.28%">Fr</div>
-            <div style="width: 14.28%">Sa</div>
-            <div style="width: 14.28%">Su</div>
+        <div class="flex w-full bg-yellow-50 h6">
+            <div class="border" style="width: 14.28%">Mo</div>
+            <div class="border" style="width: 14.28%">Tu</div>
+            <div class="border" style="width: 14.28%">We</div>
+            <div class="border" style="width: 14.28%">Th</div>
+            <div class="border" style="width: 14.28%">Fr</div>
+            <div class="border" style="width: 14.28%">Sa</div>
+            <div class="border" style="width: 14.28%">Su</div>
         </div>
         @php
             $startdate = $date->clone()->startOfMonth()->startOfWeek()->subDay()->addDAy(1);
@@ -32,12 +32,15 @@
 
         @while ($loopdate < $enddate)
             <div style="width: 14.28%"
-                 class="h-10 hover:font-bold
+                 class="h8 hover:font-bold border
                      @if ($loopdate < $month->startOfMonth() || $loopdate > $month->endOfMonth())
                          opacity-50
                      @endif
+                     @if($loopdate->isCurrentWeek())
+                        bg-gray-50
+                     @endif
                      ">
-                <a class="block px-4 py-2 text-sm hover:bg-gray-600 hover:text-gray" href="{{ route('playtomic.bookings.create', $loopdate->format('Y-m-d')) }}">
+                <a class="block px-4 py-1 text-sm hover:bg-gray-600 hover:text-gray" href="{{ route('playtomic.bookings.create', $loopdate->format('Y-m-d')) }}">
                 @php
                     $items = array_map(function($item){ return explode(" ",$item)[0];},array_column($bookings,'started_at'));
                 @endphp
