@@ -101,15 +101,23 @@
                             {{ trans('playtomic.bookings.fields.status_helper') }}
                         </div>
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" value="0" class="sr-only peer" id="ck_public" name="ck_public" wire:model="booking.public" checked>
-                        <div
-                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                        <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ trans('playtomic.bookings.fields.is_public') }}</span>
-                    </label>
+                    <div class="w-full grid grid-cols-3 mb-2 align-middle">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="0" class="sr-only peer" id="ck_public" name="ck_public" wire:model="booking.public" checked>
+                            <div
+                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ trans('playtomic.bookings.fields.is_public') }}</span>
+                        </label>
+                        <p>Is booked: {{ $booking->booked_at ? $booking->booked_at->format('d-m-Y H:i:s') : null }}</p>
+                        <button type="button"
+                                class="float-right px-3 py-1 text-xs text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-center mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
+                                wire:click="toggleBooked">
+                            @if($booking->isBooked) Set no booked @else Set Booked @endif
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="w-full items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div class="w-full items-center p-6 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button type="submit" class="float-right text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     {{ trans('global.save') }}
                 </button>

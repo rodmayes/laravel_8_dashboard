@@ -126,4 +126,20 @@ class Edit extends Component
             ]
         );
     }
+
+    public function toggleBooked(){
+        try{
+            $this->booking->toggleBooked();
+            $text = $this->booking->isBooked ? "booked" : 'no booked';
+            $this->notification()->success(
+                $title = 'Item updated',
+                $description = 'This items has been '.$text.' successfully'
+            );
+        }catch (\Exception $e){
+            $this->notification()->error(
+                $title = 'Error !!!',
+                $description = $e->getMessage()
+            );
+        }
+    }
 }

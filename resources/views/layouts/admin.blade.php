@@ -46,9 +46,10 @@
     @stack('scripts')
 <script>
     $(function () {
-        if ($('[data-toggle="tooltip"]').length > 0) {
-            $('[data-toggle="tooltip"]').tooltip();
-        }
+        //tooltip = $('[data-toggle="tooltip"]');
+        //if (tooltip.length > 0) {
+        //    tooltip.tooltip();
+        //}
     })
 </script>
 @include('components.end')

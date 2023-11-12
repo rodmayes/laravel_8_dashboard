@@ -28,7 +28,8 @@ class Booking extends Model
         'started_at',
         'timetable_id',
         'created_by',
-        'public'
+        'public',
+        'booked_at'
     ];
 
     public $filterable = [
@@ -42,14 +43,16 @@ class Booking extends Model
         'timetables',
         'created_by',
         'public',
-        'booking_preference'
+        'booking_preference',
+        'booked_at'
     ];
 
     protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
-        'started_at'
+        'started_at',
+        'booked_at'
     ];
 
     protected $fillable = [
@@ -64,7 +67,8 @@ class Booking extends Model
         'started_at',
         'created_by',
         'public',
-        'booking_preference'
+        'booking_preference',
+        'booked_at'
     ];
 
     public function club()
@@ -96,6 +100,10 @@ class Booking extends Model
         return $this->status === 'on-time';
     }
 
+    public function getIsBookedAttribute(){
+        return !is_null($this->booked_at);
+    }
+
     public function scopeByClub($query, $value){
         return $query->where('club_id', $value)
             ->orWhere('public', 1);
@@ -113,6 +121,14 @@ class Booking extends Model
         return $query->where('status', '<>', 'closed');
     }
 
+    public function scopeBooked($query){
+        return $query->whereNotNull('booked');
+    }
+
+    public function scopeNoBooked($query){
+        return $query->whereNull('booked');
+    }
+
     public function setStatusTimeOut(){
         $this->status = 'time-out';
         return $this->save();
@@ -125,6 +141,16 @@ class Booking extends Model
 
     public function setStatusOnTime(){
         $this->status = 'on-time';
+        return $this->save();
+    }
+
+    public function setBooked(){
+        $this->booked_at = now();
+        return $this->save();
+    }
+
+    public function toggleBooked(){
+        $this->booked_at = is_null($this->booked_at) ? now() : null;
         return $this->save();
     }
 }

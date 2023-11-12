@@ -12,7 +12,7 @@ class CreatePlaytomicClubTable extends Migration
             $table->id();
             $table->string('name', 50);
             $table->string('playtomic_id', 100);
-            $table->integer('days_min_booking')->default(3)->default('Els díes abans que permeten fer una reserva');
+            $table->integer('days_min_booking')->default(3)->comment('Els díes abans que permeten fer una reserva');
             $table->timestamps();
             $table->softDeletes();
         });

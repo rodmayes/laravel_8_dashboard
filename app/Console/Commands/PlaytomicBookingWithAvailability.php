@@ -96,6 +96,7 @@ class PlaytomicBookingWithAvailability extends Command
                     if (!isset($response['error'])) {
                         Mail::to($this->user)->send(new PlaytomicBookingConfirmation($booking, $resource, $timetable, $response));
                         $this->displayMessage('Mail sent to ' . $this->user->email, 'info');
+                        $booking->setBooked();
                         $booked = true;
                         break;
                     } else {

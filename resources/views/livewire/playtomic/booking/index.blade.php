@@ -152,17 +152,23 @@
                 </td>
                 <td class="px-2 py-2">
                     @if($booking->booking_preference === 'timetable')
-                        <span class="text-pink-400 mr-2" title="Preference {{$booking->booking_preference}}" data-toggle="tooltip" data-placement="top"><i class="fas fa-clock"></i></span>
+                        <span class="text-pink-400 mr-1" title="Preference {{$booking->booking_preference}}" data-toggle="tooltip" data-placement="top"><i class="fas fa-clock"></i></span>
                     @else
-                        <span class="text-blue-500 mr-2" title="Preference {{$booking->booking_preference}}" data-toggle="tooltip" data-placement="top" title="On Time"><i class="fas fa-table-tennis"></i></span>
+                        <span class="text-blue-500 mr-1" title="Preference {{$booking->booking_preference}}" data-toggle="tooltip" data-placement="top" title="On Time"><i class="fas fa-table-tennis"></i></span>
                     @endif
 
                     @if($booking->status === 'on-time')
-                            <span class="text-green-800" data-toggle="tooltip" data-placement="top" title="On Time"><i class="fas fa-calendar"></i></span>
+                            <span class="text-green-800 mr-1" data-toggle="tooltip" data-placement="top" title="On Time"><i class="fas fa-calendar"></i></span>
                     @elseif($booking->status === 'time-out')
-                            <span class="text-indigo-900" data-toggle="tooltip" data-placement="top" title="Time out"><i class="fas fa-calendar-times"></i></span>
+                            <span class="text-indigo-900 mr-1" data-toggle="tooltip" data-placement="top" title="Time out"><i class="fas fa-calendar-times"></i></span>
                     @else
-                            <span class="text-gray-800" data-toggle="tooltip" data-placement="top" title="Closed"><i class="fas fa-times-circle"></i></span>
+                            <span class="text-gray-800 mr-1" data-toggle="tooltip" data-placement="top" title="Closed"><i class="fas fa-times-circle"></i></span>
+                    @endif
+
+                    @if($booking->isBooked)
+                        <span class="text-green-800" data-toggle="tooltip" data-placement="top" title="Booked!!"><i class="far fa-smile-beam"></i></span>
+                    @else
+                        <span class="text-red-800" data-toggle="tooltip" data-placement="top" title="No Booked!!"><i class="far fa-dizzy"></i></span>
                     @endif
                 </td>
                 <td class="px-2 py-2">
