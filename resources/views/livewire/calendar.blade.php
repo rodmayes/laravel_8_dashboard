@@ -39,6 +39,9 @@
                      @if($loopdate->isCurrentWeek())
                         bg-gray-50
                      @endif
+                     @if($loopdate->isToday())
+                        bg-yellow-400 text-white
+                     @endif
                      ">
                 <a class="block px-4 py-1 text-sm hover:bg-gray-600 hover:text-gray" href="{{ route('playtomic.bookings.create', $loopdate->format('Y-m-d')) }}">
                 @php
