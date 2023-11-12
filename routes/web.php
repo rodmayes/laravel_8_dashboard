@@ -19,6 +19,7 @@ Auth::routes(['register' => false]);
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('logs');
 Route::get('schedule', [ScheduleController::class, 'index'])->name('database-schedule');
 Route::get('console', [\App\Http\Controllers\ConsoleController::class, 'index'])->name('console');
+Route::get('user/edit-noadmin', [UserController::class, 'editNoAdmin'])->name('user.edit-noadmin');
 
 // ADMINISTRATION
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function () {
@@ -26,9 +27,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::resource('permissions', PermissionController::class, ['except' => ['store', 'update', 'destroy']]);
     Route::resource('roles', RoleController::class, ['except' => ['store', 'update', 'destroy']]);
     Route::resource('users', UserController::class, ['except' => ['store', 'update', 'destroy'], 'middleware' => ['can:user_management_access']]);
-    //Route::resource('contact-companies', ContactCompanyController::class, ['except' => ['store', 'update', 'destroy']]);
-    //Route::resource('contact-contacts', ContactContactController::class, ['except' => ['store', 'update', 'destroy']]);
-    //Route::resource('transactions', TransactionController::class, ['except' => ['store', 'update', 'destroy']]);
     Route::post('user/set-avatar/{user}', [\App\Http\Livewire\User\Edit::class, 'uploadAvatar'])->name('user.set-avatar');
 });
 

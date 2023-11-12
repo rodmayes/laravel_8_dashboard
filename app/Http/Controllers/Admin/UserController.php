@@ -39,4 +39,11 @@ class UserController extends Controller
 
         return view('admin.user.show', compact('user'));
     }
+
+    public function editNoAdmin()
+    {
+        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return view('admin.user.edit-noadmin');
+    }
 }

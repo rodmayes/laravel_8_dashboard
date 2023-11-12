@@ -73,6 +73,7 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
     }
 
     public function preBooking(Booking $booking, Resource $resource, Timetable $timetable = null){
+        Log::info('Preboooking api at '.now()->format('d-m-Y H:i:s'));
         $timetable_summer = $booking->club->timetableSummerActive;
         $selected_timetable = $timetable ?: $booking->timetable;
         $time = str_replace("%3A",":",($timetable_summer ? $selected_timetable->playtomic_id_summer : $selected_timetable->playtomic_id));

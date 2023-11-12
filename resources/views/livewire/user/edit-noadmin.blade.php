@@ -66,25 +66,6 @@
                 </div>
             </div>
         </div>
-        <div class="w-full mt-2">
-            <div class="form-group {{ $errors->has('roles') ? 'invalid' : '' }}">
-                <label class="form-label required" for="roles">{{ trans('cruds.user.fields.roles') }}</label>
-                <x-select
-                    placeholder="Select many roles"
-                    multiselect
-                    :options="$this->listsForFields['roles']"
-                    wire:model.defer="roles"
-                    option-value="id"
-                    option-label="title"
-                />
-                <div class="text-danger">
-                    {{ $errors->first('roles') }}
-                </div>
-                <div class="help-block">
-                    {{ trans('cruds.user.fields.roles_helper') }}
-                </div>
-            </div>
-        </div>
         <div class="w-full mt-6">
             <h1 class="h5">
                 Playtomic data
