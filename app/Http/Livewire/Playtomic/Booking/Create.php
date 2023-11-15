@@ -36,7 +36,7 @@ class Create extends Component
 
     public function mount($start_date = null, Booking $booking)
     {
-        $this->start_date = is_null($start_date) ? Carbon::now()->addDays((int)$this->booking->club->days_min_booking) : Carbon::createFromFormat('Y-m-d',$start_date)->format('d-m-Y');
+        $this->start_date = is_null($start_date) ? null;
         $this->booking = $booking;
         $this->initListsForFields();
     }
