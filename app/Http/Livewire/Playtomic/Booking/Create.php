@@ -36,7 +36,7 @@ class Create extends Component
 
     public function mount($start_date = null, Booking $booking)
     {
-        $this->start_date = is_null($start_date) ? null;
+        $this->start_date = !is_null($start_date) ? $start_date : null;
         $this->booking = $booking;
         $this->initListsForFields();
     }
