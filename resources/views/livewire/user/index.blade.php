@@ -139,7 +139,6 @@
                 @endforelse
             </tbody>
         </table>
-        </table>
         <nav class="flex items-center justify-between p-4" aria-label="Table navigation">
             <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> <span class="font-semibold text-gray-900 dark:text-white">{{$users->currentPage()}}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{ $users->total() }}</span></span>
             @if($this->selectedCount)

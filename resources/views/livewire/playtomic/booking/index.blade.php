@@ -88,6 +88,7 @@
                         <label for="checkbox-all-search" class="sr-only">checkbox</label>
                     </div>
                 </th>
+                <th scope="col" class="p-4">Avatar</th>
                 <th scope="col" class="px-6 py-3">
                     {{ trans('playtomic.bookings.fields.id') }}
                     @include('components.table.sort', ['field' => 'id'])
@@ -124,6 +125,9 @@
                         <input type="checkbox" value="{{ $booking->id }}" wire:model="selected" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                     </div>
                 </td>
+                <td class="px-4 py-4">
+                    <img src="{{ asset($booking->creator->getAvatar()) }}" class="w-full h-full object-cover" wire:model="image">
+                </td>
                 <td class="px-2 py-2">{{ $booking->id }}</td>
                 <td class="px-2 py-2 text-xs">
                     {{ $booking->started_at->format('d-m-Y') }} ({{ ucfirst($booking->started_at->locale('es')->dayName) }})
@@ -134,9 +138,20 @@
                     @endforeach
                 </td>
                 <td class="px-2 py-2">
-                    @foreach(explode(",",$booking->resources) as $id)
-                        <span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ \App\Models\Resource::find($id)->name }}</span>
-                    @endforeach
+                    <span class="text-yellow-600 font-bold" data-popover-target="popover-table-{{$booking->id}}">
+                        Resources
+                    </span>
+                    <div data-popover id="popover-table-{{$booking->id}}" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
+                        <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
+                            <h3 class="font-semibold text-gray-900 dark:text-white">Resources</h3>
+                        </div>
+                        <div class="px-3 py-2">
+                            @foreach(explode(",",$booking->resources) as $id)
+                                <p><span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ \App\Models\Resource::find($id)->name }}</span></p>
+                            @endforeach
+                        </div>
+                        <div data-popper-arrow></div>
+                    </div>
                 </td>
                 <td class="px-2 py-2">
                     {{ $booking->club->name }}

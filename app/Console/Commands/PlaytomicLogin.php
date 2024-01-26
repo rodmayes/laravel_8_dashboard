@@ -30,6 +30,7 @@ class PlaytomicLogin extends Command
     protected $description = 'Login to PLaytomic and set Token to database';
     private $service;
     private $user;
+    private $log;
 
     /**
      * Create a new command instance.

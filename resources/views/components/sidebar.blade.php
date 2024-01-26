@@ -26,7 +26,7 @@
             <!-- link -->
             <a href="{{ route("playtomic.timetables.index") }}" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500
            @if(Route::is('playtomic.timetables.*')) text-warning-600 @endif">
-                <i class="fad fa-medal text-xs mr-2"></i>
+                <i class="fad fa-clock text-xs mr-2"></i>
                 {{ trans('playtomic.timetable.title') }}
             </a>
             <!-- end link -->
@@ -67,7 +67,7 @@
         <!-- link -->
         <a href="{{ route("admin.users.index") }}" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500
         @if(Route::is('admin.users.*')) text-warning-600 @endif">
-            <i class="fad fa-medal text-xs mr-2"></i>
+            <i class="fad fa-users text-xs mr-2"></i>
             {{ trans('cruds.user.title') }}
         </a>
         <!-- end link -->
@@ -76,7 +76,7 @@
         <!-- link -->
         <a href="{{ route("admin.roles.index") }}" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500
         @if(Route::is('admin.roles.*')) text-warning-600 @endif">
-            <i class="fad fa-table-tennis text-xs mr-2"></i>
+            <i class="fad fa-user-tag text-xs mr-2"></i>
             {{ trans('cruds.role.title') }}
         </a>
         <!-- end link -->
@@ -85,7 +85,7 @@
         <!-- link -->
         <a href="{{ route("admin.permissions.index") }}" class="mb-3 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500
         @if(Route::is('admin.permissions.*')) text-warning-600 @endif">
-            <i class="fad fa-baseball-ball text-xs mr-2"></i>
+            <i class="fad fa-user-shield text-xs mr-2"></i>
             {{ trans('cruds.permission.title') }}
         </a>
         <!-- end link -->

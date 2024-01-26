@@ -1,30 +1,18 @@
 @extends('layouts.admin')
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">
-                        Logs
-                    </h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Home</a></li>
-                        <li class="breadcrumb-item active"> Logs</li>
-                    </ol>
-                </div>
-            </div>
+<div class="grid">
+    <div class="col-sm-12 col-log-12">
+        <h1 class="m-0">
+            Logs
+        </h1>
+    </div>
+
+
+    <div class="card">
+        <div wire:loading.delay class="col-12 alert alert-info">
+            {{trans('global.datatables.loading')}}...
         </div>
-    </section>
-
-    <section class="content">
-        <div class="container-fluid">
-
-      <div class="row">
-        <div class="col sidebar mb-3">
-          <h5><i class="fa fa-calendar" aria-hidden="true"></i> Laravel Log Viewer</h5>
-          <p class="text-muted"><i>by Rap2h</i></p>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
           <div class="list-group div-scroll">
             @foreach($folders as $folder)
@@ -42,14 +30,13 @@
               </a>
             @endforeach
           </div>
-        </div>
-        <div class="col-10 table-container">
+
           @if ($logs === null)
             <div>
               Log file >50M, please download it.
             </div>
           @else
-            <table id="table-log" class="table table-striped" data-ordering-index="{{ $standardFormat ? 2 : 0 }}">
+            <table id="table-log" class="table table-striped w-full text-sm text-left text-gray-500 dark:text-gray-400" data-ordering-index="{{ $standardFormat ? 2 : 0 }}">
               <thead>
               <tr>
                 @if ($standardFormat)
@@ -119,9 +106,7 @@
             @endif
           </div>
         </div>
-      </div>
-        </div>
-    </section>
+    </div>
 @endsection
 @push('styles')
     <link rel="stylesheet"
@@ -206,10 +191,11 @@
     </script>
 @endpush
     @push('css')
-        <link rel="stylesheet"
+        <!--<link rel="stylesheet"
               href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
               crossorigin="anonymous">
+              -->
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
         <style>
             body {
