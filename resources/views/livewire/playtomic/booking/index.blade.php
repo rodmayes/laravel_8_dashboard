@@ -126,7 +126,7 @@
                     </div>
                 </td>
                 <td class="px-4 py-4 w-8 h-8 overflow-hidden rounded-full">
-                    <img src="{{ asset($booking->creator->getAvatar()) }}" class="w-full h-full object-cover" wire:model="image">
+                    <img src="{{ asset($booking->creator->getAvatar()) }}" class="object-cover" wire:model="image">
                 </td>
                 <td class="px-2 py-2">{{ $booking->id }}</td>
                 <td class="px-2 py-2 text-xs">
