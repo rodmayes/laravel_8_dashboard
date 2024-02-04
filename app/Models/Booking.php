@@ -116,11 +116,6 @@ class Booking extends Model
         return $this->player->name;
     }
 
-
-    public function getPlayerEmailAttribute(){
-        return $this->player->email;
-    }
-
     public function scopeByClub($query, $value){
         return $query->where('club_id', $value)
             ->orWhere('public', 1);
