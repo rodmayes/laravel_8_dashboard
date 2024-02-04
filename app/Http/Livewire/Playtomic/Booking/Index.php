@@ -22,8 +22,8 @@ class Index extends Component
     use WithConfirmation;
     use Actions;
 
-    public $perPage;
-    public $perClub;
+    public $perPage = 10;
+    public $perClub = -1;
     public $orderable;
     public $search = '';
     public $selected = [];
@@ -42,6 +42,8 @@ class Index extends Component
         'sortDirection' => [
             'except' => 'desc',
         ],
+        'perPage',
+        'perClub'
     ];
 
     public function getSelectedCountProperty()
@@ -66,11 +68,9 @@ class Index extends Component
 
     public function mount()
     {
-        $this->selected_booking = new Booking(); $this->selected_booking->id = 0;
+        $this->selected_booking  = new Booking(); $this->selected_booking->id = 0;
         $this->sortBy            = 'started_at';
         $this->sortDirection     = 'desc';
-        $this->perPage           = 10;
-        $this->perClub           = -1;
         $this->paginationOptions = collect(config('project.pagination.options'))->pluck('id','name');
         $this->orderable         = (new User())->orderable;
     }
@@ -143,15 +143,9 @@ class Index extends Component
     public function truncateResources(){
         try{
             DB::table('playtomic_booking')->truncate();
-            $this->notification()->success(
-                $title = 'Action',
-                $description = 'Bookings truncated!'
-            );
+            $this->notification()->success('Action','Bookings truncated!');
         }catch (\Exception $e){
-            $this->notification()->error(
-            $title = 'Error !!!',
-            $description = $e->getMessage()
-            );
+            $this->notification()->error('Error !!!', $e->getMessage());
         }
     }
 
