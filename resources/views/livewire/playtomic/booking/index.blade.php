@@ -26,7 +26,7 @@
                             {{ trans('playtomic.resources.per_club') }}:
                         </label>
                         <select wire:model="perClub" class="block appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option value="-1">Select a club</option>
+                            <option value="-1">{{ trans('playtomic.bookings.select-club') }}</option>
                             @foreach($clubs as $club)
                                 <option value="{{ $club->id }}">{{ $club->name }}</option>
                             @endforeach
@@ -36,7 +36,7 @@
                 <div class="flex-initial px-4 py-2 m-2">
                     <div>
                         <label class="block text-gray-700 font-bold md:text-right mb-1 md:mb-0 pr-4" for="perPage">
-                            Search:
+                            {{ trans('playtomic.bookings.search') }}:
                         </label>
                         <input type="text" id="table-search" wire:model.debounce.300ms="search" placeholder="Search"
                                class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" />
@@ -58,12 +58,12 @@
                         </li>
                         <li>
                             <a class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-primary-100 hover:text-gray" href="{{ route('playtomic.bookings.booking') }}">
-                                <i class="fa fa-calendar-check"></i> Booking
+                                <i class="fa fa-calendar-check"></i> {{ trans('playtomic.bookings.title_singular') }}
                             </a>
                         </li>
                         <li>
                             <button class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-primary-100 hover:text-gray" wire:click="truncateResources">
-                                <i class="fa fa-times"></i> Truncate data
+                                <i class="fa fa-times"></i> {{ trans('playtomic.bookings.truncate-data') }}
                             </button>
                         </li>
                         <li>
@@ -88,7 +88,7 @@
                         <label for="checkbox-all-search" class="sr-only">checkbox</label>
                     </div>
                 </th>
-                <th scope="col" class="p-4">Avatar</th>
+                <th scope="col" class="p-4">{{ trans('playtomic.bookings.fields.player') }}</th>
                 <th scope="col" class="px-6 py-3">
                     {{ trans('playtomic.bookings.fields.id') }}
                     @include('components.table.sort', ['field' => 'id'])
@@ -108,10 +108,10 @@
                     @include('components.table.sort', ['field' => 'club_id'])
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Links create
+                    {{ trans('playtomic.bookings.links_create') }}
                 </th>
                 <th scope="col" class="px-6 py-3">
-                  Options
+                    {{ trans('playtomic.bookings.options') }}
                 </th>
                 <th scope="col" class="px-6 py-3">
                 </th>
@@ -143,11 +143,11 @@
                 </td>
                 <td class="px-2 py-2">
                     <span class="text-yellow-600 font-bold" data-popover-target="popover-table-{{$booking->id}}">
-                        Resources
+                        {{ trans('playtomic.bookings.resources') }}
                     </span>
                     <div data-popover id="popover-table-{{$booking->id}}" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
                         <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
-                            <h3 class="font-semibold text-gray-900 dark:text-white">Resources</h3>
+                            <h3 class="font-semibold text-gray-900 dark:text-white">{{ trans('playtomic.bookings.resources') }}</h3>
                         </div>
                         <div class="px-3 py-2">
                             @foreach(explode(",",$booking->resources) as $id)
@@ -226,7 +226,7 @@
             </tr>
             @empty
                 <tr>
-                    <td colspan="10">No entries found.</td>
+                    <td colspan="10">{{ trans('playtomic.bookings.no_entries_found') }}</td>
                 </tr>
             @endforelse
             </tbody>
@@ -280,11 +280,11 @@
                             @if($selected_booking->id != 0)
                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.bookings.fields.status') }}: </label>
                                 @if($selected_booking->status === 'on-time')
-                                    <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">On time</span>
+                                    <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ trans('playtomic.bookings.on-time') }}</span>
                                 @elseif($selected_booking->status === 'time-out')
-                                    <span class="bg-indigo-100 text-indigo-900 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300">Time out</span>
+                                    <span class="bg-indigo-100 text-indigo-900 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300">{{ trans('playtomic.bookings.time-out') }}</span>
                                 @else
-                                    <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">Closed</span>
+                                    <span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{{ trans('playtomic.bookings.closed') }}</span>
                                 @endif
                             @endif
                         </div>
@@ -314,7 +314,7 @@
                         @endif
                     </div>
                     <div>
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Log: </label>
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.bookings.fields.log') }}: </label>
                         {{ $selected_booking ? $selected_booking->log : null }}
                     </div>
                 </div>

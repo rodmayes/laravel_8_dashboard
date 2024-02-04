@@ -19,7 +19,7 @@ return [
             'updated_at'        => 'Updated at',
             'updated_at_helper' => ' ',
             'deleted_at'        => 'Deleted at',
-            'deleted_at_helper' => ' ',
+            'deleted_at_helper' => ' '
         ],
     ],
     'clubs' => [
@@ -111,11 +111,22 @@ return [
             'updated_at_helper'        => ' ',
             'deleted_at'               => 'Deleted at',
             'deleted_at_helper'        => ' ',
+            'player'                   => 'Player'
         ],
         'prebooking' =>[
             'title'          => 'PreBookings',
             'title_singular' => 'PreBooking',
-        ]
+        ],
+        'links_create'       => 'Links create',
+        'options'            => 'Options',
+        'resources'          => 'Resources',
+        'no_entries_found'   => 'No entries found',
+        'closed'             => 'Closed',
+        'on-time'            => 'On Time',
+        'time-out'           => 'Time out',
+        'truncate-data'      => 'Truncate data',
+        'search'             => 'Search',
+        'select-club'        => 'Select a club'
     ],
     'generate-links' => [
         'title'          => 'Generate links',
