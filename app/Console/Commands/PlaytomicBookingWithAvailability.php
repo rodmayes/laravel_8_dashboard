@@ -53,7 +53,7 @@ class PlaytomicBookingWithAvailability extends Command
 
         $this->service = new PlaytomicHttpService($this->user);
         $this->displayMessage('Init process - '.now()->format('d-m-Y H:i:s'));
-        $bookings = Booking::ontime()->orderBy('started_at', 'DESC')->get();
+        $bookings = Booking::ontime()->byUser($this->user->email)->orderBy('started_at', 'DESC')->get(); // Get User's Bookings
         foreach ($bookings as $booking) {
             $day_to_date = $booking->started_at->subDays((int)$booking->club->days_min_booking);
             if ($day_to_date->startOfDay()->format('d-m-Y') == Carbon::now('Europe/Andorra')->startOfDay()->format('d-m-Y')) {
@@ -87,7 +87,7 @@ class PlaytomicBookingWithAvailability extends Command
                     $resource = $preference;
                     $timetable = $preference2;
                 }
-                $this->displayMessage('Prebooking availability: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name, 'info');
+                $this->displayMessage('Prebooking availability: ' . $booking->name . ' ' . $resource->name.' '.$booking->started_at->format('d-m-Y') . ' ' . $timetable->name.' - Init: '.now()->format('d-m-Y H:i:s'), 'info');
                 $prebooking = $this->availability($booking, $resource, $timetable);
                 //Log::notice('Prebooking with availability: '.(!is_array($prebooking) ? $prebooking : ''), is_array($prebooking) ? $prebooking : []);
                 if(isset($prebooking['status']) && $prebooking['status'] === 'fail') $this->displayMessage ('No availibility '.$prebooking['message']);
@@ -195,7 +195,7 @@ class PlaytomicBookingWithAvailability extends Command
     }
 
     public function displayMessage($message, $type = 'error'){
-        $this->log[] = $message;
+        $this->log[] = $message.'\n\r';
         if($type === 'error') {
             $this->error($message);
         }else {

@@ -86,6 +86,23 @@
                         </div>
                     </div>
 
+                    <div class="mb-2 {{ $errors->has('booking.player') ? 'invalid' : '' }} 4">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white required" for="booking_player">Player: </label>
+                        <x-select
+                            placeholder="Select a player"
+                            :options="$this->listsForFields['players']"
+                            wire:model="booking.player"
+                            option-value="email"
+                            option-label="name"
+                        />
+                        <small class="text-danger">
+                            {{ $errors->first('booking.player') }}
+                        </small>
+                        <div class="help-block">
+                            {{ trans('playtomic.bookings.fields.resource_helper') }}
+                        </div>
+                    </div>
+
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" value="0" class="sr-only peer" id="ck_public" name="ck_public" wire:model="booking.public" checked>
                         <div

@@ -29,7 +29,8 @@ class Booking extends Model
         'timetable_id',
         'created_by',
         'public',
-        'booked_at'
+        'booked_at',
+        'player'
     ];
 
     public $filterable = [
@@ -44,7 +45,8 @@ class Booking extends Model
         'created_by',
         'public',
         'booking_preference',
-        'booked_at'
+        'booked_at',
+        'player'
     ];
 
     protected $dates = [
@@ -68,7 +70,8 @@ class Booking extends Model
         'created_by',
         'public',
         'booking_preference',
-        'booked_at'
+        'booked_at',
+        'player'
     ];
 
     public function club()
@@ -79,6 +82,11 @@ class Booking extends Model
     public function creator()
     {
         return $this->hasOne(User::class, 'id', 'created_by');
+    }
+
+    public function player()
+    {
+        return $this->hasOne(User::class, 'email', 'player');
     }
 
     public function resource()
@@ -104,6 +112,15 @@ class Booking extends Model
         return !is_null($this->booked_at);
     }
 
+    public function getPlayerNameAttribute(){
+        return $this->player->name;
+    }
+
+
+    public function getPlayerEmailAttribute(){
+        return $this->player->email;
+    }
+
     public function scopeByClub($query, $value){
         return $query->where('club_id', $value)
             ->orWhere('public', 1);
@@ -127,6 +144,10 @@ class Booking extends Model
 
     public function scopeNoBooked($query){
         return $query->whereNull('booked');
+    }
+
+    public function scopeByPlayer($query, $value){
+        return $query->where('player', mb_strtolower(trim($value)));
     }
 
     public function setStatusTimeOut(){

@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Club;
 use App\Models\Resource;
 use App\Models\Timetable;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -38,6 +39,7 @@ class Create extends Component
     {
         $this->start_date = !is_null($start_date) ? $start_date : null;
         $this->booking = $booking;
+        $this->booking->player = Auth::user()->email;
         $this->initListsForFields();
     }
 
@@ -62,18 +64,14 @@ class Create extends Component
             $this->booking->started_at = $this->booking->started_at ?: Carbon::now()->addDays((int)$this->booking->club->days_min_booking);
             if(Carbon::now('Europe/Andorra')->startOfDay()->diffInDays($this->booking->started_at->startOfDay()) >= (int)$this->booking->club->days_min_booking) $this->booking->status = 'on-time';
             else $this->booking->status = 'time-out';
+
+            if(is_null($this->booking->player)) $this->booking->player = Auth::user()->email;
             $this->booking->save();
 
-            $this->notification()->success(
-                $title = 'Item saved',
-                $description = 'This items has been saved successfully'
-            );
+            $this->notification()->success('Item saved', 'This items has been saved successfully');
             return redirect()->route('playtomic.bookings.index');
         }catch (\Exception $e){
-            $this->notification()->error(
-                $title = 'Error !!!',
-                $description = $e->getMessage()
-            );
+            $this->notification()->error('Error !!!', $e->getMessage());
         }
     }
 
@@ -102,12 +100,18 @@ class Create extends Component
             ],
             'booking.booking_preference' => [
                 'nullable'
-            ]
+            ],
+            'booking.player' => [
+                'string',
+                'exists:users,email',
+                'required',
+            ],
         ];
     }
 
     protected function initListsForFields(): void
     {
+        $this->listsForFields['players'] = User::all();
         $this->listsForFields['club'] = Club::all();
         $this->listsForFields['resource'] = Resource::all();
         $this->listsForFields['timetable'] = Timetable::all();

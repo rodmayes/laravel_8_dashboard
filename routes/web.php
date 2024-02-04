@@ -2,14 +2,12 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Admin\ContactCompanyController;
-use App\Http\Controllers\Admin\ContactContactController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\UserController;
 use RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController;
+use App\Http\Controllers\PolicyAndLegalController;
 
 Route::redirect('/', '/login');
 Route::impersonate();
@@ -20,6 +18,7 @@ Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->n
 Route::get('schedule', [ScheduleController::class, 'index'])->name('database-schedule');
 Route::get('console', [\App\Http\Controllers\ConsoleController::class, 'index'])->name('console');
 Route::get('user/edit-noadmin', [UserController::class, 'editNoAdmin'])->name('user.edit-noadmin');
+Route::get('privacy-policy', [PolicyAndLegalController::class, 'PrivacyPolicy'])->name('privacy-policy');
 
 // ADMINISTRATION
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function () {

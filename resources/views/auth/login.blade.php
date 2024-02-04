@@ -105,12 +105,12 @@
 
          </div>
 
-         <!-- Credit -->
-         <!--
+         <!-- Privacy Policy -->
+
          <div class="mt-3 w-full">
-             <p class="text-center">Made by <a target="_blank" href="https://www.instagram.com/_inubayuaji/" class="text-purple-700">Inu Bayu Aji</a> and ispired by <a target="_blank" href="https://dribbble.com/shots/17564792-Log-in-page-Untitled-UI" class="text-purple-700">this</a>.</p>
+             <p class="text-center"><a target="_blank" href="/privacy-policy" class="text-purple-700">Privacy Policy</a></p>
          </div>
-         -->
+
      </div>
 
 @endsection

@@ -92,7 +92,6 @@ class User extends Authenticatable
         return $this->morphOne('App\Models\Image', 'imageable');
     }
 
-
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
@@ -134,5 +133,13 @@ class User extends Authenticatable
         }catch (\Exception $e){
             throw new \Exception($e->getMessage());
         }
+    }
+
+    public function setNameAttribute($value){
+        $this->attributes['name'] = ucwords(trim($value));
+    }
+
+    public function setEmailAttribute($value){
+        $this->attributes['email'] = mb_strtolower(trim($value));
     }
 }

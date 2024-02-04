@@ -6,7 +6,9 @@ use App\Models\Booking;
 use App\Models\Club;
 use App\Models\Resource;
 use App\Models\Timetable;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
@@ -56,6 +58,7 @@ class Edit extends Component
             $this->booking->timetables = implode(",", $this->timetables);
             $this->booking->name = $this->booking->club->name . ' ' . $this->booking->start_at;
             $this->booking->public = $this->booking->public ?? false;
+            if(is_null($this->booking->player)) $this->booking->player = Auth::user()->email;
             $this->booking->save();
 
             $this->notification()->success(
@@ -102,11 +105,17 @@ class Edit extends Component
                 'string',
                 'required',
             ],
+            'booking.player' => [
+                'string',
+                'exists:users,email',
+                'required',
+            ],
         ];
     }
 
     public function initListsForFields(): void
     {
+        $this->listsForFields['players'] = User::all();
         $this->listsForFields['club'] = Club::all();
         if(!empty($this->booking->club_id)) {
             $this->listsForFields['resource'] = Resource::byClub($this->booking->club_id)->get();
