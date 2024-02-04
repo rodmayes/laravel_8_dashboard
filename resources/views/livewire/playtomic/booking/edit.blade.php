@@ -101,17 +101,17 @@
                             {{ trans('playtomic.bookings.fields.status_helper') }}
                         </div>
                     </div>
-                    <div class="mb-2 {{ $errors->has('booking.player') ? 'invalid' : '' }} 4">
+                    <div class="mb-2 {{ $errors->has('booking.player_email') ? 'invalid' : '' }} 4">
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white required" for="booking_player">Player: </label>
                         <x-select
                             placeholder="Select a player"
                             :options="$this->listsForFields['players']"
-                            wire:model="booking.player"
+                            wire:model="booking.player_email"
                             option-value="email"
                             option-label="name"
                         />
                         <small class="text-danger">
-                            {{ $errors->first('booking.player') }}
+                            {{ $errors->first('booking.player_email') }}
                         </small>
                         <div class="help-block">
                             {{ trans('playtomic.bookings.fields.resource_helper') }}

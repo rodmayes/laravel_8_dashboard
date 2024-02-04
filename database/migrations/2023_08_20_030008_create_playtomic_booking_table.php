@@ -20,8 +20,8 @@ class CreatePlaytomicBookingTable extends Migration
             $table->dateTime('started_at');
             $table->text('log')->nullable();
             $table->string('status',30)->enum(['on-time','time-out','closed'])->default('on-time');
-            $table->string('player')->nullable();
-            $table->foreign('player', 'fk_playtomic_booking_player_email')->references('email')->on('users');
+            $table->string('player_email')->nullable();
+            $table->foreign('player_email', 'fk_playtomic_booking_player_email')->references('email')->on('users');
             $table->unsignedBigInteger('created_by');
             $table->unsignedInteger('public')->default(0);
             $table->string('playtomic_url_check_match', 255)->nullable();

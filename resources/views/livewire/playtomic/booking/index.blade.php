@@ -127,7 +127,7 @@
                 </td>
                 <td class="px-4 py-4 w-8 h-8 overflow-hidden rounded-full">
                     @if(isset($booking->player))
-                    <img src="{{ asset($booking->player->getAvatar()) }}" class="object-cover" wire:model="image">
+                        <img src="{{ asset($booking->player->getAvatar()) }}" class="object-cover" wire:model="image">
                     @else
                         {{ $booking->player->name }}
                     @endif

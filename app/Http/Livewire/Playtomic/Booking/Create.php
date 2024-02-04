@@ -39,7 +39,7 @@ class Create extends Component
     {
         $this->start_date = !is_null($start_date) ? $start_date : null;
         $this->booking = $booking;
-        $this->booking->player = Auth::user()->email;
+        $this->booking->player_email = Auth::user()->email;
         $this->initListsForFields();
     }
 
@@ -65,7 +65,7 @@ class Create extends Component
             if(Carbon::now('Europe/Andorra')->startOfDay()->diffInDays($this->booking->started_at->startOfDay()) >= (int)$this->booking->club->days_min_booking) $this->booking->status = 'on-time';
             else $this->booking->status = 'time-out';
 
-            if(is_null($this->booking->player)) $this->booking->player = Auth::user()->email;
+            if(is_null($this->booking->player_email)) $this->booking->player_email = Auth::user()->email;
             $this->booking->save();
 
             $this->notification()->success('Item saved', 'This items has been saved successfully');
@@ -101,7 +101,7 @@ class Create extends Component
             'booking.booking_preference' => [
                 'nullable'
             ],
-            'booking.player' => [
+            'booking.player_email' => [
                 'string',
                 'exists:users,email',
                 'required',

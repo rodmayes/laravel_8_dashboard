@@ -58,7 +58,7 @@ class Edit extends Component
             $this->booking->timetables = implode(",", $this->timetables);
             $this->booking->name = $this->booking->club->name . ' ' . $this->booking->start_at;
             $this->booking->public = $this->booking->public ?? false;
-            if(is_null($this->booking->player)) $this->booking->player = Auth::user()->email;
+            if(is_null($this->booking->player_email)) $this->booking->player_email = Auth::user()->email;
             $this->booking->save();
 
             $this->notification()->success(
@@ -105,7 +105,7 @@ class Edit extends Component
                 'string',
                 'required',
             ],
-            'booking.player' => [
+            'booking.player_email' => [
                 'string',
                 'exists:users,email',
                 'required',

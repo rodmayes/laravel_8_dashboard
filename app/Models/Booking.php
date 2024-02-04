@@ -71,7 +71,7 @@ class Booking extends Model
         'public',
         'booking_preference',
         'booked_at',
-        'player'
+        'player_email'
     ];
 
     public function club()
@@ -86,7 +86,7 @@ class Booking extends Model
 
     public function player()
     {
-        return $this->hasOne(User::class, 'email', 'player');
+        return $this->hasOne(User::class, 'email', 'player_email');
     }
 
     public function resource()
@@ -147,7 +147,7 @@ class Booking extends Model
     }
 
     public function scopeByPlayer($query, $value){
-        return $query->where('player', mb_strtolower(trim($value)));
+        return $query->where('player_email', mb_strtolower(trim($value)));
     }
 
     public function setStatusTimeOut(){
