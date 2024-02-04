@@ -53,7 +53,7 @@ class PlaytomicBookingWithAvailability extends Command
 
         $this->service = new PlaytomicHttpService($this->user);
         $this->displayMessage('Init process - '.now()->format('d-m-Y H:i:s'));
-        $bookings = Booking::ontime()->byUser($this->user->email)->orderBy('started_at', 'DESC')->get(); // Get User's Bookings
+        $bookings = Booking::ontime()->byPlayer($this->user->email)->orderBy('started_at', 'DESC')->get(); // Get User's Bookings
         foreach ($bookings as $booking) {
             $day_to_date = $booking->started_at->subDays((int)$booking->club->days_min_booking);
             if ($day_to_date->startOfDay()->format('d-m-Y') == Carbon::now('Europe/Andorra')->startOfDay()->format('d-m-Y')) {
