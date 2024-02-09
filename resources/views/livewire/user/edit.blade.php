@@ -34,7 +34,7 @@
 
             <div class="{{ $errors->has('user.email') ? 'invalid' : '' }} mr-2">
                 <label class="form-label required" for="email">{{ trans('cruds.user.fields.email') }}</label>
-                <x-input  name="email" id="email" required wire:model.defer="user.email"/>
+                <x-input  name="email" id="email" required wire:model.defer="user.email" type="password"/>
                 <div class="text-danger">
                     {{ $errors->first('user.email') }}
                 </div>
