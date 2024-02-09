@@ -18,6 +18,7 @@ Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->n
 Route::get('schedule', [ScheduleController::class, 'index'])->name('database-schedule');
 Route::get('console', [\App\Http\Controllers\ConsoleController::class, 'index'])->name('console');
 Route::get('user/edit-noadmin', [UserController::class, 'editNoAdmin'])->name('user.edit-noadmin');
+
 Route::get('privacy-policy', [PolicyAndLegalController::class, 'PrivacyPolicy'])->name('privacy-policy');
 
 // ADMINISTRATION

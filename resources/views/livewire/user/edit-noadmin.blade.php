@@ -44,7 +44,7 @@
             </div>
             <div class="{{ $errors->has('user.password') ? 'invalid' : '' }}">
                 <label class="form-label" for="password">{{ trans('cruds.user.fields.password') }}</label>
-                <x-input name="password" id="password" wire:model.defer="password">
+                <x-input name="password" id="password" wire:model.defer="password" type="password">
                     <x-slot name="append">
                         <div class="absolute inset-y-0 right-0 flex items-center p-0.5">
                             <x-button

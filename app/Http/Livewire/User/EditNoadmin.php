@@ -49,14 +49,14 @@ class EditNoadmin extends Component
         $this->user->password = $this->password;
         $this->user->save();
 
-        return redirect()->route('admin.users.edit-noadmin');
+        return redirect()->route('user.edit-noadmin');
     }
 
     public function storePlaytomicPassword(){
         $this->user->playtomic_password = Crypt::encrypt($this->playtomic_password);
         $this->user->save();
 
-        return redirect()->route('admin.users.edit-noadmin');
+        return redirect()->route('user.edit-noadmin');
     }
 
     public function refreshToken(){
@@ -66,7 +66,7 @@ class EditNoadmin extends Component
             $this->user->playtomic_token = $response['access_token'];
             $this->user->playtomic_refresh_token = $response['refresh_token'];
             $this->user->save();
-            return redirect()->route('admin.users.edit-noadmin', $this->user->id);
+            return redirect()->route('user.edit-noadmin', $this->user->id);
         }
         return $this->addError('user.playtomic_token', 'Error to refresh');
     }
