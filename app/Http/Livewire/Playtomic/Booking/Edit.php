@@ -61,16 +61,10 @@ class Edit extends Component
             if(is_null($this->booking->player_email)) $this->booking->player_email = Auth::user()->email;
             $this->booking->save();
 
-            $this->notification()->success(
-                $title = 'Item saved',
-                $description = 'This items has been saved successfully'
-            );
+            $this->notification()->success('Item saved', 'This items has been saved successfully');
             return redirect()->route('playtomic.bookings.index');
         }catch (\Exception $e){
-            $this->notification()->error(
-                $title = 'Error !!!',
-                $description = $e->getMessage()
-            );
+            $this->notification()->error('Error !!!', $e->getMessage());
         }
     }
 

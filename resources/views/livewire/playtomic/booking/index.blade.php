@@ -120,28 +120,28 @@
             <tbody>
             @forelse($bookings as $booking)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td class="px-4 py-4">
+                <td class="px-4">
                     <div class="flex items-center">
                         <input type="checkbox" value="{{ $booking->id }}" wire:model="selected" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                     </div>
                 </td>
-                <td class="px-4 py-4 w-8 h-8 overflow-hidden rounded-full">
+                <td class="px-4 w-10 h-10 overflow-hidden rounded-md">
                     @if(isset($booking->player))
-                        <img src="{{ asset($booking->player->getAvatar()) }}" class="object-cover" wire:model="image">
+                        <img src="{{ asset($booking->player->getAvatar()) }}" class="img-responsive w-10 h-10" wire:model="image">
                     @else
                         {{ $booking->player->name }}
                     @endif
                 </td>
-                <td class="px-2 py-2">{{ $booking->id }}</td>
-                <td class="px-2 py-2 text-xs">
+                <td class="px-2">{{ $booking->id }}</td>
+                <td class="px-2 text-xs">
                     {{ $booking->started_at->format('d-m-Y') }} ({{ ucfirst($booking->started_at->locale('es')->dayName) }})
                 </td>
-                <td class="px-2 py-2">
+                <td class="px-2">
                     @foreach(explode(",",$booking->timetables) as $id)
                         <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">{{ \App\Models\Timetable::find($id)->name }}</span>
                     @endforeach
                 </td>
-                <td class="px-2 py-2">
+                <td class="px-2">
                     <span class="text-yellow-600 font-bold" data-popover-target="popover-table-{{$booking->id}}">
                         {{ trans('playtomic.bookings.resources') }}
                     </span>
@@ -157,48 +157,45 @@
                         <div data-popper-arrow></div>
                     </div>
                 </td>
-                <td class="px-2 py-2">
+                <td class="px-2">
                     {{ $booking->club->name }}
                 </td>
-                <td class="px-2 py-2 text-xs">
-                    @if($booking->started_at->addDays(-((int)$booking->club->days_min_booking))->format('d-m-Y') === \Carbon\Carbon::now()->format('d-m-Y'))
-                        <span class="text-red-500">
-                                {{ $booking->started_at->addDays(-((int)$booking->club->days_min_booking))->format('d-m-Y')}}
-                            </span>
-                    @else
-                        {{ $booking->started_at->addDays(-((int)$booking->club->days_min_booking))->format('d-m-Y')}}
-                    @endif
+                <td class="px-2 text-xs">
+                    @php $links_date_at = $booking->started_at->addDays(-((int)$booking->club->days_min_booking))->format('d-m-Y'); @endphp
+                    <span @if($links_date_at === \Carbon\Carbon::now()->format('d-m-Y')) class="text-red-500" @endif>{{ $links_date_at }}</span>
                 </td>
-                <td class="px-2 py-2">
+                <td class="px-2">
                     @if($booking->booking_preference === 'timetable')
                         <span class="text-pink-400 mr-1" title="Preference {{$booking->booking_preference}}" data-toggle="tooltip" data-placement="top"><i class="fas fa-clock"></i></span>
                     @else
-                        <span class="text-blue-500 mr-1" title="Preference {{$booking->booking_preference}}" data-toggle="tooltip" data-placement="top" title="On Time"><i class="fas fa-table-tennis"></i></span>
+                        <span class="text-blue-500 mr-1" title="Preference {{$booking->booking_preference}}" data-toggle="tooltip" data-placement="top"><i class="fas fa-table-tennis"></i></span>
                     @endif
 
                     @if($booking->status === 'on-time')
-                            <span class="text-green-800 mr-1" data-toggle="tooltip" data-placement="top" title="On Time"><i class="fas fa-calendar"></i></span>
+                        <span class="text-green-800 mr-1" data-toggle="tooltip" data-placement="top" title="On Time"><i class="fas fa-calendar"></i></span>
                     @elseif($booking->status === 'time-out')
-                            <span class="text-indigo-900 mr-1" data-toggle="tooltip" data-placement="top" title="Time out"><i class="fas fa-calendar-times"></i></span>
+                        <span class="text-indigo-900 mr-1" data-toggle="tooltip" data-placement="top" title="Time out"><i class="fas fa-calendar-times"></i></span>
                     @else
-                            <span class="text-gray-800 mr-1" data-toggle="tooltip" data-placement="top" title="Closed"><i class="fas fa-times-circle"></i></span>
+                        <span class="text-gray-800 mr-1" data-toggle="tooltip" data-placement="top" title="Closed"><i class="fas fa-times-circle"></i></span>
                     @endif
 
                     @if($booking->isBooked)
                         <span class="text-green-800" data-toggle="tooltip" data-placement="top" title="Booked!!"><i class="far fa-smile-beam"></i></span>
-                    @else
+                    @elseif($links_date_at <= \Carbon\Carbon::now()->format('d-m-Y'))
                         <span class="text-red-800" data-toggle="tooltip" data-placement="top" title="No Booked!!"><i class="far fa-dizzy"></i></span>
+                    @else
+                        <span class="text-primary-800" data-toggle="tooltip" data-placement="top" title="Waiting"><i class="far fa-grimace"></i></span>
                     @endif
                 </td>
-                <td class="px-2 py-2">
+                <td class="px-2 pt-1">
                     <div class="inline-flex">
-                        @can('user_show')
-                        <button type="button" data-modal-target="defaultModal" data-modal-toggle="defaultModal" wire:click="showItem({{$booking}})" wire:loading.attr="disabled"
+                        @can('playtomic.booking_show')
+                        <button type="button" data-modal-target="booking-show-modal" data-modal-toggle="booking-show-modal" wire:click="showItem({{$booking}})" wire:loading.attr="disabled"
                                 class="mr-1 px-2 py-2 mb-2 text-xs  font-medium text-center inline-flex items-center text-white bg-yellow-400 hover:bg-yellow-500 rounded-lg focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:bg-blue-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">
                             <i class="fas fa-eye"></i>
                         </button>
                         @endcan
-                        @can('user_edit')
+                        @can('playtomic.booking_edit')
                             <a class="px-2 py-2 text-xs mr-1 mb-2 text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('playtomic.bookings.edit', $booking) }}" title="{{ trans('global.edit') }}">
                                 <i class="fas fa-edit"></i>
                             </a>
@@ -243,7 +240,7 @@
         </nav>
     </div>
     <!-- Main modal -->
-    <div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full" wire:ignore.self>
+    <div id="booking-show-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full" wire:ignore.self>
         <div class="relative w-full max-w-4xl max-h-full">
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -252,7 +249,7 @@
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                         {{ $selected_booking ? $selected_booking->name : null }} #{{ $selected_booking->id ?: null }}
                     </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="booking-show-modal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                         </svg>
@@ -315,7 +312,7 @@
                     </div>
                     <div>
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ trans('playtomic.bookings.fields.log') }}: </label>
-                        {{ $selected_booking ? $selected_booking->log : null }}
+                        <p>{!! $selected_booking ? $selected_booking->log : null !!}</p>
                     </div>
                 </div>
                 <!-- Modal footer -->
@@ -324,7 +321,7 @@
                        type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         {{ trans('global.edit') }}
                     </a>
-                    <button data-modal-hide="defaultModal" type="button"
+                    <button data-modal-hide="booking-show-modal" type="button"
                             class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                         {{ trans('global.cancel') }}
                     </button>

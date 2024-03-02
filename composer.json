@@ -25,6 +25,7 @@
         "laravel/telescope": "^4.10",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "livewire-ui/modal": "^1.0",
         "livewire/livewire": "^2.12",
         "mews/captcha": "^3.3",
         "nesbot/carbon": "^2.69",
@@ -37,6 +38,7 @@
         "studio/laravel-totem": "^10.0",
         "symfony/mailer": "^6.1",
         "vxm/laravel-async": "^2.2",
+        "wire-elements/modal": "^1.0",
         "wireui/wireui": "^1.17"
     },
     "require-dev": {

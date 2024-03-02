@@ -36,7 +36,7 @@
                 <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 mr-2">
                     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                         <li>
-                            <a class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-primary-100 hover:text-gray" href="{{ route('admin.permissions.create') }}">
+                            <a class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-primary-100 hover:text-gray" href="{{ route('user_management.permissions.create') }}">
                                 <i class="fa fa-plus-circle"></i> {{ trans('global.add') }} {{ trans('cruds.permission.title_singular') }}
                             </a>
                         </li>
@@ -84,17 +84,17 @@
                         <td class="px-6 py-4">{{ $permission->title }}</td>
                         <td class="tpx-6 py-4">
                             <div class="inline-flex">
-                                @can('permission_show')
-                                    <a class="px-2 py-2 text-xs text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900" href="{{ route('admin.permissions.show', $permission) }}" title="{{ trans('global.view') }}">
+                                @can('user_management.permission_show')
+                                    <a class="px-2 py-2 text-xs text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900" href="{{ route('user_management.permissions.show', $permission) }}" title="{{ trans('global.view') }}">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                 @endcan
-                                @can('permission_edit')
-                                    <a class="px-2 py-2 text-xs text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('admin.permissions.edit', $permission) }}" title="{{ trans('global.edit') }}">
+                                @can('user_management.permission_edit')
+                                    <a class="px-2 py-2 text-xs text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('user_management.permissions.edit', $permission) }}" title="{{ trans('global.edit') }}">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 @endcan
-                                @can('permission_delete')
+                                @can('user_management.permission_delete')
                                     <button class="px-2 py-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" wire:click="confirmDelete({{ $permission->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
                                         <i class="fas fa-trash"></i>
                                     </button>

@@ -36,7 +36,7 @@ class Create extends Component
         $this->user->save();
         $this->user->roles()->sync($this->roles);
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('user_management.users.index');
     }
 
     protected function rules(): array

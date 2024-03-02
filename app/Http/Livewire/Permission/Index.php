@@ -113,6 +113,6 @@ class Index extends Component
     public function delete(Permission $permission)
     {
         $permission->delete();
-        return redirect()->route('admin.permissions.index');
+        return redirect()->route('user_management.permissions.index');
     }
 }

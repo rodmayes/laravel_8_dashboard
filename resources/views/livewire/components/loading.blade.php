@@ -1,0 +1,3 @@
+<div wire:loading.delay class="alert alert-info top-2 fixed left-20 w-1/2 flex flex-col bg-gray-100 rounded">
+    {{trans('global.datatables.loading')}}...
+</div>

@@ -18,15 +18,19 @@ class Permission extends Model
 
     public $orderable = [
         'id',
+        'section',
         'title',
     ];
 
     public $filterable = [
         'id',
+        'section',
         'title',
     ];
 
     protected $fillable = [
+        'id',
+        'section',
         'title',
     ];
 

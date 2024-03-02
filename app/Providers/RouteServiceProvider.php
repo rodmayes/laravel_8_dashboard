@@ -49,6 +49,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->name('playtomic.')
                 ->middleware(['web','auth'])
                 ->group(base_path('routes/playtomic.php'));
+
+            Route::prefix('line-ups')
+                ->name('line-ups.')
+                ->middleware(['web','auth'])
+                ->group(base_path('routes/line-ups.php'));
         });
     }
 

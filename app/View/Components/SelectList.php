@@ -21,7 +21,6 @@ class SelectList extends Component
     }
 
     public function refreshResources($options){
-        dd(2);
         if(count($options) > 0) $this->options = $options;
     }
     /**

@@ -113,7 +113,7 @@ class Index extends Component
     public function delete(Role $role)
     {
         $role->delete();
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('user_management.roles.index');
     }
 
 }

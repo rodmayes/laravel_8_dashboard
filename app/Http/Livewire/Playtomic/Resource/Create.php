@@ -9,9 +9,7 @@ use Livewire\Component;
 class Create extends Component
 {
     public $resource;
-
     public $club;
-
     public $listsForFields = [];
 
     public function mount(Resource $resource)

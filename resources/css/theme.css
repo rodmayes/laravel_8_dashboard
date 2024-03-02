@@ -218,3 +218,9 @@ textarea.form-control {
     color: #000000!important;
     padding-right: inherit!important;
 }
+
+
+.w-full.transition-all.p-4.sm\:max-w-lg {
+    margin-bottom: auto!important;
+    margin-top: auto!important
+}

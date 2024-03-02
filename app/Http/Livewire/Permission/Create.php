@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Permission;
 
 use App\Models\Permission;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class Create extends Component
 {
+    use Actions;
+
     public $permission;
 
     public function mount(Permission $permission)
@@ -21,11 +24,16 @@ class Create extends Component
 
     public function submit()
     {
-        $this->validate();
-
-        $this->permission->save();
-
-        return redirect()->route('admin.permissions.index');
+        try {
+            $this->validate();
+            $this->permission->save();
+            //$this->emit('item-updated');
+            //$this->notification(['timeout' => 1500, 'title' => 'Action', 'description' => 'Permission created!', 'icon' => 'success']);
+            return redirect()->route('user_management.permissions.index');
+        }catch(\Exception $e){
+            $this->emit('closeModal');
+            $this->notification()->error('Error',$e->getMessage());
+        }
     }
 
     protected function rules(): array
@@ -35,6 +43,10 @@ class Create extends Component
                 'string',
                 'required',
             ],
+            'permission.section' => [
+                'string',
+                'required',
+            ]
         ];
     }
 }

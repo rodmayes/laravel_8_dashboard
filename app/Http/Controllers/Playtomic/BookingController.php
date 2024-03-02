@@ -24,43 +24,43 @@ class BookingController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('playtomic.bookings_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.booking.index');
     }
 
     public function viewCalendar()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('playtomic.bookings_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $bookings = BookingCalendarResource::collection(Booking::all())->resolve(); //notCLosed()->get()();
         return view('livewire.playtomic.booking.playtomic-calendar', compact('bookings'));
     }
 
     public function create($start_date = null)
     {
-        abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('playtomic.bookings_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.booking.create', compact('start_date'));
     }
 
     public function edit(Booking $booking)
     {
-        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('playtomic.bookings_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.booking.edit', compact('booking'));
     }
 
     public function show(Booking $booking)
     {
-        abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('playtomic.bookings_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.booking.show', compact('booking'));
     }
 
     public function generateLinks(Booking $booking)
     {
-        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('playtomic.bookings_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.booking.generate-links', compact('booking'));
     }
 
     public function prebooking(){
-        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('playtomic.bookings_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.booking.pre-booking');
     }
 

@@ -113,7 +113,7 @@ class Index extends Component
     public function delete(User $user)
     {
         $user->delete();
-        return redirect()->route('admin.users.index');
+        return redirect()->route('user_management.users.index');
     }
 
     public function impersonate($user){
