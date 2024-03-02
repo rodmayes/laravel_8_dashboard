@@ -195,7 +195,7 @@ class PlaytomicBookingWithAvailability extends Command
     }
 
     public function displayMessage($message, $type = 'error'){
-        $this->log[] = $message.'\n\r';
+        $this->log[] = $message.'<br/>';
         if($type === 'error') {
             $this->error($message);
         }else {
