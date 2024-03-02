@@ -212,7 +212,7 @@
                                     <i class="fas fa-calendar"></i>
                                 </button>
                             @endif
-                            @can('user_delete')
+                            @can('playtomic.booking_delete')
                                 <button class="px-2 py-2 mr-1 mb-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
                                         wire:click="confirmDelete({{ $booking->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
                                     <i class="fas fa-trash"></i>
