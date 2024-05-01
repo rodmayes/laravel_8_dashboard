@@ -20,55 +20,49 @@
                         </a>
                     </li>
                     <!-- END DASHBOARD -->
-                    <!-- PLAYTOMIC -->
-                    <li>
-                        <button type="button" class="flex items-center w-full font-medium text-sm hover:text-black transition ease-in-out duration-500 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg focus:outline-none"
-                                aria-controls="dropdown-playtomic" data-collapse-toggle="dropdown-playtomic">
-                            <i class="fad fa-dot-circle text-xs"></i>
-                            <span class="flex-1 ml-3 text-left whitespace-nowrap uppercase" sidebar-toggle-item>{{ trans('playtomic.title') }}</span>
-                            <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd">
-                                </path>
-                            </svg>
-                        </button>
-                        <ul id="dropdown-playtomic" class="@if(Route::is('playtomic.*')) '' @else hidden @endif py-2 space-y-2">
-                            @can('playtomic.club_access')
-                                <li class="hover:text-black hover:bg-teal-300 pt-2 pt-1 rounded-lg items-center">
-                                    <a href="{{ route("playtomic.timetables.index") }}" class="flex mb-3 pl-4 capitalize font-medium text-sm transition ease-in-out duration-500
-                                @if(Route::is('playtomic.timetables.*')) text-warning-600 @endif">
-                                        <i class="fad fa-clock text-xs mr-2"></i>
-                                        {{ trans('playtomic.timetable.title') }}
-                                    </a>
-                            @endcan
-                            @can('playtomic.club_access')
-                                <li class="hover:text-black hover:bg-teal-300 pt-2 pt-1 rounded-lg items-center">
-                                    <a href="{{ route("playtomic.clubs.index") }}" class="flex mb-3 pl-4 capitalize font-medium text-sm transition ease-in-out duration-500
-                                @if(Route::is('playtomic.clubs.*')) text-warning-600 @endif">
-                                        <i class="fad fa-medal text-xs mr-2"></i>
-                                        {{ trans('playtomic.clubs.title') }}
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('playtomic.resources_access')
-                                <li class="hover:text-black hover:bg-teal-300 pt-2 pt-1 rounded-lg">
-                                    <a href="{{ route("playtomic.resources.index") }}" class="flex mb-3 pl-4 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500
-                                @if(Route::is('playtomic.resources.*')) text-warning-600 @endif">
-                                        <i class="fad fa-table-tennis text-xs mr-2"></i>
-                                        {{ trans('playtomic.resources.title') }}
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('playtomic.bookings_access')
-                                <li class="hover:text-black hover:bg-teal-300 pt-2 pt-1 rounded-lg items-center">
-                                    <a href="{{ route("playtomic.bookings.index") }}" class="flex mb-3 pl-4 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500
-                                @if(Route::is('playtomic.bookings.*')) text-warning-600 @endif">
-                                        <i class="fad fa-baseball-ball text-xs mr-2"></i>
-                                        {{ trans('playtomic.bookings.title') }}
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </li>
+                    @can('hasRole', 'playtomic')
+                        <!-- PLAYTOMIC -->
+                        <li>
+                            <button type="button" class="flex items-center w-full font-medium text-sm hover:text-black transition ease-in-out duration-500 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg focus:outline-none"
+                                    aria-controls="dropdown-playtomic" data-collapse-toggle="dropdown-playtomic">
+                                <i class="fad fa-dot-circle text-xs"></i>
+                                <span class="flex-1 ml-3 text-left whitespace-nowrap uppercase" sidebar-toggle-item>{{ trans('playtomic.title') }}</span>
+                                <svg sidebar-toggle-item class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd">
+                                    </path>
+                                </svg>
+                            </button>
+                            <ul id="dropdown-playtomic" class="@if(Route::is('playtomic.*')) '' @else hidden @endif py-2 space-y-2">
+                                    <li class="hover:text-black hover:bg-teal-300 pt-2 pt-1 rounded-lg items-center">
+                                        <a href="{{ route("playtomic.timetables.index") }}" class="flex mb-3 pl-4 capitalize font-medium text-sm transition ease-in-out duration-500
+                                    @if(Route::is('playtomic.timetables.*')) text-warning-600 @endif">
+                                            <i class="fad fa-clock text-xs mr-2"></i>
+                                            {{ trans('playtomic.timetable.title') }}
+                                        </a>
+                                    <li class="hover:text-black hover:bg-teal-300 pt-2 pt-1 rounded-lg items-center">
+                                        <a href="{{ route("playtomic.clubs.index") }}" class="flex mb-3 pl-4 capitalize font-medium text-sm transition ease-in-out duration-500
+                                    @if(Route::is('playtomic.clubs.*')) text-warning-600 @endif">
+                                            <i class="fad fa-medal text-xs mr-2"></i>
+                                            {{ trans('playtomic.clubs.title') }}
+                                        </a>
+                                    </li>
+                                    <li class="hover:text-black hover:bg-teal-300 pt-2 pt-1 rounded-lg">
+                                        <a href="{{ route("playtomic.resources.index") }}" class="flex mb-3 pl-4 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500
+                                    @if(Route::is('playtomic.resources.*')) text-warning-600 @endif">
+                                            <i class="fad fa-table-tennis text-xs mr-2"></i>
+                                            {{ trans('playtomic.resources.title') }}
+                                        </a>
+                                    </li>
+                                    <li class="hover:text-black hover:bg-teal-300 pt-2 pt-1 rounded-lg items-center">
+                                        <a href="{{ route("playtomic.bookings.index") }}" class="flex mb-3 pl-4 capitalize font-medium text-sm hover:text-black transition ease-in-out duration-500
+                                    @if(Route::is('playtomic.bookings.*')) text-warning-600 @endif">
+                                            <i class="fad fa-baseball-ball text-xs mr-2"></i>
+                                            {{ trans('playtomic.bookings.title') }}
+                                        </a>
+                                    </li>
+                            </ul>
+                        </li>
+                    @endcan
 
                     <!-- USER MANAGEMENT -->
                     @can('user_management.access')
