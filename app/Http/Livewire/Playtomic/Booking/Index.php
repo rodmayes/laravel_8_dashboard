@@ -22,6 +22,7 @@ class Index extends Component
     use WithConfirmation;
     use Actions;
 
+    public $listsForFields = [];
     public $perPage = 10;
     public $perClub = -1;
     public $orderable;
@@ -73,6 +74,7 @@ class Index extends Component
         $this->sortDirection     = 'desc';
         $this->paginationOptions = collect(config('project.pagination.options'))->pluck('id','name');
         $this->orderable         = (new User())->orderable;
+        $this->initListsForFields();
     }
 
     public function render()
@@ -151,5 +153,17 @@ class Index extends Component
 
     public function showItem(Booking $booking){
         $this->selected_booking = $booking;
+    }
+
+    protected function initListsForFields(): void
+    {
+        $this->listsForFields['duration'] = array(
+                ['id' => 30, 'name' => '30min'],
+                ['id' => 60, 'name' => '1h'],
+                ['id' => 90, 'name' => '1h 30h'],
+                ['id' => 120, 'name' => '2h'],
+                ['id' => 150, 'name' => '2h 30h'],
+                ['id' => 180, 'name' => '3h']
+        );
     }
 }

@@ -111,7 +111,8 @@ return [
             'updated_at_helper'        => ' ',
             'deleted_at'               => 'Deleted at',
             'deleted_at_helper'        => ' ',
-            'player'                   => 'Player'
+            'player'                   => 'Player',
+            'duration'                  => 'Duration'
         ],
         'prebooking' =>[
             'title'          => 'PreBookings',

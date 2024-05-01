@@ -117,7 +117,25 @@
                             {{ trans('playtomic.bookings.fields.resource_helper') }}
                         </div>
                     </div>
-                    <div class="w-full grid grid-cols-2 mb-2 content-end">
+
+                    <div class="flex justify-between">
+                        <div class="mb-2 {{ $errors->has('booking.duration') ? 'invalid' : '' }} ">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white required" for="booking_player">Duration: </label>
+                            <x-select
+                                placeholder="Select a duration"
+                                :options="$this->listsForFields['duration']"
+                                wire:model="booking.duration"
+                                option-value="id"
+                                option-label="name"
+                            />
+                            <small class="text-danger">
+                                {{ $errors->first('booking.duration') }}
+                            </small>
+                            <div class="help-block">
+
+                            </div>
+                        </div>
+
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" value="0" class="sr-only peer" id="ck_public" name="ck_public" wire:model="booking.public" checked>
                             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full

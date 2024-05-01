@@ -95,7 +95,11 @@
                 </th>
                 <th scope="col" class="px-6 py-3">
                     {{ trans('playtomic.bookings.fields.started_at') }}
-                    @include('components.table.sort', ['field' => 'started_at'])
+                    @include('components.table.sort', ['field' => 'booking.started_at'])
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    {{ trans('playtomic.bookings.fields.duration') }}
+                    @include('components.table.sort', ['field' => 'booking.duration'])
                 </th>
                 <th scope="col" class="px-6 py-3">
                     {{ trans('playtomic.bookings.fields.timetable') }}
@@ -135,6 +139,9 @@
                     <td class="px-2">{{ $booking->id }}</td>
                     <td class="px-2 text-xs">
                         {{ $booking->started_at->format('d-m-Y') }} ({{ ucfirst($booking->started_at->locale('es')->dayName) }})
+                    </td>
+                    <td class="px-2 text-xs">
+                        {!! $listsForFields['duration'][array_search($booking->duration, array_column($listsForFields['duration'], 'id'))]['name'] !!}
                     </td>
                     <td class="px-2">
                         @foreach(explode(",",$booking->timetables) as $id)

@@ -40,6 +40,7 @@ class Create extends Component
         $this->start_date = !is_null($start_date) ? $start_date : null;
         $this->booking = $booking;
         $this->booking->player_email = Auth::user()->email;
+        $this->booking->duration = 90;
         $this->initListsForFields();
     }
 
@@ -55,7 +56,6 @@ class Create extends Component
     {
         $this->validate();
         try{
-
             $this->booking->resources = implode(",",$this->resources);
             $this->booking->timetables = implode(",", $this->timetables);
             $this->booking->created_by = Auth::user()->id;
@@ -106,6 +106,9 @@ class Create extends Component
                 'exists:users,email',
                 'required',
             ],
+            'booking.duration' => [
+                'integer',
+            ],
         ];
     }
 
@@ -126,6 +129,16 @@ class Create extends Component
                 ['id' => 'on-time', 'name' => 'On time'],
                 ['id' => 'time-out', 'name' => 'Time out'],
                 ['id' => 'closed', 'name' => 'Closed']
+            ]
+        );
+        $this->listsForFields['duration'] = collect(
+            [
+                ['id' => 30, 'name' => '30min'],
+                ['id' => 60, 'name' => '1h'],
+                ['id' => 90, 'name' => '1h 30h'],
+                ['id' => 120, 'name' => '2h'],
+                ['id' => 150, 'name' => '2h 30h'],
+                ['id' => 180, 'name' => '3h']
             ]
         );
     }

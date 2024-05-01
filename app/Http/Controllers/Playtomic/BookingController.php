@@ -43,19 +43,19 @@ class BookingController extends Controller
 
     public function edit(Booking $booking)
     {
-        abort_if(Gate::allows('hasRole', ['admin','playtomic']), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        //abort_if(Gate::allows('hasRole', ['admin','playtomic']), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.booking.edit', compact('booking'));
     }
 
     public function show(Booking $booking)
     {
-        abort_if(Gate::allows('hasRole', ['admin','playtomic']), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        //abort_if(Gate::allows('hasRole', ['admin','playtomic']), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.booking.show', compact('booking'));
     }
 
     public function generateLinks(Booking $booking)
     {
-        abort_if(Gate::allows('hasRole', ['admin','playtomic']), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        //abort_if(Gate::allows('hasRole', ['admin','playtomic']), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.booking.generate-links', compact('booking'));
     }
 

@@ -110,6 +110,9 @@ class Edit extends Component
                 'exists:users,email',
                 'required',
             ],
+            'booking.duration' => [
+                'integer',
+            ],
         ];
     }
 
@@ -132,6 +135,16 @@ class Edit extends Component
                 ['id' => 'on-time', 'name' => 'On time'],
                 ['id' => 'time-out', 'name' => 'Time out'],
                 ['id' => 'closed', 'name' => 'Closed']
+            ]
+        );
+        $this->listsForFields['duration'] = collect(
+            [
+                ['id' => 30, 'name' => '30min'],
+                ['id' => 60, 'name' => '1h'],
+                ['id' => 90, 'name' => '1h 30h'],
+                ['id' => 120, 'name' => '2h'],
+                ['id' => 150, 'name' => '2h 30h'],
+                ['id' => 180, 'name' => '3h']
             ]
         );
     }

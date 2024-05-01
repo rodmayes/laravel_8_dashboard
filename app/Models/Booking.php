@@ -30,7 +30,8 @@ class Booking extends Model
         'created_by',
         'public',
         'booked_at',
-        'player'
+        'player',
+        'duration'
     ];
 
     public $filterable = [
@@ -46,7 +47,8 @@ class Booking extends Model
         'public',
         'booking_preference',
         'booked_at',
-        'player'
+        'player',
+        'duration'
     ];
 
     protected $dates = [
@@ -71,7 +73,8 @@ class Booking extends Model
         'public',
         'booking_preference',
         'booked_at',
-        'player_email'
+        'player_email',
+        'duration'
     ];
 
     public function club()
