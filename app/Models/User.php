@@ -88,6 +88,23 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function hasRole($role)
+    {
+        if(is_array($role)) return $this->roles()->whereIn('title', $role)->exists();
+        return $this->roles()->where('title', $role)->exists();
+    }
+
+    public function hasPermission($permission)
+    {
+        if(is_array($permission)) return $this->permissions()->whereIn('title', $permission)->exists();
+        return $this->permissions()->where('title', $permission)->exists();
+    }
+
     public function avatar()
     {
         return $this->morphOne('App\Models\Image', 'imageable');

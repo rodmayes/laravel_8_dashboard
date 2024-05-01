@@ -84,7 +84,7 @@ class PreBooking extends Component
             }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            $this->addError('action', 'Dramatic error you will die. '. $e->getMessage());
+            $this->addError('booking-action', 'Dramatic error you will die. '. $e->getMessage());
         }
     }
 

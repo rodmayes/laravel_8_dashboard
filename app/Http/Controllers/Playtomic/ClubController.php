@@ -10,27 +10,27 @@ use Illuminate\Http\Response;
 
 class ClubController extends Controller
 {
+    public function __construct(){
+        abort_if(Gate::allows('hasRole', ['admin','playtomic']), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    }
+
     public function index()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.club.index');
     }
 
     public function create()
     {
-        abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.club.create');
     }
 
     public function edit(Club $club)
     {
-        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.club.edit', compact('club'));
     }
 
     public function show(Club $club)
     {
-        abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $club->load('resources');
         return view('playtomic.club.show', compact('club'));
     }
@@ -38,7 +38,6 @@ class ClubController extends Controller
 
     public function availability(Club $club)
     {
-        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.club.availability', compact('club'));
     }
 

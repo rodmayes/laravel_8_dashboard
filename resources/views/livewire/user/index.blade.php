@@ -36,7 +36,7 @@
                 <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 mr-2">
                     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                         <li>
-                            <a class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-primary-100 hover:text-gray" href="{{ route('admin.users.create') }}">
+                            <a class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-primary-100 hover:text-gray" href="{{ route('user_management.users.create') }}">
                                 <i class="fa fa-plus-circle"></i> {{ trans('global.add') }} {{ trans('cruds.user.title_singular') }}
                             </a>
                         </li>
@@ -54,89 +54,89 @@
         </div>
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="p-4">
-                        <div class="flex items-center">
-                            <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                        </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        {{ trans('cruds.user.fields.id') }}
-                        @include('components.table.sort', ['field' => 'id'])
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        {{ trans('cruds.user.fields.name') }}
-                        @include('components.table.sort', ['field' => 'name'])
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        {{ trans('cruds.user.fields.email') }}
-                        @include('components.table.sort', ['field' => 'email'])
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        {{ trans('playtomic.clubs.fields.playtomic_id') }}
-                        @include('components.table.sort', ['field' => 'playtomic_id'])
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        {{ trans('cruds.user.fields.roles') }}
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                    </th>
-                </tr>
+            <tr>
+                <th scope="col" class="p-4">
+                    <div class="flex items-center">
+                        <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                    </div>
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    {{ trans('cruds.user.fields.id') }}
+                    @include('components.table.sort', ['field' => 'id'])
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    {{ trans('cruds.user.fields.name') }}
+                    @include('components.table.sort', ['field' => 'name'])
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    {{ trans('cruds.user.fields.email') }}
+                    @include('components.table.sort', ['field' => 'email'])
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    {{ trans('playtomic.clubs.fields.playtomic_id') }}
+                    @include('components.table.sort', ['field' => 'playtomic_id'])
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    {{ trans('cruds.user.fields.roles') }}
+                </th>
+                <th scope="col" class="px-6 py-3">
+                </th>
+            </tr>
             </thead>
             <tbody>
-                @forelse($users as $user)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="w-4 p-4">
-                            <div class="flex items-center">
-                                <input type="checkbox" value="{{ $user->id }}" wire:model="selected" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            </div>
-                        </td>
-                        <td class="px-2 py-2">{{ $user->id }}</td>
-                        <td class="px-2 py-2">{{ $user->name }}</td>
-                        <td class="px-2 py-2">
-                            <a class="link-light-blue" href="mailto:{{ $user->email }}">
-                                <i class="far fa-envelope fa-fw"></i>
-                                {{ $user->email }}
-                            </a>
-                        </td>
-                        <td class="px-2 py-2">{{ $user->playtomic_id }}</td>
-                        <td class="px-2 py-2">
-                            @foreach($user->roles as $key => $entry)
-                                <span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ $entry->title }}</span>
-                            @endforeach
-                        </td>
-                        <td class="px-2 py-2">
-                            <div class="inline-flex">
-                                @can('user_show')
-                                    <a class="px-2 py-2 text-xs text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900" href="{{ route('admin.users.show', $user) }}" title="{{ trans('global.view') }}">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                @endcan
-                                @can('user_edit')
-                                    <a class="px-2 py-2 text-xs text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('admin.users.edit', $user) }}" title="{{ trans('global.edit') }}">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                @endcan
-                                @can('user_delete')
-                                    <button class="px-2 py-2 text-xs text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                                            wire:click="impersonate({{ $user }})" title="Login as">
-                                        <i class="fas fa-user"></i>
-                                    </button>
-                                @endcan
-                                @can('user_delete')
-                                    <button class="px-2 py-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" wire:click="confirmDelete({{ $user->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                @endcan
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="10">No entries found.</td>
-                    </tr>
-                @endforelse
+            @forelse($users as $user)
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td class="w-4 p-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" value="{{ $user->id }}" wire:model="selected" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        </div>
+                    </td>
+                    <td class="px-2 py-2">{{ $user->id }}</td>
+                    <td class="px-2 py-2">{{ $user->name }}</td>
+                    <td class="px-2 py-2">
+                        <a class="link-light-blue" href="mailto:{{ $user->email }}">
+                            <i class="far fa-envelope fa-fw"></i>
+                            {{ $user->email }}
+                        </a>
+                    </td>
+                    <td class="px-2 py-2">{{ $user->playtomic_id }}</td>
+                    <td class="px-2 py-2">
+                        @foreach($user->roles as $key => $entry)
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ $entry->title }}</span>
+                        @endforeach
+                    </td>
+                    <td class="px-2 py-2">
+                        <div class="inline-flex">
+                            @can('user_management.user_show')
+                                <a class="px-2 py-2 text-xs text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900" href="{{ route('user_management.users.show', $user) }}" title="{{ trans('global.view') }}">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            @endcan
+                            @can('user_management.user_edit')
+                                <a class="px-2 py-2 text-xs text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('user_management.users.edit', $user) }}" title="{{ trans('global.edit') }}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            @endcan
+                            @can('user_management.user_delete')
+                                <button class="px-2 py-2 text-xs text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                                        wire:click="impersonate({{ $user }})" title="Login as">
+                                    <i class="fas fa-user"></i>
+                                </button>
+                            @endcan
+                            @can('user_management.user_delete')
+                                <button class="px-2 py-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" wire:click="confirmDelete({{ $user->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            @endcan
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="10">No entries found.</td>
+                </tr>
+            @endforelse
             </tbody>
         </table>
         <nav class="flex items-center justify-between p-4" aria-label="Table navigation">

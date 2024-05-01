@@ -36,7 +36,7 @@
                 <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 mr-2">
                     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                         <li>
-                            <a class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-primary-100 hover:text-gray" href="{{ route('admin.roles.create') }}">
+                            <a class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-primary-100 hover:text-gray" href="{{ route('user_management.roles.create') }}">
                                 <i class="fa fa-plus-circle"></i> {{ trans('global.add') }} {{ trans('cruds.role.title_singular') }}
                             </a>
                         </li>
@@ -74,8 +74,8 @@
                 </th>
                 <th scope="col" class="px-6 py-3"></th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             @forelse($roles as $role)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td class="w-4 p-4">
@@ -92,32 +92,26 @@
                     </td>
                     <td class="px-6 py-4">
                         <div class="inline-flex">
-                            @can('user_show')
-                                <a class="px-2 py-2 text-xs text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900" href="{{ route('admin.roles.show', $role) }}" title="{{ trans('global.view') }}">
+                                <a class="px-2 py-2 text-xs text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900" href="{{ route('user_management.roles.show', $role) }}" title="{{ trans('global.view') }}">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                            @endcan
-                            @can('user_edit')
-                                <a class="px-2 py-2 text-xs text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('admin.roles.edit', $role) }}" title="{{ trans('global.edit') }}">
+                                <a class="px-2 py-2 text-xs text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('user_management.roles.edit', $role) }}" title="{{ trans('global.edit') }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                            @endcan
-                            @can('user_delete')
                                 <button class="px-2 py-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800" wire:click="confirmDelete({{ $role->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                            @endcan
                         </div>
 
                     </td>
                 </tr>
-                @empty
+            @empty
                 <tr>
                     <td colspan="10">No entries found.</td>
                 </tr>
             @endforelse
-        </tbody>
-    </table>
+            </tbody>
+        </table>
         <nav class="flex items-center justify-between p-4" aria-label="Table navigation">
             <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> <span class="font-semibold text-gray-900 dark:text-white">{{$roles->currentPage()}}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{ $roles->total() }}</span></span>
             @if($this->selectedCount)

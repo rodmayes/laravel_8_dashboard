@@ -129,7 +129,7 @@
                         @if(isset($booking->player))
                             <img src="{{ asset($booking->player->getAvatar()) }}" class="img-responsive w-10 h-10" wire:model="image">
                         @else
-                            {{ $booking->player->name }}
+                            {{ $booking->player->name ?? 'no-name' }}
                         @endif
                     </td>
                     <td class="px-2">{{ $booking->id }}</td>
@@ -138,7 +138,7 @@
                     </td>
                     <td class="px-2">
                         @foreach(explode(",",$booking->timetables) as $id)
-                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">{{ \App\Models\Timetable::find($id)->name }}</span>
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">{{ \App\Models\Timetable::find($id)->name ?? 'no-time' }}</span>
                         @endforeach
                     </td>
                     <td class="px-2">
@@ -151,7 +151,7 @@
                             </div>
                             <div class="px-3 py-2">
                                 @foreach(explode(",",$booking->resources) as $id)
-                                    <p><span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ \App\Models\Resource::find($id)->name }}</span></p>
+                                    <p><span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ \App\Models\Resource::find($id)->name ?? 'no-resource'}}</span></p>
                                 @endforeach
                             </div>
                             <div data-popper-arrow></div>
@@ -212,7 +212,7 @@
                                     <i class="fas fa-calendar"></i>
                                 </button>
                             @endif
-                            @can('playtomic.booking_delete')
+                            @can('user_delete')
                                 <button class="px-2 py-2 mr-1 mb-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
                                         wire:click="confirmDelete({{ $booking->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
                                     <i class="fas fa-trash"></i>

@@ -21,13 +21,16 @@ Route::get('user/edit-noadmin', [UserController::class, 'editNoAdmin'])->name('u
 
 Route::get('privacy-policy', [PolicyAndLegalController::class, 'PrivacyPolicy'])->name('privacy-policy');
 
-// ADMINISTRATION
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::resource('permissions', PermissionController::class, ['except' => ['store', 'update', 'destroy']]);
-    Route::resource('roles', RoleController::class, ['except' => ['store', 'update', 'destroy']]);
-    Route::resource('users', UserController::class, ['except' => ['store', 'update', 'destroy'], 'middleware' => ['can:user_management_access']]);
     Route::post('user/set-avatar/{user}', [\App\Http\Livewire\User\Edit::class, 'uploadAvatar'])->name('user.set-avatar');
+});
+
+// ADMINISTRATION
+Route::prefix('user_management')->name('user_management.')->middleware(['auth'])->group(function () {
+    Route::resource('permissions', PermissionController::class, ['except' => ['store', 'update', 'destroy'], 'middleware' => ['role:admin']]);
+    Route::resource('roles', RoleController::class, ['except' => ['store', 'update', 'destroy'], 'middleware' => ['role:admin']]);
+    Route::resource('users', UserController::class, ['except' => ['store', 'update', 'destroy'], 'middleware' => ['role:admin']]);
 });
 
 // CAPTCHA

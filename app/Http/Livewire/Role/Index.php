@@ -82,7 +82,7 @@ class Index extends Component
 
     public function deleteSelected()
     {
-        abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        //abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         Role::whereIn('id', $this->selected)->delete();
 
@@ -91,7 +91,7 @@ class Index extends Component
 
     public function confirmDelete(Role $role)
     {
-        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        //abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         // use a full syntax
         $this->dialog()->confirm([
