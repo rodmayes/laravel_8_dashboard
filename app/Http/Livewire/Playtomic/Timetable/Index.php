@@ -86,14 +86,14 @@ class Index extends Component
 
     public function deleteSelected()
     {
-        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        //abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         Timetable::whereIn('id', $this->selected)->delete();
         $this->resetSelected();
     }
 
     public function confirmDelete(Timetable $timetable)
     {
-        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        //abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         // use a full syntax
         $this->dialog()->confirm([

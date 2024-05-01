@@ -130,8 +130,15 @@
                 @if(count($log) > 0)
                     <div class="callout callout-info">
                         <h5>Process info</h5>
-                        @foreach($log as $l)
-                                <p>{{ $l }}</p>
+                        <button class="btn btn-warning" wire:click="$set('log','')" type="button">Clear log</button>
+                        @foreach($log as $log_detail)
+                            @if(is_array($log_detail))
+                                @foreach($log_detail as $detail)
+                                    <p>{!! print_r($log_detail) !!}</p>
+                                @endforeach
+                            @else
+                                <p>{!! $log_detail !!}</p>
+                            @endif
                         @endforeach
                     </div>
                 @endif

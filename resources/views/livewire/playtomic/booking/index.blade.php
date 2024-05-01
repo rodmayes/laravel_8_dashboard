@@ -129,7 +129,7 @@
                         @if(isset($booking->player))
                             <img src="{{ asset($booking->player->getAvatar()) }}" class="img-responsive w-10 h-10" wire:model="image">
                         @else
-                            {{ $booking->player->name }}
+                            {{ $booking->player->name ?? 'no-name' }}
                         @endif
                     </td>
                     <td class="px-2">{{ $booking->id }}</td>
@@ -138,7 +138,7 @@
                     </td>
                     <td class="px-2">
                         @foreach(explode(",",$booking->timetables) as $id)
-                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">{{ \App\Models\Timetable::find($id)->name }}</span>
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">{{ \App\Models\Timetable::find($id)->name ?? 'no-time' }}</span>
                         @endforeach
                     </td>
                     <td class="px-2">
@@ -151,7 +151,7 @@
                             </div>
                             <div class="px-3 py-2">
                                 @foreach(explode(",",$booking->resources) as $id)
-                                    <p><span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ \App\Models\Resource::find($id)->name }}</span></p>
+                                    <p><span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ \App\Models\Resource::find($id)->name ?? 'no-resource'}}</span></p>
                                 @endforeach
                             </div>
                             <div data-popper-arrow></div>
@@ -189,17 +189,13 @@
                     </td>
                     <td class="px-2 pt-1">
                         <div class="inline-flex">
-                            @can('playtomic.booking_show')
-                                <button type="button" data-modal-target="booking-show-modal" data-modal-toggle="booking-show-modal" wire:click="showItem({{$booking}})" wire:loading.attr="disabled"
-                                        class="mr-1 px-2 py-2 mb-2 text-xs  font-medium text-center inline-flex items-center text-white bg-yellow-400 hover:bg-yellow-500 rounded-lg focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:bg-blue-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            @endcan
-                            @can('playtomic.booking_edit')
-                                <a class="px-2 py-2 text-xs mr-1 mb-2 text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('playtomic.bookings.edit', $booking) }}" title="{{ trans('global.edit') }}">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            @endcan
+                            <button type="button" data-modal-target="booking-show-modal" data-modal-toggle="booking-show-modal" wire:click="showItem({{$booking}})" wire:loading.attr="disabled"
+                                    class="mr-1 px-2 py-2 mb-2 text-xs  font-medium text-center inline-flex items-center text-white bg-yellow-400 hover:bg-yellow-500 rounded-lg focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:bg-blue-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <a class="px-2 py-2 text-xs mr-1 mb-2 text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('playtomic.bookings.edit', $booking) }}" title="{{ trans('global.edit') }}">
+                                <i class="fas fa-edit"></i>
+                            </a>
                             <a class="px-2 py-2 mb-2 mr-1 text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" href="{{ route('playtomic.bookings.generate-links', $booking->id) }}" title="{{ trans('playtomic.generate-links.title')  }}">
                                 <i class="fas fa-link"></i>
                             </a>
@@ -212,12 +208,10 @@
                                     <i class="fas fa-calendar"></i>
                                 </button>
                             @endif
-                            @can('playtomic.booking_delete')
-                                <button class="px-2 py-2 mr-1 mb-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
-                                        wire:click="confirmDelete({{ $booking->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            @endcan
+                            <button class="px-2 py-2 mr-1 mb-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                                    wire:click="confirmDelete({{ $booking->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
                     </td>
                 </tr>

@@ -25,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        /*
         Gate::define('manage_users', function(User $user) {
             return $user->is_admin == 1;
         });
@@ -44,5 +45,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('access_console', function(User $user) {
             return $user->is_admin == 1;
         });
+        */
     }
 }

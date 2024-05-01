@@ -9,27 +9,27 @@ use Illuminate\Http\Response;
 
 class TimetableController extends Controller
 {
+    public function __construct(){
+        abort_if(Gate::allows('hasRole', ['admin','playtomic']), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    }
+
     public function index()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.timetable.index');
     }
 
     public function create()
     {
-        abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.timetable.create');
     }
 
     public function edit(Timetable $timetable)
     {
-        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('playtomic.timetable.edit', compact('timetable'));
     }
 
     public function show(Timetable $timetable)
     {
-        abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $timetable->load('resources');
         return view('playtomic.timetable.show', compact('timetable'));
     }

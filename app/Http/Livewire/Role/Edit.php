@@ -9,9 +9,7 @@ use Livewire\Component;
 class Edit extends Component
 {
     public $role;
-
     public $permissions = [];
-
     public $listsForFields = [];
 
     public function mount(Role $role)
@@ -33,7 +31,7 @@ class Edit extends Component
         $this->role->save();
         $this->role->permissions()->sync($this->permissions);
 
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('user_management.roles.index');
     }
 
     protected function rules(): array
@@ -56,6 +54,11 @@ class Edit extends Component
 
     protected function initListsForFields(): void
     {
-        $this->listsForFields['permissions'] = Permission::orderBy('title')->get();
+        $permissions = Permission::orderBy('title')->get()->mapToGroups(function ($item, $key) {
+            $label = explode(".", $item->title);
+            return [$item->section => ['label' => $label[1], 'id' => $item->id, 'title' => $item->title]];
+        });
+
+        $this->listsForFields['permissions'] = $permissions;
     }
 }

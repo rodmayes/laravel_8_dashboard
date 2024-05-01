@@ -15,10 +15,10 @@
     </h1>
     <form wire:submit.prevent="submit" class="pt-3">
         <div class="w-full">
-                    <h1 class="h5 align-content-end">App data</h1>
-                    <div wire:loading wire:target="refreshData">
-                        Processing Refresh...
-                    </div>
+            <h1 class="h5 align-content-end">App data</h1>
+            <div wire:loading wire:target="refreshData">
+                Processing Refresh...
+            </div>
         </div>
         <div class="w-full grid grid-cols-3">
             <div class="{{ $errors->has('user.name') ? 'invalid' : '' }} mr-2">
@@ -113,18 +113,34 @@
                 </div>
             </div>
         </div>
-        <div class="w-full">
+
+        <!-- Playtomic Token -->
+        <div class="grid grid-cols-1">
             <div class="m-2 {{ $errors->has('user.playtomic_token') ? 'invalid' : '' }}">
-                <label class="form-label" for="playtomic_token">{{ trans('cruds.user.fields.playtomic_token') }}</label>
-                <p class="mb-3 text-gray-500 dark:text-gray-400" style="overflow: hidden" data-popover-target="popover-playtomic_token">{{ substr($this->user->playtomic_token,0,100) }}...</p>
-                <div data-popover id="popover-playtomic_token" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
-                    <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
-                        <h3 class="font-semibold text-gray-900 dark:text-white">{{ trans('cruds.user.fields.playtomic_token') }}</h3>
+                <div class="">
+                    <div class="mb-2 flex justify-between items-center">
+                        <label class="form-label" for="playtomic_token">{{ trans('cruds.user.fields.playtomic_token') }}</label>
                     </div>
-                    <div class="p-3 space-y-2" style="word-wrap: break-word;">
-                        {!! $this->user->playtomic_token !!}
+                    <div class="relative bg-gray-50 rounded-lg dark:bg-gray-700 p-2">
+                        <div class="overflow-scroll max-h-full">
+                            <p id="code-block-token" class="text-sm text-gray-500 dark:text-gray-400 whitespace-pre">{{ $this->user->playtomic_token }}</p>
+                        </div>
+                        <div class="absolute top-2 end-2 bg-gray-50 dark:bg-gray-700">
+                            <button data-copy-to-clipboard-target="code-block-token" data-copy-to-clipboard-content-type="innerHTML" data-copy-to-clipboard-html-entities="true" type="button"
+                                    class="text-gray-900 dark:text-gray-400 m-0.5 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg py-2 px-2.5 inline-flex items-center justify-center bg-white border-gray-200 border">
+                            <span id="default-message" class="inline-flex items-center">
+                                <i class="fa fa-clipboard mr-1"></i>
+                                <span class="text-xs font-semibold"></span>
+                            </span>
+                                <span id="success-message" class="hidden inline-flex items-center">
+                            <svg class="w-3 h-3 text-blue-700 dark:text-blue-500 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                            </svg>
+                            <span class="text-xs font-semibold text-blue-700 dark:text-blue-500">Copied</span>
+                        </span>
+                            </button>
+                        </div>
                     </div>
-                    <div data-popper-arrow></div>
                 </div>
                 <div class="text-danger">
                     {{ $errors->first('user.playtomic_token') }}
@@ -133,17 +149,36 @@
                     {{ trans('cruds.user.fields.playtomic_token_helper') }}
                 </div>
             </div>
-            <div class="m-2 {{ $errors->has('user.playtomic_refresh_token') ? 'invalid' : '' }}">
-                <label class="form-label" for="playtomic_refresh_token">{{ trans('cruds.user.fields.playtomic_refresh_token') }}</label>
-                <p class=" truncate mb-3 text-gray-500 dark:text-gray-400" data-popover-target="popover-playtomic_refresh_token">{{ substr($this->user->playtomic_refresh_token,0,100) }}...</p>
-                <div data-popover id="popover-playtomic_refresh_token" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
-                    <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
-                        <h3 class="font-semibold text-gray-900 dark:text-white">{{ trans('cruds.user.fields.playtomic_refresh_token') }}</h3>
+        </div>
+        <!-- End Playtomic Token -->
+
+        <!-- Playtomic Token Refresh -->
+        <div class="grid grid-cols-1">
+            <div class="m-2 {{ $errors->has('user.playtomic_token_refresh') ? 'invalid' : '' }}">
+                <div class="">
+                    <div class="mb-2 flex justify-between items-center">
+                        <label class="form-label" for="playtomic_token">{{ trans('cruds.user.fields.playtomic_refresh_token') }}</label>
                     </div>
-                    <div class="p-3 space-y-2" style="word-wrap: break-word;">
-                        {!! $this->user->playtomic_refresh_token !!}
+                    <div class="relative bg-gray-50 rounded-lg dark:bg-gray-700 p-2">
+                        <div class="overflow-scroll max-h-full">
+                            <p id="code-block-token-refresh" class="text-sm text-gray-500 dark:text-gray-400 whitespace-pre">{{ $this->user->playtomic_refresh_token }}</p>
+                        </div>
+                        <div class="absolute top-2 end-2 bg-gray-50 dark:bg-gray-700">
+                            <button data-copy-to-clipboard-target="code-block-token-refresh" data-copy-to-clipboard-content-type="innerHTML" data-copy-to-clipboard-html-entities="true" type="button"
+                                    class="text-gray-900 dark:text-gray-400 m-0.5 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg py-2 px-2.5 inline-flex items-center justify-center bg-white border-gray-200 border">
+                            <span id="default-message" class="inline-flex items-center">
+                                <i class="fa fa-clipboard mr-1"></i>
+                                <span class="text-xs font-semibold"></span>
+                            </span>
+                                <span id="success-message" class="hidden inline-flex items-center">
+                            <svg class="w-3 h-3 text-blue-700 dark:text-blue-500 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                            </svg>
+                            <span class="text-xs font-semibold text-blue-700 dark:text-blue-500">Copied</span>
+                        </span>
+                            </button>
+                        </div>
                     </div>
-                    <div data-popper-arrow></div>
                 </div>
                 <div class="text-danger">
                     {{ $errors->first('user.playtomic_refresh_token') }}
@@ -151,13 +186,14 @@
                 <div class="help-block">
                     {{ trans('cruds.user.fields.playtomic_token_helper') }}
                 </div>
+                <!-- End Playtomic Token Refresh -->
             </div>
         </div>
         <div class="w-full items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
             <button type="submit" class="float-right text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 {{ trans('global.save') }}
             </button>
-            <a href="{{ route('admin.users.index') }}" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+            <a href="{{ route('user_management.users.index') }}" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                 {{ trans('global.cancel') }}
             </a>
         </div>
@@ -198,7 +234,7 @@
                     </label>
                 </div>
 
-            @if(session('success_msg'))
+                @if(session('success_msg'))
                     <div class="card-footer">
                         <div class="alert alert-success show">{{ session('success_msg') }}</div>
                         @if(session('uploaded_img'))<img src="{{session('uploaded_img')}}" height="50px" width="50px">@endif
