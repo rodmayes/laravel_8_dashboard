@@ -44,21 +44,21 @@ class Edit extends Component
         $this->user->save();
         $this->user->roles()->sync($this->roles);
 
-        return redirect()->route('admin.users.index');
+        return redirect()->route('user_management.users.index');
     }
 
     public function storePassword(){
         $this->user->password = $this->password;
         $this->user->save();
 
-        return redirect()->route('admin.users.edit', $this->user->id);
+        return redirect()->route('user_management.users.edit', $this->user->id);
     }
 
     public function storePlaytomicPassword(){
         $this->user->playtomic_password = Crypt::encrypt($this->playtomic_password);
         $this->user->save();
 
-        return redirect()->route('admin.users.edit', $this->user->id);
+        return redirect()->route('user_management.users.edit', $this->user->id);
     }
 
     public function refreshToken(){
@@ -68,7 +68,7 @@ class Edit extends Component
             $this->user->playtomic_token = $response['access_token'];
             $this->user->playtomic_refresh_token = $response['refresh_token'];
             $this->user->save();
-            return redirect()->route('admin.users.edit', $this->user->id);
+            return redirect()->route('user_management.users.edit', $this->user->id);
         }
         return $this->addError('user.playtomic_token', 'Error to refresh');
     }
