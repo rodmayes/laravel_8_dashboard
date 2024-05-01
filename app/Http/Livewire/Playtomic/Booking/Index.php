@@ -83,7 +83,14 @@ class Index extends Component
             's'               => $this->search ?: null,
             'order_column'    => $this->sortBy,
             'order_direction' => $this->sortDirection,
-        ])->byUser(Auth::user()->id)
+        ])->where(function($q1) {
+            $q1->orWhere(function($q) {
+                $q->byUser(Auth::user()->id);
+            })
+                ->orWhere(function($q) {
+                     $q->isPublic();
+                 });
+        })
             ->when((int)$this->perClub > -1, function($q){
             return $q->byClub($this->perClub);
         });

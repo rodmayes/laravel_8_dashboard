@@ -57,7 +57,7 @@ class Edit extends Component
             $this->booking->resources = implode(",", $this->resources);
             $this->booking->timetables = implode(",", $this->timetables);
             $this->booking->name = $this->booking->club->name . ' ' . $this->booking->start_at;
-            $this->booking->public = $this->booking->public ?? false;
+            //$this->booking->public = $this->booking->public ?: false;
             if(is_null($this->booking->player_email)) $this->booking->player_email = Auth::user()->email;
             $this->booking->save();
 

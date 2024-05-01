@@ -148,6 +148,10 @@ class Booking extends Model
         return $query->where('player_email', mb_strtolower(trim($value)));
     }
 
+    public function scopeIsPublic($query){
+        return $query->where('public',1);
+    }
+
     public function setStatusTimeOut(){
         $this->status = 'time-out';
         return $this->save();

@@ -59,7 +59,7 @@ class Create extends Component
             $this->booking->resources = implode(",",$this->resources);
             $this->booking->timetables = implode(",", $this->timetables);
             $this->booking->created_by = Auth::user()->id;
-            $this->booking->public = isset($this->public) ? $this->public : false;
+           // $this->booking->public = isset($this->public) ? $this->public : false;
             $this->booking->name = $this->booking->club->name.' '.$this->booking->started_at;
             $this->booking->started_at = $this->booking->started_at ?: Carbon::now()->addDays((int)$this->booking->club->days_min_booking);
             if(Carbon::now('Europe/Andorra')->startOfDay()->diffInDays($this->booking->started_at->startOfDay()) >= (int)$this->booking->club->days_min_booking) $this->booking->status = 'on-time';
