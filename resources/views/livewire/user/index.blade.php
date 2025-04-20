@@ -61,6 +61,7 @@
                         <label for="checkbox-all-search" class="sr-only">checkbox</label>
                     </div>
                 </th>
+                <th scope="col" class="px-6 py-3"></th>
                 <th scope="col" class="px-6 py-3">
                     {{ trans('cruds.user.fields.id') }}
                     @include('components.table.sort', ['field' => 'id'])
@@ -80,8 +81,7 @@
                 <th scope="col" class="px-6 py-3">
                     {{ trans('cruds.user.fields.roles') }}
                 </th>
-                <th scope="col" class="px-6 py-3">
-                </th>
+                <th scope="col" class="px-6 py-3"></th>
             </tr>
             </thead>
             <tbody>
@@ -91,6 +91,9 @@
                         <div class="flex items-center">
                             <input type="checkbox" value="{{ $user->id }}" wire:model="selected" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         </div>
+                    </td>
+                    <td>
+                        <img src="{{ $user->getAvatar() }}" class="float-right rounded w-36 h-36" wire:model="image">
                     </td>
                     <td class="px-2 py-2">{{ $user->id }}</td>
                     <td class="px-2 py-2">{{ $user->name }}</td>
