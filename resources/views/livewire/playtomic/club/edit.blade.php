@@ -44,9 +44,9 @@
                             </div>
                             <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ trans('playtomic.clubs.fields.timetable_summer') }}</span>
                         </label>
-                        <div class="validation-message">
+                        <p class="text-red-500">
                             {{ $errors->first('club.timetable_summer') }}
-                        </div>
+                        </p>
                         <div class="help-block">
                             {{ trans('playtomic.clubs.fields.timetable_summer_helper') }}
                         </div>

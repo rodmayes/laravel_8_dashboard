@@ -44,7 +44,7 @@ class Edit extends Component
                 'required',
             ],
             'club.timetable_summer' => [
-                'integer',
+                'boolean',
                 'required',
             ],
         ];
