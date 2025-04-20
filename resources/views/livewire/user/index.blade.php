@@ -93,7 +93,7 @@
                         </div>
                     </td>
                     <td>
-                        <img src="{{ $user->getAvatar() }}" class="float-right rounded w-36 h-36" wire:model="image">
+                        <img src="{{ $user->getAvatar() }}" class="w-8 h-8 object-cover" wire:model="image">
                     </td>
                     <td class="px-2 py-2">{{ $user->id }}</td>
                     <td class="px-2 py-2">{{ $user->name }}</td>
