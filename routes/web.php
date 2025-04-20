@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\UserController;
 use RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController;
 use App\Http\Controllers\PolicyAndLegalController;
 
-Route::redirect('/', '/login');
+Route::redirect('/', '/login')->name('login');
 Route::impersonate();
 
 Auth::routes(['register' => false]);
@@ -27,10 +27,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 });
 
 // ADMINISTRATION
-Route::prefix('user_management')->name('user_management.')->middleware(['auth'])->group(function () {
-    Route::resource('permissions', PermissionController::class, ['except' => ['store', 'update', 'destroy'], 'middleware' => ['role:admin']]);
-    Route::resource('roles', RoleController::class, ['except' => ['store', 'update', 'destroy'], 'middleware' => ['role:admin']]);
-    Route::resource('users', UserController::class, ['except' => ['store', 'update', 'destroy'], 'middleware' => ['role:admin']]);
+Route::prefix('user_management')->name('user_management.')->middleware(['auth', 'role:Admin'])->group(function () {
+    Route::resource('permissions', PermissionController::class, ['except' => ['store', 'update', 'destroy']]);
+    Route::resource('roles', RoleController::class, ['except' => ['store', 'update', 'destroy']]);
+    Route::resource('users', UserController::class, ['except' => ['store', 'update', 'destroy']]);
 });
 
 // CAPTCHA

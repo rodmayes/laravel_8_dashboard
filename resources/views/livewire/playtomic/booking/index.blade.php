@@ -131,7 +131,7 @@
                     </td>
                     <td class="px-4 w-10 h-10 overflow-hidden rounded-md">
                         @if(isset($booking->player))
-                            <img src="{{ asset($booking->player->getAvatar()) }}" class="img-responsive w-10 h-10" wire:model="image">
+                            <img src="{{ $booking->player->getAvatar() }}" class="img-responsive w-10 h-10" wire:model="image">
                         @else
                             {{ $booking->player->name ?? 'no-name' }}
                         @endif

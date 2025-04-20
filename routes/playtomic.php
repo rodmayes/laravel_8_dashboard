@@ -13,7 +13,7 @@ use App\Http\Controllers\Playtomic\TimetableController;
     Route::resource('resources', ResourceController::class, ['except' => ['store', 'update', 'destroy']]);
     Route::resource('timetables', TimetableController::class, ['except' => ['store', 'update', 'destroy']]);
     //Route::resource('bookings', BookingController::class, ['except' => ['store', 'update', 'destroy']]);
-    Route::group(['prefix' => 'bookings', 'as' => 'bookings.'], function () {
+    Route::prefix('bookings')->name('bookings.')->group(function () {
         Route::get('', [BookingController::class, 'index'])->name('index');
         Route::get('create/{start_date?}', [BookingController::class, 'create'])->name('create');
         Route::get('{booking}/edit', [BookingController::class, 'edit'])->name('edit');

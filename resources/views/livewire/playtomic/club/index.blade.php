@@ -110,13 +110,13 @@
                     <td class="px-2 py-2">{{ $club->resources->count() }}</td>
                     <td class="px-2 py-2">
                         <div class="inline-flex">
-                            @can('user_show')
+                            @can('playtomic.club_show')
                                 <button data-modal-target="defaultModal" data-modal-toggle="defaultModal" wire:click="showItem({{ $club}})" wire:loading.attr="disabled"
                                         class="px-2 py-2 text-xs text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             @endcan
-                            @can('user_edit')
+                            @can('playtomic.club_edit')
                                 <a class="px-2 py-2 text-xs text-white bg-teal-400 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800" href="{{ route('playtomic.clubs.edit', $club) }}" title="{{ trans('global.edit') }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
@@ -124,7 +124,7 @@
                                 <button class="px-2 py-2 text-xs text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" wire:click="syncResources({{ $club->id }})" wire:loading.attr="disabled" title="Sync resources">
                                     <i class="fas fa-sync"></i>
                                 </button>
-                            @can('user_delete')
+                            @can('playtomic.club_delete')
                                 <button class="px-2 py-2 text-xs text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
                                         wire:click="confirmDelete({{ $club->id }})" wire:loading.attr="disabled" title="{{ trans('global.delete') }}">
                                     <i class="fas fa-trash"></i>

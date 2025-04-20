@@ -1,7 +1,7 @@
 <div class="w-2/3 sm:w-full p-4 border border-gray-200 bg-white rounded-t-xl dark:border-gray-600 dark:bg-gray-700">
     <h1 class="h3">
         Edit User
-        <img src="{{ asset($user->getAvatar()) }}" class="float-right rounded w-36 h-36" wire:model="image">
+        <img src="{{ $user->getAvatar() }}" class="float-right rounded w-36 h-36" wire:model="image">
         <div class="grid grid-cols-1 float-right">
             <button type="button" wire:click="refreshData"
                     class="float-right px-3 py-2 text-xs text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">

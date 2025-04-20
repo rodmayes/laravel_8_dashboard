@@ -25,6 +25,7 @@
         "laravel/telescope": "^4.10",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "laravolt/avatar": "^5.1",
         "livewire/livewire": "^2.12",
         "mews/captcha": "^3.3",
         "nesbot/carbon": "^2.69",

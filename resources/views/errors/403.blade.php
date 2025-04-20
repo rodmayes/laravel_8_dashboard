@@ -10,12 +10,12 @@
 @section('message_custom')
     {{ __('errors.unauthorized') }}<br>
     @if(auth()->user())
-        @if(auth()->user()->hasRole('staff'))
+        @if(auth()->user()->hasRole('Admin'))
             @if(!empty(url()->previous()))
                 <a href="{{ url()->previous() }}">{{  __('errors.goBack') }}</a>
             @endif
             <br>
-            <a href="{{  route('home') }}">{{   __('errors.goHome') }}</a>
+            <a href="{{  route('admin.home') }}">{{   __('errors.goHome') }}</a>
         @elseif(auth()->user())
             <a href="{{  route('logout') }}">{{   __('errors.goHome') }}</a>
         @endif

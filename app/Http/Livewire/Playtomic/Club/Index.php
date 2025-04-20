@@ -128,7 +128,7 @@ class Index extends Component
 
     public function syncResources(Club $club){
         try {
-            $service = (new PlaytomicHttpService(Auth::user()));
+            $service = (new PlaytomicHttpService(auth()->user()));
             $service->login();
             $information_club = $service->getInformationClub($club);
 
@@ -146,13 +146,13 @@ class Index extends Component
                         ]);
                 }
             $this->notification()->success(
-                $title = 'Notice',
-                $description = 'Data resources synced!'
+                'Notice',
+                'Data resources synced!'
             );
         }catch (\Exception $e){
             $this->notification()->error(
-                $title = 'Error !!!',
-                $description = $e->getMessage()
+                'Error !!!',
+                $e->getMessage()
             );
         }
     }

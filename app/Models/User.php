@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Lab404\Impersonate\Models\Impersonate;
+use Laravolt\Avatar\Facade;
 
 class User extends Authenticatable
 {
@@ -95,8 +96,13 @@ class User extends Authenticatable
 
     public function hasRole($role)
     {
-        if(is_array($role)) return $this->roles()->whereIn('title', $role)->exists();
-        return $this->roles()->where('title', $role)->exists();
+        if(is_array($role)) {
+            return $this->roles()
+                ->whereIn('title', $role)
+                ->exists();
+        }
+
+        return $this->roles()->whereRaw("LOWER(title) = '".strtolower($role)."'")->exists();
     }
 
     public function hasPermission($permission)
@@ -125,8 +131,13 @@ class User extends Authenticatable
         return $query->where('email', $value);
     }
 
-    public function getAvatar(){
-        return $this->avatar ? Storage::url($this->avatar->image) : asset('/images/avatar-default.jpeg');
+    public function getAvatar()
+    {
+        if ($this->avatar && Storage::exists($this->avatar->image)) {
+            return asset(Storage::url($this->avatar->image));
+        }
+
+        return Facade::create($this->name)->toBase64();
     }
 
     public function saveAvatar($image){
