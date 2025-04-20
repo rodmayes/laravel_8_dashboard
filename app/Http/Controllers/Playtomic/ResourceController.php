@@ -10,10 +10,6 @@ use Illuminate\Http\Response;
 
 class ResourceController extends Controller
 {
-    public function __construct(){
-        abort_if(Gate::allows('hasRole', ['admin','playtomic']), Response::HTTP_FORBIDDEN, '403 Forbidden');
-    }
-
     public function index()
     {
         return view('playtomic.resource.index');
