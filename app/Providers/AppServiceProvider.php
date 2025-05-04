@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Livewire::setComponentNamespace('App\\Livewire');
+        //Livewire::setComponentNamespace('App\\Livewire');
 
         /*
         Gate::define('manage_users', function(User $user) {
