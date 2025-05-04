@@ -1,13 +1,13 @@
 <?php
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
-use RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController;
 use App\Http\Controllers\PolicyAndLegalController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use RobersonFaria\DatabaseSchedule\Http\Controllers\ScheduleController;
 
 Route::redirect('/', '/login')->name('login');
 Route::impersonate();
@@ -23,7 +23,7 @@ Route::get('privacy-policy', [PolicyAndLegalController::class, 'PrivacyPolicy'])
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::post('user/set-avatar/{user}', [\App\Http\Livewire\User\Edit::class, 'uploadAvatar'])->name('user.set-avatar');
+    Route::post('user/set-avatar/{user}', [\App\Livewire\User\Edit::class, 'uploadAvatar'])->name('user.set-avatar');
 });
 
 // ADMINISTRATION

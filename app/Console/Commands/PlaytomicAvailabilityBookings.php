@@ -6,7 +6,7 @@ use App\Models\Availibility;
 use App\Models\Club;
 use App\Models\Slot;
 use App\Models\User;
-use App\Services\PlaytomicHttpService;
+use App\Services\Playtomic\PlaytomicHttpService;
 use Illuminate\Console\Command;
 
 class PlaytomicAvailabilityBookings extends Command

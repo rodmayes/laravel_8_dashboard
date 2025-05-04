@@ -2,16 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\PlaytomicBookingConfirmation;
-use App\Models\Booking;
-use App\Models\Resource;
-use App\Models\Timetable;
 use App\Models\User;
-use App\Services\PlaytomicHttpService;
+use App\Services\Playtomic\PlaytomicHttpService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class PlaytomicLogin extends Command
 {
@@ -30,36 +24,34 @@ class PlaytomicLogin extends Command
     protected $description = 'Login to PLaytomic and set Token to database';
     private $service;
     private $user;
-    private $log;
+    protected $bookingService;
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * @return void|null
      */
-    public function handle()
+    public function handle(): void
     {
         $this->user = User::byEmail($this->argument('user'))->first();
-        if(!$this->user) return $this->displayMessage('No user found');
+        if(!$this->user){
+            $this->displayMessage('No user found');
+        }
 
-        $this->service = new PlaytomicHttpService($this->user);
-        $this->displayMessage('Login attempt', 'info');
-        $login_response = $this->service->login();
-        if(!$login_response)
-            return $this->displayMessage('NOT Logged');
-        $this->displayMessage('Logged', 'info', $login_response);
+        try {
+            $this->bookingService = new PlaytomicHttpService($this->user);
+            $this->displayMessage('Login attempt', 'info');
+            $login_response = $this->bookingService->login();
+            if (!$login_response) {
+                $this->displayMessage('NOT Logged');
+            }
+            $this->displayMessage('Logged', 'info', $login_response);
+        }catch (\Exception $e){
+            Log::error($e->getMessage());
+        }
     }
 
-    public function displayMessage($message, $type = 'error', $detail_log = []){
-        $this->log[] = $message;
+    public function displayMessage($message, $type = 'error', $detail_log = []): void
+    {
         if($type === 'error') {
             $this->error($message);
             Log::error($message, $detail_log);

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Playtomic;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\PlaytomicHttpService;
+use App\Services\Playtomic\PlaytomicHttpService;
 
 class PlaytomicController extends Controller
 {

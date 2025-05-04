@@ -74,7 +74,7 @@ class ApiHttpServiceRequest extends Http
      * @param $data
      * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function sendPut($data, $url = '')
+    public function sendPut($data, string $url = ''): void
     {
         try {
             $this->returnResponse($this->httpd->put($this->url.$url, $data)->json());
@@ -89,7 +89,7 @@ class ApiHttpServiceRequest extends Http
      * @param $data
      * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function sendPatch($data, $url = '')
+    public function sendPatch($data, string $url = ''): void
     {
         try {
             $this->returnResponse($this->httpd->patch($this->url.$url, $data)->json());
@@ -105,7 +105,7 @@ class ApiHttpServiceRequest extends Http
      * @param $data
      * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function sendDelete($data, $url = '')
+    public function sendDelete($data, string $url = ''): void
     {
         try {
             $this->returnResponse($this->httpd->delete($this->url.$url, $data)->json());
@@ -119,9 +119,10 @@ class ApiHttpServiceRequest extends Http
         return $this->url;
     }
 
-    public function seUrl($url)
+    public function seUrl($url): String
     {
         $this->url = $url;
+        return $this->url;
     }
 
     private function returnResponse($response)

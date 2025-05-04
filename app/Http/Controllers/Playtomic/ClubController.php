@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Playtomic;
 
 use App\Http\Controllers\Controller;
 use App\Models\Club;
-use App\Services\PlaytomicHttpService;
+use App\Services\Playtomic\PlaytomicHttpService;
 use Gate;
-use Illuminate\Http\Response;
 
 class ClubController extends Controller
 {

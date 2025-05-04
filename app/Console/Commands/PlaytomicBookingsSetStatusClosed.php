@@ -3,8 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Models\Booking;
-use App\Models\User;
-use App\Services\PlaytomicHttpService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
