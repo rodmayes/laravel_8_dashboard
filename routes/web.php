@@ -23,7 +23,7 @@ Route::get('privacy-policy', [PolicyAndLegalController::class, 'PrivacyPolicy'])
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::post('user/set-avatar/{user}', [\App\Livewire\User\Edit::class, 'uploadAvatar'])->name('user.set-avatar');
+    Route::post('user/set-avatar/{user}', [\App\Http\Livewire\User\Edit::class, 'uploadAvatar'])->name('user.set-avatar');
 });
 
 // ADMINISTRATION
