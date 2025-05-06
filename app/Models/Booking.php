@@ -152,6 +152,10 @@ class Booking extends Model
         return $query->where('public',1);
     }
 
+    public function scopeOnDate($query){
+        return $query->where('started_at','>=',Carbon::now());
+    }
+
     public function setStatusTimeOut(){
         $this->status = 'time-out';
         return $this->save();

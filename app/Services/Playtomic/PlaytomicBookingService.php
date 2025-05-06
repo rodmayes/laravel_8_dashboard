@@ -16,31 +16,26 @@ use Spatie\Async\Pool;
 class PlaytomicBookingService
 {
     protected $log = [];
+    private $service;
+    private $user;
 
-    public function processBookingsForUser(string $email): void
+    public function __construct(User $user){
+        $this->user = $user;
+        $this->service = new PlaytomicHttpService($user);
+    }
+
+    public function processBookingsForUser($bookings): void
     {
-        Log::debug("[Start] Booking process for user: {$email}");
+        Log::debug("[Start] Booking process for user: {$this->user->email}");
         $this->log[] = "Start booking ".now()->format('Y-m-d H:i:s');
 
-        $user = User::byEmail($email)->first();
-        if (!$user) {
-            Log::warning("[Abort] No user found for email: {$email}");
-            $this->log[] = 'No user found';
-            return;
-        }
-
-        $bookings = Booking::ontime()
-            ->byPlayer($user->email)
-            ->orderByDesc('started_at')
-            ->get();
-
         foreach ($bookings as $booking) {
-            Log::debug("[Booking Check] {$booking->id} for user {$user->email}");
+            Log::debug("[Booking Check] {$booking->id} for user {$this->user->email}");
 
             $day_to_date = $booking->started_at->copy()->subDays((int)$booking->club->days_min_booking);
             if ($day_to_date->isSameDay(Carbon::now(env('APP_DATETIME_ZONE'), 'Europe/Andorra'))) {
                 try {
-                    $this->handleBooking($booking, $user);
+                    $this->handleBooking($booking);
                 } catch (\Exception $e) {
                     Log::error("[Exception] Booking ID {$booking->id}: {$e->getMessage()}");
                     $this->log[] = '[Exception] ' . $e->getMessage();
@@ -55,16 +50,16 @@ class PlaytomicBookingService
         Log::info('Booking process finished', $this->log);
     }
 
-    protected function handleBooking($booking, $user)
+    protected function handleBooking($booking)
     {
         $this->log[] = "[HandleBooking] Start for booking ID {$booking->id}";
 
         $timetables = Timetable::whereIn('id', explode(",", $booking->timetables))
             ->orderByRaw(DB::raw("FIELD(id, {$booking->timetables})"))
-            ->get();
+            ->get()->keyBy('id');
         $resources = Resource::whereIn('id', explode(",", $booking->resources))
             ->orderByRaw(DB::raw("FIELD(id, {$booking->resources})"))
-            ->get();
+            ->get()->keyBy('id');
 
         $pref = $booking->booking_preference;
         $primaryItems = $pref === 'timetable' ? $timetables : $resources;
@@ -78,10 +73,10 @@ class PlaytomicBookingService
                 [$resource, $timetable] = $pref === 'timetable' ? [$p2, $p1] : [$p1, $p2];
                 $combinations[] = [
                     'combo_index' => $index++,
-                    'booking_id' => $booking->id,
-                    'user_id' => $user->id,
                     'resource_id' => $resource->id,
                     'timetable_id' => $timetable->id,
+                    'resource' => $resource,
+                    'timetable' => $timetable
                 ];
             }
         }
@@ -90,27 +85,15 @@ class PlaytomicBookingService
         $pool = Pool::create();
 
         foreach ($combinations as $combo) {
-            $pool->add(function () use ($combo) {
+            $pool->add(function () use ($booking, $combo) {
                 try {
-                    $booking = Booking::find($combo['booking_id']);
-                    $user = User::find($combo['user_id']);
-                    $resource = Resource::find($combo['resource_id']);
-                    $timetable = Timetable::find($combo['timetable_id']);
-
-                    if (!$booking || !$user || !$resource || !$timetable) {
-                        return ['combo_index' => $combo['combo_index'], 'prebooking' => ['status' => 'fail', 'message' => 'Invalid combo data']];
-                    }
-
-                    $service = new PlaytomicHttpService($user);
-                    $response = $this->availability($booking, $resource, $timetable, $service);
+                    $response = $this->availability($booking, $combo['resource'], $combo['timetable']);
 
                     return [
                         'combo_index' => $combo['combo_index'],
                         'prebooking' => $response,
-                        'resource_id' => $resource->id,
-                        'timetable_id' => $timetable->id,
-                        'booking_id' => $booking->id,
-                        'user_id' => $user->id,
+                        'resource' => $combo['resource'],
+                        'timetable' => $combo['timetable'],
                     ];
                 } catch (\Throwable $e) {
                     return ['combo_index' => $combo['combo_index'], 'prebooking' => ['status' => 'fail', 'message' => $e->getMessage()]];
@@ -132,19 +115,16 @@ class PlaytomicBookingService
                 continue;
             }
 
-            $booking = Booking::find($result['booking_id']);
-            $user = User::find($result['user_id']);
-            $resource = Resource::find($result['resource_id']);
-            $timetable = Timetable::find($result['timetable_id']);
-            $service = new PlaytomicHttpService($user);
+            $resource = $result['resource'];
+            $timetable = $result['timetable'];
 
             $this->log[] = "[MakeBooking] For booking {$booking->id} and timetable {$timetable->id}";
-            $response = $this->makeBooking($result['prebooking'], $timetable, $service);
+            $response = $this->makeBooking($result['prebooking']);
 
             if (!isset($response['error'])) {
                 try {
-                    Mail::to($user->email)->send(new PlaytomicBookingConfirmation($booking, $resource, $timetable, $response));
-                    $this->log[] = "Mail sent to {$user->email}";
+                    Mail::to($this->user->email)->send(new PlaytomicBookingConfirmation($booking, $resource, $timetable, $response));
+                    $this->log[] = "Mail sent to {$this->user->email}";
                 } catch (\Exception $e) {
                     $this->log[] = "Mail send error: {$e->getMessage()}";
                 }
@@ -159,11 +139,11 @@ class PlaytomicBookingService
         $booking->save();
     }
 
-    protected function availability(Booking $booking, Resource $resource, Timetable $timetable, $service): array
+    protected function availability(Booking $booking, Resource $resource, Timetable $timetable): array
     {
         try {
             $this->log[] = 'Availibility '.$timetable->name.' '.now()->format('Y-m-d H:i:s');
-            $response = $service->preBooking($booking, $resource, $timetable);
+            $response = $this->service->preBooking($booking, $resource, $timetable);
             if (isset($response['status']) && $response['status'] === 'fail') {
                 $this->log[] = 'Prebooking error: ' . $timetable->name . ' ' . $response['message'];
                 return ['status' => 'fail', 'message' => 'Prebooking error: ' . $timetable->name . ' ' . $response['message']];
@@ -176,7 +156,7 @@ class PlaytomicBookingService
         }
     }
 
-    protected function makeBooking(array $prebooking, Timetable $timetable, $service): array
+    protected function makeBooking(array $prebooking): array
     {
         if (!isset($prebooking['payment_intent_id'])) {
             $this->log[] = 'Missing payment_intent_id';
@@ -184,13 +164,13 @@ class PlaytomicBookingService
         }
 
         try {
-            $step1 = $service->paymentMethodSelection($prebooking);
+            $step1 = $this->service->paymentMethodSelection($prebooking);
             if ($step1['status'] === 'fail') {
                 $this->log[] = 'Payment method failed: ' . $step1['message'];
                 return ['error' => $step1['message']];
             }
 
-            $step2 = $service->confirmation($step1['payment_intent_id']);
+            $step2 = $this->service->confirmation($step1['payment_intent_id']);
             if ($step2['status'] === 'fail') {
                 $this->log[] = 'Confirmation failed: ' . $step2['message'];
                 return ['error' => $step2['message']];
@@ -202,8 +182,8 @@ class PlaytomicBookingService
                 return ['error' => 'Missing match_id'];
             }
 
-            $step3 = $service->confirmationMatch($matchId);
-            if ($step3['status'] === 'fail') {
+            $step3 = $this->service->confirmationMatch($matchId);
+            if (isset($step3['status']) && $step3['status'] === 'fail') {
                 $this->log[] = 'Confirmation match failed: ' . $step3['message'];
                 return ['error' => $step3['message']];
             }

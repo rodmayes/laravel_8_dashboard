@@ -2,8 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Booking;
+use App\Models\User;
 use App\Services\Playtomic\PlaytomicBookingService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class PlaytomicBookingWithAvailability extends Command
 {
@@ -26,10 +29,9 @@ class PlaytomicBookingWithAvailability extends Command
     /**
      * Create a new command instance.
      */
-    public function __construct(PlaytomicBookingService $bookingService)
+    public function __construct()
     {
         parent::__construct();
-        $this->bookingService = $bookingService;
     }
 
     /**
@@ -38,8 +40,24 @@ class PlaytomicBookingWithAvailability extends Command
     public function handle(): void
     {
         $email = $this->argument('user');
+
         $this->line('⏳ Iniciando proceso de reserva para: ' . $email);
-        $this->bookingService->processBookingsForUser($email);
+
+        $user = User::byEmail($email)->first();
+        if (!$user) {
+            Log::warning("[Abort] No user found for email: {$email}");
+            $this->line('No user found');
+            return;
+        }
+
+        $bookings = Booking::ontime()
+            ->byPlayer($user->email)
+            ->orderByDesc('started_at')
+            ->get();
+
+        $bookingService = new PlaytomicBookingService($user);
+        $bookingService->processBookingsForUser($bookings);
+
         $this->info('✅ Proceso finalizado');
     }
 }

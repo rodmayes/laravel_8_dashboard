@@ -52,7 +52,7 @@ class PlaytomicBooking extends Command
 
         $this->service = new PlaytomicHttpService($this->user);
         $this->displayMessage('Init process - '.now()->format('d-m-Y H:i:s'));
-        $bookings = Booking::ontime()->orderBy('started_at', 'DESC')->get();
+        $bookings = Booking::onDate()->notClosed()->orderBy('started_at', 'DESC')->get();
         foreach ($bookings as $booking) {
             try {
                 $this->booking($booking);

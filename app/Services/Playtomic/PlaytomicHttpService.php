@@ -149,7 +149,7 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
 
     public function confirmationMatch($match_id){
         try{
-        $response = $this->sendGet('v1/matches/'.$match_id);
+            $this->sendGet('v1/matches/'.$match_id);
         return env('PLAYTOMIC_URL','https://playtomic.io/api/').'v1/matches/'.$match_id;
         }catch(\Exception $e){
             Log::error('Catch confirmation match '.$e->getMessage());
