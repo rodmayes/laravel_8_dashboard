@@ -46,8 +46,8 @@ return [
             'stream' => [
                 'ssl' => [
                     'allow_self_signed' => true,
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
+                    'verify_peer' => env('MAIL_SSL_VERIFY_PEER', false),
+                    'verify_peer_name' => env('MAIL_SSL_VERIFY_PEER_NAME', false),
                 ],
             ],
         ],
