@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
         "bugsnag/bugsnag-laravel": "^2.21",
         "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",
@@ -25,6 +25,7 @@
         "laravel/ui": "^3.2",
         "laravolt/avatar": "^5.1",
         "livewire/livewire": "^2.12",
+        "maatwebsite/excel": "^3.1.40",
         "mews/captcha": "^3.3",
         "nesbot/carbon": "^2.69",
         "opcodesio/log-viewer": "^3.1",

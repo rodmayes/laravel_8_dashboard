@@ -42,7 +42,6 @@ class PlaytomicAvailabilityBookings extends Command
      */
     public function handle()
     {
-
         $clubs = Club::all();
         foreach($clubs as $club){
             $this->user = User::byEmail($this->argument('user'))->first();

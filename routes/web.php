@@ -46,7 +46,7 @@ Route::get('send-mail', function () {
 
     \Mail::to(env('MAIL_TEST'))->send(new \App\Mail\MyTestMail($details));
 
-    dd("Email is Sent.");
+    echo("Email is Sent.");
 });
 
 Route::get('datetime-iso', function(){
