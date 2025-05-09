@@ -2,10 +2,15 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\LaunchPrebookingJob;
 use App\Models\Booking;
+use App\Models\Resource;
+use App\Models\Timetable;
 use App\Models\User;
 use App\Services\Playtomic\PlaytomicBookingService;
+use App\Services\Playtomic\PlaytomicHttpService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PlaytomicBooking extends Command
@@ -46,32 +51,62 @@ class PlaytomicBooking extends Command
             ->orderByDesc('started_at')
             ->get();
 
-
-
-        if ($bookings->isEmpty()) {
+        if (!$bookings) {
             $this->warn("⚠ No hay reservas pendientes para {$email}");
             return;
         }
 
-        $bookingService = new PlaytomicBookingService($user);
-        $this->loginPlaytomic();
-        $results = $bookingService->processBookingsForUser($bookings);
+        $this->loginPlaytomic($user);
+
+        foreach ($bookings as $booking) {
+            $this->enqueuePrebookingJobs($booking, $user);
+        }
+
 
         $this->info('✅ Proceso de reservas completado');
-
-       print_r($results);
     }
 
-    private function loginPlaytomic(){
+    private function loginPlaytomic($user){
         try {
             $this->displayMessage('Login attempt', 'info');
-            $login_response = $this->bookingService->login();
+            $bookingService = new PlaytomicHttpService($user);
+            $login_response = $bookingService->login();
             if (!$login_response) {
                 $this->displayMessage('NOT Logged');
             }
             $this->displayMessage('Logged', 'info', $login_response);
         }catch (\Exception $e){
             Log::error($e->getMessage());
+        }
+    }
+
+    protected function enqueuePrebookingJobs(Booking $booking, $user): void
+    {
+        $timetables = Timetable::whereIn('id', explode(",", $booking->timetables))
+            ->orderByRaw(DB::raw("FIELD(id, {$booking->timetables})"))
+            ->get();
+
+        $resources = Resource::whereIn('id', explode(",", $booking->resources))
+            ->orderByRaw(DB::raw("FIELD(id, {$booking->resources})"))
+            ->get();
+
+        $pref = $booking->booking_preference;
+        $primaryItems = $pref === 'timetable' ? $timetables : $resources;
+        $secondaryItems = $pref === 'timetable' ? $resources : $timetables;
+
+        $this->info('Primary');
+        foreach ($primaryItems as $p1) {
+            foreach ($secondaryItems as $p2) {
+                [$resource, $timetable] = $pref === 'timetable' ? [$p2, $p1] : [$p1, $p2];
+
+                $this->info('Create Job');
+                LaunchPrebookingJob::dispatch(
+                    $user->id,
+                    $booking->id,
+                    $resource->id,
+                    $timetable->id
+                );
+            }
         }
     }
 
