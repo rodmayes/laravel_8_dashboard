@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Booking;
 use App\Models\User;
-use App\Services\Playtomic\PlaytomicBookingService;
+use App\Services\Playtomic\PlaytomicBookingServiceOld;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
@@ -55,7 +55,7 @@ class PlaytomicBookingWithAvailability extends Command
             ->orderByDesc('started_at')
             ->get();
 
-        $bookingService = new PlaytomicBookingService($user);
+        $bookingService = new PlaytomicBookingServiceOld($user);
         $bookingService->processBookingsForUser($bookings);
 
         $this->info('✅ Proceso finalizado');
