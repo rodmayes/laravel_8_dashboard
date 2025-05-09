@@ -56,6 +56,6 @@ class PlaytomicBooking extends Command
 
         $this->info('✅ Proceso de reservas completado');
 
-        $this->info('Results', $results);
+       print_r($results);
     }
 }
