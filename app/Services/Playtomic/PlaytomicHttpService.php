@@ -23,9 +23,7 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
     {
         $this->user = $user;
         $this->playtomic_token = $user->playtomic_token;
-        Log::warning('Token '.$this->playtomic_token);
         $this->headers = array_merge(['Authorization' => 'Bearer '.$this->playtomic_token], $headers);
-        Log::warning('Headers', $this->headers);
         parent::__construct(env('PLAYTOMIC_URL','https://playtomic.io/api/'), $this->headers);
     }
 

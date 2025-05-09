@@ -100,8 +100,8 @@ class PlaytomicBookingService
                         return ['combo_index' => $combo['combo_index'], 'prebooking' => ['status' => 'fail', 'message' => 'Invalid combo data']];
                     }
 
-                    $service = new PlaytomicHttpService($user);
-                    $response = $service->preBooking($booking, $resource, $timetable);
+                    $response = $this->service->preBooking($booking, $resource, $timetable);
+                    Log::warning('Response prebooking', $response);
 
                     return [
                         'combo_index' => $combo['combo_index'],
