@@ -56,7 +56,7 @@ class PlaytomicBookingWithAvailability extends Command
             ->orderByDesc('started_at')
             ->get();
 
-        if(!$bookings->isEmpty()) {
+        if($bookings) {
             $bookingService = new PlaytomicBookingService($user);
             $this->loginPlaytomic();
             $bookingService->processBookingsForUser($bookings);
@@ -64,7 +64,7 @@ class PlaytomicBookingWithAvailability extends Command
 
         $this->info('✅ Proceso finalizado');
     }
-    
+
     private function loginPlaytomic(){
         try {
             $this->displayMessage('Login attempt', 'info');
