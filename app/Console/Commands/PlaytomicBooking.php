@@ -15,7 +15,7 @@ class PlaytomicBooking extends Command
      *
      * @var string
      */
-    protected $signature = 'playtomic:booking-on-date {user : Email del usuario}';
+    protected $signature = 'playtomic:booking-on-date {user}';
 
     /**
      * The console command description.
