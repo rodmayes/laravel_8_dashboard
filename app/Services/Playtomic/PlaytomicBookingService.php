@@ -21,7 +21,7 @@ class PlaytomicBookingService
         $this->user = $user;
     }
 
-    public function processBookingsForUser($bookings): void
+    public function processBookingsForUser($bookings): array
     {
         Log::debug("[Start] Booking process for user: {$this->user->email}");
         $this->log[] = "Start booking " . now()->format('Y-m-d H:i:s');
@@ -41,6 +41,7 @@ class PlaytomicBookingService
         }
 
         Log::info('Booking job scheduling finished', $this->log);
+        return $this->log;
     }
 
     protected function enqueuePrebookingJobs(Booking $booking): void
