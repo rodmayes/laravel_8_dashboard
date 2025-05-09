@@ -46,16 +46,43 @@ class PlaytomicBooking extends Command
             ->orderByDesc('started_at')
             ->get();
 
+
+
         if ($bookings->isEmpty()) {
             $this->warn("⚠ No hay reservas pendientes para {$email}");
             return;
         }
 
         $bookingService = new PlaytomicBookingService($user);
+        $this->loginPlaytomic();
         $results = $bookingService->processBookingsForUser($bookings);
 
         $this->info('✅ Proceso de reservas completado');
 
        print_r($results);
+    }
+
+    private function loginPlaytomic(){
+        try {
+            $this->displayMessage('Login attempt', 'info');
+            $login_response = $this->bookingService->login();
+            if (!$login_response) {
+                $this->displayMessage('NOT Logged');
+            }
+            $this->displayMessage('Logged', 'info', $login_response);
+        }catch (\Exception $e){
+            Log::error($e->getMessage());
+        }
+    }
+
+    private function displayMessage($message, $type = 'error', $detail_log = []): void
+    {
+        if($type === 'error') {
+            $this->error($message);
+            Log::error($message, $detail_log);
+        }else {
+            $this->line($message);
+            Log::info($message, $detail_log);
+        }
     }
 }
