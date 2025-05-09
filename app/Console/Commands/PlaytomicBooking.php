@@ -52,8 +52,10 @@ class PlaytomicBooking extends Command
         }
 
         $bookingService = new PlaytomicBookingService($user);
-        $bookingService->processBookingsForUser($bookings);
+        $results = $bookingService->processBookingsForUser($bookings);
 
         $this->info('✅ Proceso de reservas completado');
+
+        $this->info('Results', $results);
     }
 }

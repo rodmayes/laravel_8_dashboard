@@ -21,13 +21,14 @@ class PlaytomicBookingService
 
     public function __construct(User $user){
         $this->user = $user;
-        $this->service = new PlaytomicHttpService($user);
     }
 
-    public function processBookingsForUser($bookings): void
+    public function processBookingsForUser($bookings): array
     {
         Log::debug("[Start] Booking process for user: {$this->user->email}");
         $this->log[] = "Start booking ".now()->format('Y-m-d H:i:s');
+        $this->service = new PlaytomicHttpService($this->user);
+        Log::warning('Service', $this->service);
 
         foreach ($bookings as $booking) {
             Log::debug("[Booking Check] {$booking->id} for user {$this->user->email}");
@@ -48,6 +49,7 @@ class PlaytomicBookingService
         }
 
         Log::info('Booking process finished', $this->log);
+        return $this->log;
     }
 
     protected function handleBooking($booking)
