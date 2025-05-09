@@ -56,10 +56,13 @@ class PlaytomicBookingService
 
         $timetables = Timetable::whereIn('id', explode(",", $booking->timetables))
             ->orderByRaw(DB::raw("FIELD(id, {$booking->timetables})"))
-            ->get()->keyBy('id');
+            ->get()
+            ->keyBy('id');
+
         $resources = Resource::whereIn('id', explode(",", $booking->resources))
             ->orderByRaw(DB::raw("FIELD(id, {$booking->resources})"))
-            ->get()->keyBy('id');
+            ->get()
+            ->keyBy('id');
 
         $pref = $booking->booking_preference;
         $primaryItems = $pref === 'timetable' ? $timetables : $resources;
@@ -72,11 +75,11 @@ class PlaytomicBookingService
             foreach ($secondaryItems as $p2) {
                 [$resource, $timetable] = $pref === 'timetable' ? [$p2, $p1] : [$p1, $p2];
                 $combinations[] = [
-                    'combo_index' => $index++,
-                    'resource_id' => $resource->id,
-                    'timetable_id' => $timetable->id,
-                    'resource' => $resource,
-                    'timetable' => $timetable
+                    'combo_index'   => $index++,
+                    'booking_id'    => $booking->id,
+                    'user_id'       => $this->user->id,
+                    'resource_id'   => $resource->id,
+                    'timetable_id'  => $timetable->id,
                 ];
             }
         }
@@ -85,15 +88,27 @@ class PlaytomicBookingService
         $pool = Pool::create();
 
         foreach ($combinations as $combo) {
-            $pool->add(function () use ($booking, $combo) {
+            $pool->add(function () use ($combo) {
                 try {
-                    $response = $this->availability($booking, $combo['resource'], $combo['timetable']);
+                    $booking   = Booking::find($combo['booking_id']);
+                    $user      = User::find($combo['user_id']);
+                    $resource  = Resource::find($combo['resource_id']);
+                    $timetable = Timetable::find($combo['timetable_id']);
+
+                    if (!$booking || !$user || !$resource || !$timetable) {
+                        return ['combo_index' => $combo['combo_index'], 'prebooking' => ['status' => 'fail', 'message' => 'Invalid combo data']];
+                    }
+
+                    $service = new PlaytomicHttpService($user);
+                    $response = $service->preBooking($booking, $resource, $timetable);
 
                     return [
                         'combo_index' => $combo['combo_index'],
-                        'prebooking' => $response,
-                        'resource' => $combo['resource'],
-                        'timetable' => $combo['timetable'],
+                        'prebooking'  => $response,
+                        'resource'    => $resource,
+                        'timetable'   => $timetable,
+                        'booking'     => $booking,
+                        'user'        => $user,
                     ];
                 } catch (\Throwable $e) {
                     return ['combo_index' => $combo['combo_index'], 'prebooking' => ['status' => 'fail', 'message' => $e->getMessage()]];
@@ -106,7 +121,6 @@ class PlaytomicBookingService
         }
 
         $pool->wait();
-
         ksort($results);
 
         foreach ($results as $result) {
@@ -115,7 +129,9 @@ class PlaytomicBookingService
                 continue;
             }
 
-            $resource = $result['resource'];
+            $booking   = $result['booking'];
+            $user      = $result['user'];
+            $resource  = $result['resource'];
             $timetable = $result['timetable'];
 
             $this->log[] = "[MakeBooking] For booking {$booking->id} and timetable {$timetable->id}";
@@ -123,8 +139,8 @@ class PlaytomicBookingService
 
             if (!isset($response['error'])) {
                 try {
-                    Mail::to($this->user->email)->send(new PlaytomicBookingConfirmation($booking, $resource, $timetable, $response));
-                    $this->log[] = "Mail sent to {$this->user->email}";
+                    Mail::to($user->email)->send(new PlaytomicBookingConfirmation($booking, $resource, $timetable, $response));
+                    $this->log[] = "Mail sent to {$user->email}";
                 } catch (\Exception $e) {
                     $this->log[] = "Mail send error: {$e->getMessage()}";
                 }
@@ -138,6 +154,7 @@ class PlaytomicBookingService
         $booking->log = json_encode($this->log);
         $booking->save();
     }
+
 
     protected function availability(Booking $booking, Resource $resource, Timetable $timetable): array
     {
