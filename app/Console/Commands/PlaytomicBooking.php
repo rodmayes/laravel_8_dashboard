@@ -2,17 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\PlaytomicBookingConfirmation;
 use App\Models\Booking;
-use App\Models\Resource;
-use App\Models\Timetable;
 use App\Models\User;
 use App\Services\Playtomic\PlaytomicBookingService;
-use App\Services\Playtomic\PlaytomicHttpService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class PlaytomicBooking extends Command
 {
@@ -21,27 +15,17 @@ class PlaytomicBooking extends Command
      *
      * @var string
      */
-    protected $signature = 'playtomic:booking-on-date {user}';
+    protected $signature = 'playtomic:booking-on-date {user : Email del usuario}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Booking opens onDate';
+    protected $description = 'Ejecuta las reservas Playtomic cuando llega la fecha deseada';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * @return void|null
+     * Ejecuta el comando.
      */
     public function handle(): void
     {
@@ -50,9 +34,10 @@ class PlaytomicBooking extends Command
         $this->line('⏳ Iniciando proceso de reserva para: ' . $email);
 
         $user = User::byEmail($email)->first();
+
         if (!$user) {
             Log::warning("[Abort] No user found for email: {$email}");
-            $this->line('No user found');
+            $this->error('❌ Usuario no encontrado');
             return;
         }
 
@@ -61,9 +46,14 @@ class PlaytomicBooking extends Command
             ->orderByDesc('started_at')
             ->get();
 
+        if ($bookings->isEmpty()) {
+            $this->warn("⚠ No hay reservas pendientes para {$email}");
+            return;
+        }
+
         $bookingService = new PlaytomicBookingService($user);
         $bookingService->processBookingsForUser($bookings);
 
-        $this->info('✅ Proceso finalizado');
+        $this->info('✅ Proceso de reservas completado');
     }
 }
