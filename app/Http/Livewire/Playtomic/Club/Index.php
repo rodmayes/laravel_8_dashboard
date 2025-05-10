@@ -124,7 +124,7 @@ class Index extends Component
 
     public function syncResources(Club $club){
         try {
-            $service = (new PlaytomicHttpService(auth()->user()));
+            $service = (new PlaytomicHttpService(auth()->user()->id));
             $service->login();
             $information_club = $service->getInformationClub($club);
 

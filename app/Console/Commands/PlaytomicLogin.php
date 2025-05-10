@@ -38,7 +38,7 @@ class PlaytomicLogin extends Command
         }
 
         try {
-            $this->bookingService = new PlaytomicHttpService($this->user);
+            $this->bookingService = new PlaytomicHttpService($this->user->id);
             $this->displayMessage('Login attempt', 'info');
             $login_response = $this->bookingService->login();
             if (!$login_response) {

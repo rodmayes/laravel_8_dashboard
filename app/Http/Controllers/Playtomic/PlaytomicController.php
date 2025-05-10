@@ -10,7 +10,7 @@ class PlaytomicController extends Controller
 {
 
     public function login(User $user){
-        $service = (new PlaytomicHttpService($user));
+        $service = (new PlaytomicHttpService($user->id));
         $response = $service->login();
 
         if(isset($response['access_token']) && $response['access_token'] != $user->playtomic_token) {

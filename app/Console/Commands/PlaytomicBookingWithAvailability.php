@@ -56,8 +56,7 @@ class PlaytomicBookingWithAvailability extends Command
             ->orderByDesc('started_at')
             ->get();
 
-        if($bookings) {
-            $this->loginPlaytomic($user);
+        if($bookings && $this->loginPlaytomic($user)) {
             $bookingService = new PlaytomicBookingService($user);
             $bookingService->processBookingsForUser($bookings);
         }
@@ -65,18 +64,21 @@ class PlaytomicBookingWithAvailability extends Command
         $this->info('✅ Proceso finalizado');
     }
 
-    private function loginPlaytomic($user){
+    private function loginPlaytomic($user): bool
+    {
         try {
             $this->displayMessage('Login attempt', 'info');
-            $playtomicHttpdService = new PlaytomicHttpService($user);
-            $login_response = $playtomicHttpdService->login();
+            $bookingService = new PlaytomicHttpService($user->id);
+            $login_response = $bookingService->login();
             if (!$login_response) {
                 $this->displayMessage('NOT Logged');
+                return false;
             }
             $this->displayMessage('Logged', 'info', $login_response);
         }catch (\Exception $e){
             Log::error($e->getMessage());
         }
+        return true;
     }
 
     private function displayMessage($message, $type = 'error', $detail_log = []): void

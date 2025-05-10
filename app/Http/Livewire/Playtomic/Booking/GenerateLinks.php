@@ -55,7 +55,7 @@ class GenerateLinks extends Component
     public function preBooking(Booking $booking, Resource $resource, Timetable $timetable){
         $this->log = [];
         $this->log[] = 'Prebooking Init';
-        $service = (new PlaytomicHttpService(Auth::user()));
+        $service = (new PlaytomicHttpService(Auth::user()->id));
         $response_login = $service->login();
         if($response_login){
             $this->log[] = 'Logged';

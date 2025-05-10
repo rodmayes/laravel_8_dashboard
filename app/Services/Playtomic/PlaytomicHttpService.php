@@ -19,11 +19,15 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
     private $playtomic_token;
     private $headers;
 
-    public function __construct(User $user, $headers = [])
+    public function __construct($user_id, $headers = [])
     {
-        $this->user = $user;
-        $this->playtomic_token = $user->playtomic_token;
-        $this->headers = array_merge(['Authorization' => 'Bearer '.$this->playtomic_token], $headers);
+        $this->user = User::find($user_id);
+        $this->playtomic_token = $this->user->playtomic_token;
+        $this->headers = array_merge([
+            'Authorization' => 'Bearer '.$this->playtomic_token,
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json'
+        ], $headers);
         parent::__construct(env('PLAYTOMIC_URL','https://playtomic.io/api/'), $this->headers);
     }
 
@@ -107,9 +111,9 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
                 ]
             ]
         ];
-
+        
         try {
-            $response = $this->sendPost($data, 'v1/payment_intents', true);
+            $response = $this->sendPost($data, 'v1/payment_intents', false);
             return $this->response($response);
         }catch(\Exception $e){
             Log::error('Catch preboooking '.$e->getMessage());

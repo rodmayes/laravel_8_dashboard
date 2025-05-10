@@ -58,6 +58,8 @@ class PlaytomicBookingService
         $primaryItems = $pref === 'timetable' ? $timetables : $resources;
         $secondaryItems = $pref === 'timetable' ? $resources : $timetables;
 
+        // Log reset
+        $booking->log = null; $booking->save();
         foreach ($primaryItems as $p1) {
             foreach ($secondaryItems as $p2) {
                 [$resource, $timetable] = $pref === 'timetable' ? [$p2, $p1] : [$p1, $p2];

@@ -47,7 +47,7 @@ class PlaytomicAvailabilityBookings extends Command
             $this->user = User::byEmail($this->argument('user'))->first();
             if(!$this->user) return $this->error('No user found');
 
-            $service = new PlaytomicHttpService($this->user);
+            $service = new PlaytomicHttpService($this->user->id);
             $information_club = $service->getInformationClub($club);
             $availibility = $service->getAvailabilityClub($information_club);
             foreach ($availibility as $data){

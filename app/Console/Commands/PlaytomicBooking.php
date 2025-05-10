@@ -56,28 +56,31 @@ class PlaytomicBooking extends Command
             return;
         }
 
-        $this->loginPlaytomic($user);
-
-        foreach ($bookings as $booking) {
-            $this->enqueuePrebookingJobs($booking, $user);
+        if($this->loginPlaytomic($user)) {
+            foreach ($bookings as $booking) {
+                $this->enqueuePrebookingJobs($booking, $user);
+            }
         }
 
 
         $this->info('✅ Proceso de reservas completado');
     }
 
-    private function loginPlaytomic($user){
+    private function loginPlaytomic($user): bool
+    {
         try {
             $this->displayMessage('Login attempt', 'info');
-            $bookingService = new PlaytomicHttpService($user);
+            $bookingService = new PlaytomicHttpService($user->id);
             $login_response = $bookingService->login();
             if (!$login_response) {
                 $this->displayMessage('NOT Logged');
+                return false;
             }
             $this->displayMessage('Logged', 'info', $login_response);
         }catch (\Exception $e){
             Log::error($e->getMessage());
         }
+        return true;
     }
 
     protected function enqueuePrebookingJobs(Booking $booking, $user): void
@@ -94,7 +97,8 @@ class PlaytomicBooking extends Command
         $primaryItems = $pref === 'timetable' ? $timetables : $resources;
         $secondaryItems = $pref === 'timetable' ? $resources : $timetables;
 
-        $this->info('Primary');
+        // Log reset
+        $booking->log = null; $booking->save();
         foreach ($primaryItems as $p1) {
             foreach ($secondaryItems as $p2) {
                 [$resource, $timetable] = $pref === 'timetable' ? [$p2, $p1] : [$p1, $p2];

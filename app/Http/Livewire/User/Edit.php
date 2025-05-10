@@ -62,7 +62,7 @@ class Edit extends Component
     }
 
     public function refreshToken(){
-        $response = (new PlaytomicHttpService($this->user))->login();
+        $response = (new PlaytomicHttpService($this->user->id))->login();
         if($response) {
             $this->user->playtomic_id = $response['user_id'];
             $this->user->playtomic_token = $response['access_token'];

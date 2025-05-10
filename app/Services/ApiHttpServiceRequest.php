@@ -40,11 +40,11 @@ class ApiHttpServiceRequest extends Http
     public function sendPost($data, $url = '', $retry = false)
     {
         try{
-            if($retry) {
-                $response = $this->httpd->retry(2, 100)->post($this->url . $url, $data)->json();
-                return $response;
-            }
-            return $this->httpd->post($this->url.$url, $data)->json();
+            $response = $retry
+                ? $this->httpd->retry(2, 100)->post($this->url . $url, $data)->json()
+                : $this->httpd->post($this->url.$url, $data)->json();
+
+            return $response;
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
@@ -58,11 +58,11 @@ class ApiHttpServiceRequest extends Http
     public function sendGet($url = null, $retry = false)
     {
         try {
-            if($retry) {
-                $response = $this->httpd->retry(2, 100)->get($url)->json();
-                return $response;
-            }
-            return $this->httpd->get($url)->json();
+            $response = $retry
+                ? $this->httpd->retry(2, 100)->get($url)->json()
+                : $this->httpd->get($url)->json();
+
+            return $response;
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }

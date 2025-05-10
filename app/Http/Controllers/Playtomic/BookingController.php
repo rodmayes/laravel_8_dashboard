@@ -70,7 +70,7 @@ class BookingController extends Controller
             Log::error('No user found');
             return $this->log['status'] = ['fail' => 'No user found'];
         }
-        $this->service = new PlaytomicHttpService($this->user);
+        $this->service = new PlaytomicHttpService($this->user->id);
 
         try{
             if(!$user) {

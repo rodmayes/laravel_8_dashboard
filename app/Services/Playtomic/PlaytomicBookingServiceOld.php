@@ -27,7 +27,7 @@ class PlaytomicBookingServiceOld
     {
         Log::debug("[Start] Booking process for user: {$this->user->email}");
         $this->log[] = "Start booking ".now()->format('Y-m-d H:i:s');
-        $this->service = new PlaytomicHttpService($this->user);
+        $this->service = new PlaytomicHttpService($this->user->id);
 
         foreach ($bookings as $booking) {
             Log::debug("[Booking Check] {$booking->id} for user {$this->user->email}");
