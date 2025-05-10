@@ -37,7 +37,7 @@ class GenerateLinks extends Component
         $urls = [];
         $timetables = Timetable::whereIn('id', $this->timetables)->get();
         $resources = Resource::whereIn('id', $this->resources)->get();
-        $url_checkout = env('PLAYTOMIC_URL_CHECKOUT','https://playtomic.io/checkout/booking');
+        $url_checkout = config('playtomic.url_base').config('playtomic.url_checkout');
 
         foreach ($resources as $resource) {
             foreach ($timetables as $timetable) {

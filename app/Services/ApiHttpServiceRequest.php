@@ -2,113 +2,95 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ApiHttpServiceRequest extends Http
 {
-    /**
-     * @var bool - Active debug mode for view WrongResponses
-     */
-    public $debug;
+    public bool $debug = false;
 
-    /**
-     * key for connection to api
-     *
-     * @var [type]
-     */
-    protected $url;
+    protected string $baseUri;
     private $httpd;
 
-    /**
-     * Construct a Guzzle Client with some API configurations preload
-     * ApiTcmService constructor.
-     * @param array $config
-     */
-    public function __construct($url = '', $headers = [])
+    public function __construct($baseUri = '', $token = null)
     {
-        $this->url = $url;
-        $this->httpd = Http::withOptions(['base_uri' => $url, 'verify' => false])->withHeaders($headers);
-    }
-
-    /**
-     * @param $data
-     * @param $url
-     * @return object
-     * @throws \Exception
-     */
-    public function sendPost($data, $url = '', $retry = false)
-    {
-        try{
-            $response = $retry
-                ? $this->httpd->retry(2, 100)->post($this->url . $url, $data)->json()
-                : $this->httpd->post($this->url.$url, $data)->json();
-
-            return $response;
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+        if (!$token) {
+            Log::error('[API] Token no proporcionado');
+            throw new \Exception('Token ausente en el constructor de ApiHttpServiceRequest');
         }
+
+        $this->baseUri = rtrim($baseUri);
+
+        $this->httpd = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'User-Agent' => 'application/postscript',
+                "Authorization" => "Bearer {$token}",
+            ])
+            ->withOptions([
+                'base_uri' => $this->baseUri,
+                'verify' => false,
+            ])
+            ->asJson();
     }
 
-    /**
-     * @param $url
-     * @return object
-     * @throws \Exception
-     */
-    public function sendGet($url = null, $retry = false)
+    public function sendPost($data, $endpoint = '', $retry = false)
     {
+        $this->debugRequest('POST', $this->baseUri.$endpoint, $data);
+
         try {
             $response = $retry
-                ? $this->httpd->retry(2, 100)->get($url)->json()
-                : $this->httpd->get($url)->json();
+                ? $this->httpd->retry(2, 100)->post($endpoint, $data)
+                : $this->httpd->post($endpoint, $data);
 
-            return $response;
+            return $response->json();
+        } catch (\Throwable $e) {
+           throw new \Exception('POST request failed: ' . $e->getMessage());
+        }
+    }
+
+
+    public function sendGet($endpoint = null, $retry = false)
+    {
+        $this->debugRequest('GET', $this->baseUri.$endpoint);
+
+        try {
+            return $retry
+                ? $this->httpd->retry(2, 100)->get($endpoint)
+                : $this->httpd->get($endpoint);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
     }
 
-    /**
-     * Simplified PUT request with only the form data that always returns the response
-     * @param $url
-     * @param $data
-     * @return null|\Psr\Http\Message\ResponseInterface
-     */
-    public function sendPut($data, string $url = ''): void
+    public function sendPut($data, string $endpoint = '', $retry = false)
     {
+        $this->debugRequest('PUT', $this->baseUri . $endpoint, $data);
+
         try {
-            $this->returnResponse($this->httpd->put($this->url.$url, $data)->json());
+            $this->returnResponse($this->httpd->put($endpoint, $data));
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
     }
 
-    /**
-     * Simplified PATCH request with only the form data that always returns the response
-     * @param $url
-     * @param $data
-     * @return null|\Psr\Http\Message\ResponseInterface
-     */
-    public function sendPatch($data, string $url = ''): void
+    public function sendPatch($data, string $endpoint = ''): void
     {
+        $this->debugRequest('PATCH', $this->baseUri . $endpoint, $data);
+
         try {
-            $this->returnResponse($this->httpd->patch($this->url.$url, $data)->json());
+            $this->returnResponse($this->httpd->patch($endpoint, $data));
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
     }
 
-
-    /**
-     * Simplified DELETE request with only the form data that always returns the response
-     * @param $url
-     * @param $data
-     * @return null|\Psr\Http\Message\ResponseInterface
-     */
-    public function sendDelete($data, string $url = ''): void
+    public function sendDelete($data, string $endpoint = ''): void
     {
+        $this->debugRequest('DELETE', $this->baseUri . $endpoint, $data);
+
         try {
-            $this->returnResponse($this->httpd->delete($this->url.$url, $data)->json());
+            $this->returnResponse($this->httpd->delete($endpoint, $data));
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
@@ -119,16 +101,31 @@ class ApiHttpServiceRequest extends Http
         return $this->url;
     }
 
-    public function seUrl($url): String
+    public function seUrl($baseUri): string
     {
-        $this->url = $url;
-        return $this->url;
+        $this->baseUri = $baseUri;
+        return $this->baseUri;
     }
 
     private function returnResponse($response)
     {
-        if(isset($response->CodigoError) && $response->CodigoError > 0) throw new \Exception($response->CodigoError.' - '.$response->MensajeError);
-        if(isset($response->Message) && $response->Message === 'Error.') throw new \Exception($response->Message);
+        if (isset($response->CodigoError) && $response->CodigoError > 0){
+            throw new \Exception($response->CodigoError . ' - ' . $response->MensajeError);
+        }
+        if (isset($response->Message) && $response->Message === 'Error.'){
+            throw new \Exception($response->Message);
+        }
+
         return $response;
+    }
+
+    private function debugRequest(string $method, string $url, array $data = []): void
+    {
+        if ($this->debug) {
+            Log::warning("[API DEBUG] {$method} {$url}", [
+                'body' => $data,
+                'headers' => $this->httpd->getOptions()['headers'] ?? [],
+            ]);
+        }
     }
 }

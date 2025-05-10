@@ -45,12 +45,13 @@ class LaunchPrebookingJob implements ShouldQueue
             return;
         }
 
-        $service = new PlaytomicHttpService($user->id);
+        $service = new PlaytomicHttpService($user->id, [], true);
 
         $this->appendLog($booking, 'Start prebooking for booking ID ' . $booking->id);
 
         try {
             $response = $service->preBooking($booking, $resource, $timetable);
+            Log::debug('Response prebooking', ['response' => $response]);
 
             if (isset($response['status']) && $response['status'] === 'fail') {
                 $this->appendLog($booking, 'Prebooking failed: ' . $response['message']);

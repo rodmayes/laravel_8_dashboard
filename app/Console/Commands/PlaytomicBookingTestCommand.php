@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\Playtomic\PlaytomicHttpService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class PlaytomicBookingTestCommand extends Command
@@ -49,18 +50,21 @@ class PlaytomicBookingTestCommand extends Command
         $bookings = Booking::ontime()
             ->byPlayer($user->email)
             ->orderByDesc('started_at')
-            ->first();
+            ->get();
 
-        $this->service = new PlaytomicHttpService($user->id);
+        $this->service = new PlaytomicHttpService($user->id, [], true);
 
-        if($bookings && $this->loginPlaytomic($user)) {
-            $this->booking($user, $bookings);
+        if($bookings){ // && $this->loginPlaytomic($user)) {
+            foreach($bookings as $booking) {
+                $this->booking($booking);
+                //$response = $this->testBooking($user, $booking);
+            }
         }
 
         $this->info('✅ Proceso finalizado');
     }
 
-    private function booking(User $user, $booking){
+    private function booking($booking){
         $timetables = Timetable::whereIn('id', explode(",", $booking->timetables))
             ->orderByRaw(DB::raw("FIELD(id, {$booking->timetables})"))
             ->get();
@@ -108,4 +112,67 @@ class PlaytomicBookingTestCommand extends Command
         }
         return true;
     }
+
+    private function testBooking(User $user, $booking)
+    {
+        $url = 'https://playtomic.com/api/v1/payment_intents';
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $user->playtomic_token,
+            'User-Agent' => 'application/postscript',
+        ];
+
+        $body = [
+            "allowed_payment_method_types" => [
+                "OFFER", "CASH", "MERCHANT_WALLET", "DIRECT", "SWISH", "IDEAL",
+                "BANCONTACT", "PAYTRAIL", "CREDIT_CARD", "QUICK_PAY"
+            ],
+            "user_id" => $user->playtomic_id,
+            "cart" => [
+                "requested_item" => [
+                    "cart_item_type" => "CUSTOMER_MATCH",
+                    "cart_item_voucher_id" => null,
+                    "cart_item_data" => [
+                        "supports_split_payment" => true,
+                        "number_of_players" => "4",
+                        "tenant_id" => $booking->club->playtomic_id,
+                        "resource_id" => "49c2ffaa-57bf-42d5-b23f-fc9eb801ffff",
+                        "start" => "2025-05-13T13:00:00",
+                        "duration" => "90",
+                        "match_registrations" => [
+                            [
+                                "user_id" => $user->playtomic_id,
+                                "pay_now" => true
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        try {
+            $response = Http::withHeaders($headers)
+                ->withOptions(['verify' => false])
+                ->post($url, $body);
+
+            if ($response->successful()) {
+                Log::info('✅ Prebooking successful', $response->json());
+                return $response->json();
+            }
+
+            Log::warning('❌ Prebooking failed', [
+                'status' => $response->status(),
+                'body' => $response->body(),
+            ]);
+
+            throw new \Exception("API Error: {$response->status()} - {$response->body()}");
+
+        } catch (\Throwable $e) {
+            Log::error('❌ Request exception', ['error' => $e->getMessage()]);
+            throw $e;
+        }
+    }
+
 }

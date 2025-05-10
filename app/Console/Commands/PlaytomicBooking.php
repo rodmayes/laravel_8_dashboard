@@ -7,7 +7,6 @@ use App\Models\Booking;
 use App\Models\Resource;
 use App\Models\Timetable;
 use App\Models\User;
-use App\Services\Playtomic\PlaytomicBookingService;
 use App\Services\Playtomic\PlaytomicHttpService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +19,7 @@ class PlaytomicBooking extends Command
      *
      * @var string
      */
-    protected $signature = 'playtomic:booking-on-date {user}';
+    protected $signature = 'playtomic:booking-onDate {user}';
 
     /**
      * The console command description.
@@ -56,11 +55,11 @@ class PlaytomicBooking extends Command
             return;
         }
 
-        if($this->loginPlaytomic($user)) {
+        //if($this->loginPlaytomic($user)) {
             foreach ($bookings as $booking) {
                 $this->enqueuePrebookingJobs($booking, $user);
             }
-        }
+        //}
 
 
         $this->info('✅ Proceso de reservas completado');

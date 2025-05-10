@@ -17,25 +17,31 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
 {
     private $user;
     private $playtomic_token;
-    private $headers;
 
-    public function __construct($user_id, $headers = [])
+    private string $urlPlaytomicBase;
+
+    public function __construct($user_id, $headers = [], $debug = false)
     {
-        $this->user = User::find($user_id);
+        $this->debug = $debug;
+        $this->user = User::findOrFail($user_id);
         $this->playtomic_token = $this->user->playtomic_token;
-        $this->headers = array_merge([
-            'Authorization' => 'Bearer '.$this->playtomic_token,
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json'
-        ], $headers);
-        parent::__construct(env('PLAYTOMIC_URL','https://playtomic.io/api/'), $this->headers);
+        $this->urlPlaytomicBase = config('playtomic.url_base');
+
+        if (!$this->playtomic_token) {
+            Log::error('[Playtomic] Token vacío para el usuario: ' . $this->user->email);
+            throw new \Exception('Token de autenticación no disponible');
+        }
+
+        Log::info('[Playtomic] Url ' . $this->urlPlaytomicBase);
+
+        parent::__construct($this->urlPlaytomicBase, $this->playtomic_token);
     }
 
     public function login(){
         try{
             $params = ['email' => $this->user->email, 'password' => Crypt::decrypt($this->user->playtomic_password)];
             $client = new Client(['headers' => ['Content-Type' => 'application/json']]);
-            $response = $client->post(env('PLAYTOMIC_URL','https://playtomic.io/api/').'v3/auth/login', [
+            $response = $client->post(env('PLAYTOMIC_URL', $this->urlPlaytomicBase).'v3/auth/login', [
                 RequestOptions::JSON => $params
             ]);
 
@@ -111,9 +117,9 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
                 ]
             ]
         ];
-        
+
         try {
-            $response = $this->sendPost($data, 'v1/payment_intents', false);
+            $response = $this->sendPost($data, 'v1/payment_intents');
             return $this->response($response);
         }catch(\Exception $e){
             Log::error('Catch preboooking '.$e->getMessage());
@@ -131,7 +137,7 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
 
         $available_payment_methods = $prebooking['available_payment_methods'];
         if(is_array($prebooking['available_payment_methods'])) $available_payment_methods = $prebooking['available_payment_methods'][0];
-        $response = $client->patch(env('PLAYTOMIC_URL','https://playtomic.io/api/').'v1/payment_intents/'. $prebooking['payment_intent_id'], [
+        $response = $client->patch(env('PLAYTOMIC_URL',$this->urlBasePlaytomic).'v1/payment_intents/'. $prebooking['payment_intent_id'], [
             RequestOptions::JSON => [
                 "selected_payment_method_id" => $available_payment_methods['payment_method_id'],
                 "selected_payment_method_data" => $available_payment_methods['data']
@@ -154,7 +160,7 @@ class PlaytomicHttpService extends ApiHttpServiceRequest
     public function confirmationMatch($match_id){
         try{
             $this->sendGet('v1/matches/'.$match_id);
-        return env('PLAYTOMIC_URL','https://playtomic.io/api/').'v1/matches/'.$match_id;
+        return env('PLAYTOMIC_URL', $this->urlPlaytomicBase).'v1/matches/'.$match_id;
         }catch(\Exception $e){
             Log::error('Catch confirmation match '.$e->getMessage());
             return ['status' => 'fail', 'message' => $e->getMessage()];

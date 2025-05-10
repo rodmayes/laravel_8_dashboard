@@ -41,7 +41,7 @@ class PreBooking extends Component
     public function mount(Booking $booking)
     {
         $this->log = [];
-        $this->playtomic_url_checkout = env('PLAYTOMIC_URL_CHECKOUT','https://playtomic.io/checkout/booking');
+        $this->playtomic_url_checkout = config('playtomic.url_base').config('playtomic.url_checkout');
         $this->booking = $booking;
         $this->initListsForFields();
     }
